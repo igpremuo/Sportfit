@@ -10,17 +10,16 @@ import android.widget.TextView;
 import com.sdm.sportfit.app.R;
 
 /**
- * Created by nacho on 31/03/14.
+ * Created by nacho on 1/04/14.
  */
-public class HiitParentFragment extends Fragment {
+public class MainReviewFragment extends Fragment {
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.fragment_main_review, container, false);
         TextView textView = (TextView) rootView.findViewById(R.id.section_label);
-        textView.setText("Hiit Fragment");
+        textView.setText("Review Fragment");
         return rootView;
     }
-
 }

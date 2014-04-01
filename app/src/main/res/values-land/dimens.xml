@@ -1,0 +1,4 @@
+<resources>
+    <!-- MainTrainFragment -->
+    <dimen name="main_train_button_margin">100dp</dimen>
+</resources>

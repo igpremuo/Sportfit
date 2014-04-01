@@ -277,4 +277,8 @@ public class NavigationDrawerFragment extends Fragment {
          */
         void onNavigationDrawerItemSelected(int position);
     }
+
+    public int getCurrentSelectedPosition() {
+        return mCurrentSelectedPosition;
+    }
 }

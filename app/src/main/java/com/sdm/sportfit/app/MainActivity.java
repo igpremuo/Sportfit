@@ -19,11 +19,6 @@ import com.sdm.sportfit.app.fragments.HiitParentFragment;
 import com.sdm.sportfit.app.fragments.MainParentFragment;
 import com.sdm.sportfit.app.fragments.TrainParentFragment;
 
-import com.sdm.sportfit.app.fragments.DietParentFragment;
-import com.sdm.sportfit.app.fragments.HiitParentFragment;
-import com.sdm.sportfit.app.fragments.MainParentFragment;
-import com.sdm.sportfit.app.fragments.TrainParentFragment;
-
 public class MainActivity extends ActionBarActivity
         implements NavigationDrawerFragment.NavigationDrawerCallbacks {
 
@@ -36,9 +31,8 @@ public class MainActivity extends ActionBarActivity
      * Used to store the last screen title. For use in {@link #restoreActionBar()}.
      */
     private CharSequence mTitle;
-    private String[] mSectionTitles;
 
-    private MainParentFragment mMainFragment = null;
+    private MainParentFragment mMapFragment = null;
     private DietParentFragment mDietFragment = null;
     private TrainParentFragment mTrainFragment = null;
     private HiitParentFragment mHiitFragment = null;
@@ -51,14 +45,17 @@ public class MainActivity extends ActionBarActivity
 
         mNavigationDrawerFragment = (NavigationDrawerFragment)
                 getSupportFragmentManager().findFragmentById(R.id.navigation_drawer);
-        mTitle = getTitle();
+
+        //mTitle = getTitle();
+
+        mTitle = getSectionTitle(mNavigationDrawerFragment.getCurrentSelectedPosition());
 
         // Set up the drawer.
         mNavigationDrawerFragment.setUp(
                 R.id.navigation_drawer,
                 (DrawerLayout) findViewById(R.id.drawer_layout));
 
-        mSectionTitles = getResources().getStringArray(R.array.drawer_titles);
+
     }
 
     @Override
@@ -68,27 +65,38 @@ public class MainActivity extends ActionBarActivity
         Fragment fragment = null;
         switch (position) {
             case 0:
+                //if (mMapFragment == null) mMapFragment = new MainParentFragment();
                 fragment = new MainParentFragment();
                 break;
             case 1:
+                //if (mDietFragment == null) mDietFragment = new DietParentFragment();
                 fragment = new DietParentFragment();
                 break;
             case 2:
+                //if (mTrainFragment == null) mTrainFragment = new TrainParentFragment();
                 fragment = new TrainParentFragment();
                 break;
             case 3:
-                fragment = new HiitParentFragment();
+                if (mHiitFragment == null) mHiitFragment = new HiitParentFragment();
+                fragment = mHiitFragment;
                 break;
         }
 
-        //PlaceholderFragment.newInstance(position + 1)
         if (fragment != null) {
-            fragmentManager.beginTransaction().replace(R.id.container, fragment).commit();
+            replaceFragment(fragment, getSectionTitle(position));
         }
     }
 
-    public void onSectionAttached(int number) {
-        mTitle = mSectionTitles[number];
+    private void replaceFragment(Fragment newFragment, CharSequence title) {
+        this.mTitle = title;
+        FragmentManager fragmentManager = getSupportFragmentManager();
+        fragmentManager.beginTransaction().replace(R.id.container, newFragment).commit();
+    }
+
+    private String getSectionTitle(int pos) {
+        String[] sectionTitles = getResources().getStringArray(R.array.drawer_titles);
+        if (pos < sectionTitles.length) return sectionTitles[pos];
+        return "";
     }
 
     public void restoreActionBar() {
@@ -152,7 +160,7 @@ public class MainActivity extends ActionBarActivity
         @Override
         public View onCreateView(LayoutInflater inflater, ViewGroup container,
                 Bundle savedInstanceState) {
-            View rootView = inflater.inflate(R.layout.fragment_main, container, false);
+            View rootView = inflater.inflate(R.layout.fragment_viewpager, container, false);
             TextView textView = (TextView) rootView.findViewById(R.id.section_label);
             textView.setText(Integer.toString(getArguments().getInt(ARG_SECTION_NUMBER)));
             return rootView;
@@ -161,8 +169,8 @@ public class MainActivity extends ActionBarActivity
         @Override
         public void onAttach(Activity activity) {
             super.onAttach(activity);
-            ((MainActivity) activity).onSectionAttached(
-                    getArguments().getInt(ARG_SECTION_NUMBER));
+            /*((MainActivity) activity).onSectionAttached(
+                    getArguments().getInt(ARG_SECTION_NUMBER));*/
         }
     }
 
