@@ -14,4 +14,14 @@
     <!-- MainTrainFragment -->
     <string name="main_train_button_start">Empezar</string>
 
+    <!--fragment_train_training -->
+    <string name="train_training_tv1_tipo_entrenamiento">Tipo de entrenamiento:</string>
+    <string name="train_training_rb_aviso_distancia">Aviso por distancia</string>
+    <string name="train_training_rb_aviso_tiempo">Aviso por tiempo</string>
+    <string name="train_training_tv2_avisos">Método de avisos:</string>
+    <string name="train_training_rb_andar">Andar</string>
+    <string name="train_training_rb_correr">Correr</string>
+    <string name="train_training_rb_bicicleta">Bicicleta</string>
+
+
 </resources>
