@@ -63,7 +63,15 @@ public class TrainParentFragment extends Fragment {
         public Fragment getItem(int position) {
             // getItem is called to instantiate the fragment for the given page.
             // Return a PlaceholderFragment (defined as a static inner class below).
-            return new MainReviewFragment();
+            switch (position) {
+                case 0:
+                    return new TrainRecordFragment();
+                case 1:
+                    return new TrainTrainingFragment();
+                case 2:
+                    return new TrainReviewFragment();
+            }
+            return new TrainTrainingFragment();
         }
 
         @Override
