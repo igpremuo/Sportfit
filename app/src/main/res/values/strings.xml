@@ -24,7 +24,7 @@
     <string name="train_training_rb_andar">Andar</string>
     <string name="train_training_rb_correr">Correr</string>
     <string name="train_training_rb_bicicleta">Bicicleta</string>
-    <string name="train_training_button_empezar">Entrenar</string>
+    <string name="train_training_button_entrenar">Entrenar</string>
 
     <!--fragment_train_review -->
     <string name="train_review_tv1_DEPORTE">DEPORTE</string>
@@ -34,9 +34,17 @@
     <string name="train_review_tv3_DISTANCIA">DISTANCIA</string>
     <string name="train_review_tv3_distancia">4.06Km</string>
     <string name="train_review_tv4_CALORIAS">CALORÍAS</string>
-    <string name="train_review_tv4_calorias">400kcal</string>
+    <string name="train_review_tv4_calorias">400Kcal</string>
     <string name="train_review_tv5_VEL_MEDIA">VEL.MEDIA</string>
     <string name="train_review_tv5_vel_media">8.93Km/h</string>
     <string name="train_review_tv6_RITMO_PROMEDIO">RITMO PROM.</string>
-    <string name="train_review_tv6_ritmo_promedio">6:43min/km</string>
+    <string name="train_review_tv6_ritmo_promedio">6:43min/Km</string>
+
+    <!--fragment_main_train -->
+    <string name="main_train_tv1">ENTRENAMIENTO:</string>
+    <string name="main_train_tv2">Correr</string>
+    <string name="main_train_tv3_TIEMPO">TIEMPO</string>
+    <string name="main_train_tv3_tiempo">00:00:01</string>
+    <string name="main_train_tv4_DISTANCIA">DISTANCIA</string>
+    <string name="main_train_tv4_distancia">2.15Km</string>
 </resources>

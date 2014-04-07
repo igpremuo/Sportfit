@@ -15,7 +15,8 @@
 
     <TableLayout
         android:layout_width="fill_parent"
-        android:layout_height="fill_parent">
+        android:layout_height="fill_parent"
+        android:stretchColumns="*">
         <!--linea de deporte y calorias -->
         <TableRow
         android:layout_width="fill_parent"
@@ -53,8 +54,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="@string/train_review_tv1_deporte"
-                    android:id="@+id/train_review_tv1_deporte"
-                    android:textSize="30sp" />
+                    android:id="@+id/train_review_tv1_deporte" />
             </LinearLayout>
         </LinearLayout>
 
@@ -89,7 +89,7 @@
                     android:layout_height="wrap_content"
                     android:text="@string/train_review_tv4_calorias"
                     android:id="@+id/train_review_tv4_calorias"
-                    android:textSize="30sp" />
+                    android:textSize="22sp" />
             </LinearLayout>
         </LinearLayout>
 
@@ -131,7 +131,7 @@
                         android:layout_height="wrap_content"
                         android:text="@string/train_review_tv2_duracion"
                         android:id="@+id/train_review_tv2_duracion"
-                        android:textSize="30sp" />
+                        android:textSize="22sp" />
                 </LinearLayout>
             </LinearLayout>
 
@@ -167,7 +167,7 @@
                             android:layout_height="wrap_content"
                             android:text="@string/train_review_tv3_distancia"
                             android:id="@+id/train_review_tv3_distancia"
-                            android:textSize="30sp" />
+                            android:textSize="22sp" />
                 </LinearLayout>
             </LinearLayout>
 
@@ -209,7 +209,7 @@
                         android:layout_height="wrap_content"
                         android:text="@string/train_review_tv5_vel_media"
                         android:id="@+id/train_review_tv5_vel_media"
-                        android:textSize="30sp" />
+                        android:textSize="22sp" />
                 </LinearLayout>
             </LinearLayout>
 
@@ -245,7 +245,7 @@
                         android:layout_height="wrap_content"
                         android:text="@string/train_review_tv6_ritmo_promedio"
                         android:id="@+id/train_review_tv6_ritmo_promedio"
-                        android:textSize="30sp" />
+                        android:textSize="22sp" />
                 </LinearLayout>
             </LinearLayout>
 
