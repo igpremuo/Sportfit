@@ -8,12 +8,6 @@
     android:paddingBottom="@dimen/activity_vertical_margin"
     tools:context="com.sdm.sportfit.app.MainActivity$PlaceholderFragment">
 
-    <TextView
-        android:id="@+id/section_label"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        />
-
     <LinearLayout
         android:orientation="vertical"
         android:layout_width="fill_parent"
@@ -23,8 +17,7 @@
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:text="@string/train_training_tv1_tipo_entrenamiento"
-            android:id="@+id/training_frag_tv1"
-            android:gravity="center_horizontal" />
+            android:id="@+id/training_frag_tv1" />
 
         <RadioGroup
             android:layout_width="fill_parent"
@@ -36,7 +29,9 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/train_training_rb_andar"
-                android:id="@+id/train_training_rb_andar" />
+                android:id="@+id/train_training_rb_andar"
+                android:checked="true"
+                />
 
             <RadioButton
                 android:layout_width="wrap_content"
@@ -65,7 +60,15 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/train_training_rb_aviso_distancia"
-                android:id="@+id/train_training_rb_aviso_distancia" />
+                android:id="@+id/train_training_rb_aviso_distancia"
+                android:checked="true" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textAppearance="?android:attr/textAppearanceSmall"
+                android:text="@string/train_training_tv3_avisos_distancia"
+                android:id="@+id/train_training_tv3_avisos_distancia" />
 
             <RadioButton
                 android:layout_width="wrap_content"
@@ -73,13 +76,27 @@
                 android:text="@string/train_training_rb_aviso_tiempo"
                 android:id="@+id/train_training_rb_aviso_tiempo" />
 
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textAppearance="?android:attr/textAppearanceSmall"
+                android:text="@string/train_training_tv4_avisos_tiempo"
+                android:id="@+id/train_training_tv4_avisos_tiempo" />
+
         </RadioGroup>
 
-        <Button
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="New Button"
-            android:id="@+id/button" />
+        <LinearLayout
+            android:orientation="vertical"
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            android:gravity="center_horizontal|bottom">
+
+            <Button
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/train_training_button_empezar"
+                android:id="@+id/button" />
+        </LinearLayout>
 
     </LinearLayout>
 

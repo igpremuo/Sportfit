@@ -16,12 +16,27 @@
 
     <!--fragment_train_training -->
     <string name="train_training_tv1_tipo_entrenamiento">Tipo de entrenamiento:</string>
+    <string name="train_training_tv2_avisos">Método de avisos:</string>
+    <string name="train_training_tv3_avisos_distancia">Dará un aviso cada kilometro realizado</string>
+    <string name="train_training_tv4_avisos_tiempo">Dará un aviso cada 5 minutos realizados</string>
     <string name="train_training_rb_aviso_distancia">Aviso por distancia</string>
     <string name="train_training_rb_aviso_tiempo">Aviso por tiempo</string>
-    <string name="train_training_tv2_avisos">Método de avisos:</string>
     <string name="train_training_rb_andar">Andar</string>
     <string name="train_training_rb_correr">Correr</string>
     <string name="train_training_rb_bicicleta">Bicicleta</string>
+    <string name="train_training_button_empezar">Entrenar</string>
 
-
+    <!--fragment_train_review -->
+    <string name="train_review_tv1_DEPORTE">DEPORTE</string>
+    <string name="train_review_tv1_deporte">Correr</string>
+    <string name="train_review_tv2_DURACION">DURACIÓN</string>
+    <string name="train_review_tv2_duracion">00:27:16</string>
+    <string name="train_review_tv3_DISTANCIA">DISTANCIA</string>
+    <string name="train_review_tv3_distancia">4.06Km</string>
+    <string name="train_review_tv4_CALORIAS">CALORÍAS</string>
+    <string name="train_review_tv4_calorias">400kcal</string>
+    <string name="train_review_tv5_VEL_MEDIA">VEL.MEDIA</string>
+    <string name="train_review_tv5_vel_media">8.93Km/h</string>
+    <string name="train_review_tv6_RITMO_PROMEDIO">RITMO PROM.</string>
+    <string name="train_review_tv6_ritmo_promedio">6:43min/km</string>
 </resources>

@@ -5,7 +5,6 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.TextView;
 
 import com.sdm.sportfit.app.R;
 
@@ -18,8 +17,8 @@ public class TrainReviewFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.fragment_train_review, container, false);
-        TextView textView = (TextView) rootView.findViewById(R.id.section_label);
-        textView.setText("Resumen Fragment");
+        /*TextView textView = (TextView) rootView.findViewById(R.id.section_label);
+        textView.setText("Resumen Fragment");*/
         return rootView;
     }
 }
