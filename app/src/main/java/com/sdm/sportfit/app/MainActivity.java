@@ -1,6 +1,7 @@
 package com.sdm.sportfit.app;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.support.v7.app.ActionBarActivity;
 import android.support.v7.app.ActionBar;
 import android.support.v4.app.Fragment;
@@ -17,6 +18,7 @@ import android.widget.TextView;
 import com.sdm.sportfit.app.fragments.DietParentFragment;
 import com.sdm.sportfit.app.fragments.HiitParentFragment;
 import com.sdm.sportfit.app.fragments.MainParentFragment;
+import com.sdm.sportfit.app.fragments.PreferencesActivity;
 import com.sdm.sportfit.app.fragments.TrainParentFragment;
 
 public class MainActivity extends ActionBarActivity
@@ -45,6 +47,7 @@ public class MainActivity extends ActionBarActivity
 
         mNavigationDrawerFragment = (NavigationDrawerFragment)
                 getSupportFragmentManager().findFragmentById(R.id.navigation_drawer);
+        mNavigationDrawerFragment.setRetainInstance(true);
 
         //mTitle = getTitle();
 
@@ -127,6 +130,8 @@ public class MainActivity extends ActionBarActivity
         // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
         if (id == R.id.action_settings) {
+            Intent intent = new Intent(MainActivity.this, PreferencesActivity.class);
+            startService(intent);
             return true;
         }
         return super.onOptionsItemSelected(item);

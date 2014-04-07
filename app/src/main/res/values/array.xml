@@ -26,4 +26,11 @@
         <item>Resumen</item>
     </string-array>
 
+    <!-- Preferences -->
+    <string-array name="preferences_goal">
+        <item>Perder peso</item>
+        <item>Mantenimiento</item>
+        <item>Ganar peso</item>
+    </string-array>
+
 </resources>

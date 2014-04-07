@@ -17,6 +17,7 @@ import com.sdm.sportfit.app.R;
  */
 public class TrainParentFragment extends Fragment {
 
+    private final static String CURRENT_POSITION = "fragment_position";
 
     /**
      * The {@link android.support.v4.view.PagerAdapter} that will provide
@@ -44,9 +45,20 @@ public class TrainParentFragment extends Fragment {
         // Set up the ViewPager with the sections adapter.
         mViewPager = (ViewPager) rootView.findViewById(R.id.viewpager);
         mViewPager.setAdapter(mSectionsPagerAdapter);
-        mViewPager.setCurrentItem(1);
+
+        if (savedInstanceState != null) {
+            mViewPager.setCurrentItem(savedInstanceState.getInt(CURRENT_POSITION,2));
+        } else {
+            mViewPager.setCurrentItem(1);
+        }
 
         return rootView;
+    }
+
+    @Override
+    public void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+        outState.putInt(CURRENT_POSITION, mViewPager.getCurrentItem());
     }
 
     /**

@@ -4,24 +4,19 @@ import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
-import android.support.v4.app.FragmentTransaction;
 import android.support.v4.view.ViewPager;
-import android.support.v7.app.ActionBar;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.TextView;
 
 import com.sdm.sportfit.app.R;
-
-import java.util.Locale;
 
 /**
  * Created by nacho on 31/03/14.
  */
 public class MainParentFragment extends Fragment{
 
-    private final static String SAVE_STATE= "fragment_position";
+    private final static String CURRENT_POSITION = "fragment_position";
     /**
      * The {@link android.support.v4.view.PagerAdapter} that will provide
      * fragments for each of the sections. We use a
@@ -59,7 +54,7 @@ public class MainParentFragment extends Fragment{
         mViewPager.setAdapter(mSectionsPagerAdapter);
 
         if (savedInstanceState != null) {
-            mViewPager.setCurrentItem(savedInstanceState.getInt(SAVE_STATE,2));
+            mViewPager.setCurrentItem(savedInstanceState.getInt(CURRENT_POSITION,2));
         } else {
             mViewPager.setCurrentItem(1);
         }
@@ -70,7 +65,7 @@ public class MainParentFragment extends Fragment{
     @Override
     public void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
-        outState.putInt(SAVE_STATE, mViewPager.getCurrentItem());
+        outState.putInt(CURRENT_POSITION, mViewPager.getCurrentItem());
     }
 
     /**
