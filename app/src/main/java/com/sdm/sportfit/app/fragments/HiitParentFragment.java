@@ -17,7 +17,7 @@ public class HiitParentFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        View rootView = inflater.inflate(R.layout.fragment_main_review, container, false);
+        View rootView = inflater.inflate(R.layout.fragment_hiit, container, false);
         TextView textView = (TextView) rootView.findViewById(R.id.section_label);
         textView.setText("Hiit Fragment");
         return rootView;
