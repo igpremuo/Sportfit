@@ -1,6 +1,7 @@
 package com.sdm.sportfit.app.fragments;
 
 import android.os.Bundle;
+import android.os.SystemClock;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -19,7 +20,7 @@ public class MainTrainFragment extends Fragment {
     Chronometer cronometro;
     ImageButton play_pause;
     ImageButton stop;
-    String _estado ="parado";
+    Long tiempo=null;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -33,12 +34,31 @@ public class MainTrainFragment extends Fragment {
             public void onClick(View view) {
 
                 if (cronometro.isActivated()) {
+                    tiempo= cronometro.getBase();
+                    cronometro.setBase(SystemClock.elapsedRealtime());
                     cronometro.stop();
 
                 }
                 else{
-                    cronometro.start();
+                    if(tiempo!=null) {
+                        cronometro.setBase(SystemClock.elapsedRealtime());
+                        cronometro.start();
+                    }
+                    else{
+                        cronometro.setBase(tiempo + SystemClock.elapsedRealtime());
+                        cronometro.start();
+                    }
                 }
+            }
+        });
+
+        stop.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+                    cronometro.setBase(SystemClock.elapsedRealtime());
+                    cronometro.stop();
+
             }
         });
         return rootView;
