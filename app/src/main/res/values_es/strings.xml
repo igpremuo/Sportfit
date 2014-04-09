@@ -49,11 +49,12 @@
     <string name="main_train_tv4_distancia">2.15Km</string>
 
     <!-- Messages error-->
-        <!-- Errors DatabaseHandler-->
-        <string name="dropError">ERROR. Not been able to clear tables database</string>
-        <string name="createError">ERROR. Have not been able to create tables in the database</string>
-        <string name="insertUserError">ERROR. Not been able to be inserted by the user in the database</string>
-        <string name="selectError">ERROR. Could not execute query</string>
-        <string name="deleteError">ERROR. Could not delete table</string>
-        <string name="dateError">Parse format date error</string>
+    <!-- Errors DatabaseHandler-->
+    <string name="dropError">ERROR. No se han podido borrar las tablas de la base de datos</string>
+    <string name="createError">ERROR. No se han podido crear las tablas en la base de datos</string>
+    <string name="insertUserError">ERROR. No se han podido insertar el usuario en la base de datos</string>
+    <string name="selectError">ERROR. No se ha podido ejecutar la consulta</string>
+    <string name="deleteError">ERROR. No se ha podido borrar la tabla</string>
+    <string name="dateError">ERROR. Al formatear la fecha</string>
 </resources>
+

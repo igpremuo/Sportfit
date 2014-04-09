@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string-array name="drawer_titles">
+        <item>Principal</item>
+        <item>Dieta</item>
+        <item>Entrenamiento</item>
+        <item>Hiit</item>
+    </string-array>
+
+    <string-array name="main_titles">
+        <item>Entrenar</item>
+        <item>Principal</item>
+        <item>Dieta</item>
+    </string-array>
+
+    <string-array name="diet_titles">
+        <item>Alimentos</item>
+        <item>Mi dieta</item>
+        <item>Resumen</item>
+    </string-array>
+
+    <string-array name="train_titles">
+        <item>Historial</item>
+        <item>Entrenamiento</item>
+        <item>Resumen</item>
+    </string-array>
+
+    <!-- Preferences -->
+    <string-array name="preferences_goal">
+        <item>Perder peso</item>
+        <item>Mantenimiento</item>
+        <item>Ganar peso</item>
+    </string-array>
+
+</resources>
