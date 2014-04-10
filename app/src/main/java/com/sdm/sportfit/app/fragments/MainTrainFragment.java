@@ -110,6 +110,7 @@ public class MainTrainFragment extends Fragment {
                     mPlayPause.setImageResource(R.drawable.ic_play);
                     //Pone el cronometro a 0
                     mCronometro.setBase(SystemClock.elapsedRealtime());
+                    cancelSubscribirService();
                 }
             }
         });
