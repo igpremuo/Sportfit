@@ -114,13 +114,6 @@ public class MainTrainFragment extends Fragment {
             }
         });
 
-        //Filtro para el paso de mensajes
-        IntentFilter filter = new IntentFilter();
-        filter.addAction(GpsIntentService.LISTA_PUNTOS);
-        filter.addAction(GpsIntentService.TIEMPO);
-        mMainRcv = new MainTrainReceiver();
-        getActivity().registerReceiver(mMainRcv, filter);
-
         return rootView;
     }
 
@@ -146,6 +139,13 @@ public class MainTrainFragment extends Fragment {
         Intent bcIntent = new Intent();
         bcIntent.setAction(SUBSCRIBIR_SERVICE);
         getActivity().sendBroadcast(bcIntent);
+
+        //Filtro para el paso de mensajes
+        IntentFilter filter = new IntentFilter();
+        filter.addAction(GpsIntentService.LISTA_PUNTOS);
+        filter.addAction(GpsIntentService.TIEMPO);
+        mMainRcv = new MainTrainReceiver();
+        getActivity().registerReceiver(mMainRcv, filter);
     }
 
     //Se cancela la suscripcion al Service para actualizar cronometro
