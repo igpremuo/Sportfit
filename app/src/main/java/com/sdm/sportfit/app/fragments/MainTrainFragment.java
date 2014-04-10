@@ -136,16 +136,17 @@ public class MainTrainFragment extends Fragment {
 
     //Se suscribe al Service para actualizar cronometro
     private void subscribirService(){
-        Intent bcIntent = new Intent();
-        bcIntent.setAction(SUBSCRIBIR_SERVICE);
-        getActivity().sendBroadcast(bcIntent);
-
         //Filtro para el paso de mensajes
         IntentFilter filter = new IntentFilter();
         filter.addAction(GpsIntentService.LISTA_PUNTOS);
         filter.addAction(GpsIntentService.TIEMPO);
         mMainRcv = new MainTrainReceiver();
         getActivity().registerReceiver(mMainRcv, filter);
+
+        // Avisar al servicio
+        Intent bcIntent = new Intent();
+        bcIntent.setAction(SUBSCRIBIR_SERVICE);
+        getActivity().sendBroadcast(bcIntent);
     }
 
     //Se cancela la suscripcion al Service para actualizar cronometro
