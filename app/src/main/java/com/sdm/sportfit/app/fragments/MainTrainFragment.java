@@ -6,13 +6,13 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.location.LocationManager;
 import android.os.Bundle;
+import android.os.SystemClock;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Chronometer;
 import android.widget.ImageButton;
-import android.widget.TextView;
 
 import com.sdm.sportfit.app.R;
 import com.sdm.sportfit.app.services.GpsIntentService;
@@ -27,15 +27,21 @@ public class MainTrainFragment extends Fragment {
     public static final String PLAY_SERVICE_GPS = "com.sdm.sportfit.app.intent.action.PLAY_SERVICE_GPS";
     public static final String PAUSE_SERVICE_GPS = "com.sdm.sportfit.app.intent.action.PAUSE_SERVICE_GPS";
     public static final String STOP_SERVICE_GPS = "com.sdm.sportfit.app.intent.action.STOP_SERVICE_GPS";
-    public static final String VALOR_CRONOMETRO = "com.sdm.sportfit.app.intent.action.VALOR_CRONOMETRO";
+    public static final String SUBSCRIBIR_SERVICE = "com.sdm.sportfit.app.intent.action.SUBSCRIBIR_CRONOMETRO";
+    public static final String CANCELAR_SUSCRIBIR_SERVICE = "com.sdm.sportfit.app.intent.action.CANCELAR_SUSCRIBIR_CRONOMETRO";
     public static final String FIN_SERVICE_GPS = "com.sdm.sportfit.app.intent.action.FIN_SERVICE_GPS";
 
+    //Variables de estado
+    public static final String PLAY="play";
+    public static final String PAUSE="pause";
+    public static final String STOP="stop";
+    static String sEstado;
+
     //Variables
-    Chronometer cronometro;
-    ImageButton play_pause;
-    ImageButton stop;
-    TextView texto;
-    String estado="stop";
+    Chronometer mCronometro;
+    ImageButton mPlayPause;
+    ImageButton mStop;
+    MainTrainReceiver mMainRcv;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -49,14 +55,32 @@ public class MainTrainFragment extends Fragment {
         IntentFilter filter = new IntentFilter();
         filter.addAction(GpsIntentService.LISTA_PUNTOS);
         filter.addAction(GpsIntentService.TIEMPO);
-        MainTrainReceiver mainRcv = new MainTrainReceiver();
-        getActivity().registerReceiver(mainRcv, filter);
+        mMainRcv = new MainTrainReceiver();
+        getActivity().registerReceiver(mMainRcv, filter);
 
-        play_pause.setOnClickListener(new View.OnClickListener() {
+
+        return rootView;
+
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+
+        if(sEstado==null){
+            sEstado=STOP;
+        }
+
+        if(sEstado.equals(PLAY)){
+            mPlayPause.setImageResource(R.drawable.ic_pause);
+            subscribirService();
+        }
+        //Funcion del boton mPlayPause
+        mPlayPause.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
 
-                if(estado.equals("stop")){
+                if (sEstado.equals(STOP)) {
                     //Creo el IntentService
                     Intent msgIntent = new Intent(getActivity(), GpsIntentService.class);
                     getActivity().startService(msgIntent);
@@ -65,57 +89,77 @@ public class MainTrainFragment extends Fragment {
                     bcIntent.setAction(PLAY_SERVICE_GPS);
                     getActivity().sendBroadcast(bcIntent);
                     //Cambios necesarios en la interfaz
-                    estado="play";
-                    play_pause.setImageResource(R.drawable.ic_pause);
-                }
-                else if(estado.equals("pause")){
+                    sEstado = PLAY;
+                    mPlayPause.setImageResource(R.drawable.ic_pause);
+                    //Me subscribo
+                    subscribirService();
+                } else if (sEstado.equals(PAUSE)) {
                     Intent bcIntent = new Intent();
                     bcIntent.setAction(PLAY_SERVICE_GPS);
                     getActivity().sendBroadcast(bcIntent);
                     //Cambios necesarios en la interfaz
-                    estado="play";
-                    play_pause.setImageResource(R.drawable.ic_pause);
+                    sEstado = PLAY;
+                    mPlayPause.setImageResource(R.drawable.ic_pause);
+                    //Me subscribo
+                    subscribirService();
 
-                }
-                else if(estado.equals("play")){
+                } else if (sEstado.equals(PLAY)) {
                     Intent bcIntent = new Intent();
                     bcIntent.setAction(PAUSE_SERVICE_GPS);
                     getActivity().sendBroadcast(bcIntent);
                     //Cambios necesarios en la interfaz
-                    estado="pause";
-                    play_pause.setImageResource(R.drawable.ic_play);
+                    sEstado = PAUSE;
+                    mPlayPause.setImageResource(R.drawable.ic_play);
+                    //cancelo subscribir
+                    cancelSubscribirService();
                 }
-
             }
         });
-
-        stop.setOnClickListener(new View.OnClickListener() {
+        //Funcion del boton mStop
+        mStop.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
 
-                if(!estado.equals("stop")){
+                if (!sEstado.equals(STOP)) {
                     Intent bcIntent = new Intent();
                     bcIntent.setAction(STOP_SERVICE_GPS);
                     getActivity().sendBroadcast(bcIntent);
                     //Cambios necesarios en la interfaz
-                    estado="stop";
-                    play_pause.setImageResource(R.drawable.ic_play);
+                    sEstado = STOP;
+                    mPlayPause.setImageResource(R.drawable.ic_play);
+                    //Pone el cronometro a 0
+                    mCronometro.setBase(SystemClock.elapsedRealtime());
                 }
-
-
-
-
             }
         });
-        return rootView;
+
 
     }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        cancelSubscribirService();
+    }
+
+    //Se suscribe al Service para actualizar cronometro
+    private void subscribirService(){
+        Intent bcIntent = new Intent();
+        bcIntent.setAction(SUBSCRIBIR_SERVICE);
+        getActivity().sendBroadcast(bcIntent);
+    }
+    //Se cancela la suscripcion al Service para actualizar cronometro
+    private void cancelSubscribirService(){
+        Intent bcIntent = new Intent();
+        bcIntent.setAction(CANCELAR_SUSCRIBIR_SERVICE);
+        getActivity().sendBroadcast(bcIntent);
+    }
+
+    //inicialia todos los View necesario de la interfaz
     private void iniciarViews(View rootView){
-        cronometro = (Chronometer) rootView.findViewById(R.id.chronometer);
-        //cronometro.setFormat("H:MM:SS");
-        play_pause = (ImageButton) rootView.findViewById(R.id.main_train_Ibutton_play);
-        stop = (ImageButton) rootView.findViewById(R.id.main_train_Ibutton_stop);
-        texto =(TextView)rootView.findViewById(R.id.main_train_tv4_distancia);
+        mCronometro = (Chronometer) rootView.findViewById(R.id.chronometer);
+        mPlayPause = (ImageButton) rootView.findViewById(R.id.main_train_Ibutton_play);
+        mStop = (ImageButton) rootView.findViewById(R.id.main_train_Ibutton_stop);
 
     }
     //Comprueba si gps esta activo
@@ -126,6 +170,12 @@ public class MainTrainFragment extends Fragment {
         }
         else return true;
     }
+    //Actualiza Cronometro
+    private void actualizarCronometro(Long tiempo){
+        mCronometro.setBase(tiempo);
+    }
+
+
 
     //Clase para mensajes con Intentservice
     public class MainTrainReceiver extends BroadcastReceiver {
@@ -137,7 +187,7 @@ public class MainTrainFragment extends Fragment {
             }
 
                 if(intent.getAction().equals(GpsIntentService.TIEMPO)){
-                    cronometro.setBase(intent.getLongExtra("tiempo", 0));
+                    actualizarCronometro(intent.getLongExtra("tiempo", 0));
                 }
 
         }
