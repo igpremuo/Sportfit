@@ -37,10 +37,11 @@ public class MainTrainFragment extends Fragment {
     public static final String STOP="stop";
     static String sEstado;
 
-    //Variables
+    //Views
     Chronometer mCronometro;
     ImageButton mPlayPause;
     ImageButton mStop;
+    //Variables
     MainTrainReceiver mMainRcv;
 
     @Override
