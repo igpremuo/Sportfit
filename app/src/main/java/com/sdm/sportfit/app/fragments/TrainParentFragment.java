@@ -8,7 +8,6 @@ import android.support.v4.view.ViewPager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.TextView;
 
 import com.sdm.sportfit.app.R;
 
@@ -77,7 +76,7 @@ public class TrainParentFragment extends Fragment {
             // Return a PlaceholderFragment (defined as a static inner class below).
             switch (position) {
                 case 0:
-                    return new TrainRecordFragment();
+                    return new TrainHistoryFragment();
                 case 1:
                     return new TrainTrainingFragment();
                 case 2:

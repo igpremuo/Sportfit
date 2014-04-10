@@ -56,4 +56,17 @@
         <string name="selectError">ERROR. Could not execute query</string>
         <string name="deleteError">ERROR. Could not delete table</string>
         <string name="dateError">Parse format date error</string>
+
+    <!-- fragment_train_history -->
+    <string name="train_history_distance">Distancia total:</string>
+    <string name="train_history_speed">Velocidad promedia:</string>
+    <string name="train_history_calories">Calorias consumidas:</string>
+    <string name="train_history_routes">Numero de rutas:</string>
+
+    <!-- train -->
+    <string name="train_running">Correr</string>
+    <string name="train_cycling">Bicicleta</string>
+    <string name="train_walking">Caminata</string>
+
+
 </resources>

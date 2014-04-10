@@ -31,8 +31,7 @@ public class GpsIntentService extends IntentService {
 
 
     @Override
-    protected void onHandleIntent(Intent intent)
-    {
+    protected void onHandleIntent(Intent intent) {
         //filtro para las comunicaciones
         IntentFilter filter = new IntentFilter();
         filter.addAction(MainTrainFragment.DAR_PUNTOS);
@@ -61,7 +60,7 @@ public class GpsIntentService extends IntentService {
 
         while(!mCerrarIntentService){
 
-            if(mEstadoSuscrito==true){
+            if(mEstadoSuscrito == true){
                 enviarValorCronometro();
             }
             dormir();
@@ -121,10 +120,10 @@ public class GpsIntentService extends IntentService {
                 enviar_lista();
             }
             else if(intent.getAction().equals(MainTrainFragment.SUBSCRIBIR_SERVICE)){
-                mEstadoSuscrito=true;
+                mEstadoSuscrito = true;
             }
             else if(intent.getAction().equals(MainTrainFragment.CANCELAR_SUSCRIBIR_SERVICE)){
-                mEstadoSuscrito=false;
+                mEstadoSuscrito = false;
             }
             else if(intent.getAction().equals(MainTrainFragment.PLAY_SERVICE_GPS)){
                 playCronometro();

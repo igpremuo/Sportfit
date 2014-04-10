@@ -35,7 +35,7 @@ public class MainTrainFragment extends Fragment {
     public static final String PLAY="play";
     public static final String PAUSE="pause";
     public static final String STOP="stop";
-    static String sEstado;
+    private static String sEstado;
 
     //Views
     Chronometer mCronometro;
@@ -52,30 +52,10 @@ public class MainTrainFragment extends Fragment {
         //Inicializa los Views
         iniciarViews(rootView);
 
-        //Filtro para el paso de mensajes
-        IntentFilter filter = new IntentFilter();
-        filter.addAction(GpsIntentService.LISTA_PUNTOS);
-        filter.addAction(GpsIntentService.TIEMPO);
-        mMainRcv = new MainTrainReceiver();
-        getActivity().registerReceiver(mMainRcv, filter);
-
-
-        return rootView;
-
-    }
-
-    @Override
-    public void onResume() {
-        super.onResume();
-
-        if(sEstado==null){
-            sEstado=STOP;
+        if(sEstado == null){
+            sEstado = STOP;
         }
 
-        if(sEstado.equals(PLAY)){
-            mPlayPause.setImageResource(R.drawable.ic_pause);
-            subscribirService();
-        }
         //Funcion del boton mPlayPause
         mPlayPause.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -103,7 +83,6 @@ public class MainTrainFragment extends Fragment {
                     mPlayPause.setImageResource(R.drawable.ic_pause);
                     //Me subscribo
                     subscribirService();
-
                 } else if (sEstado.equals(PLAY)) {
                     Intent bcIntent = new Intent();
                     bcIntent.setAction(PAUSE_SERVICE_GPS);
@@ -116,6 +95,7 @@ public class MainTrainFragment extends Fragment {
                 }
             }
         });
+
         //Funcion del boton mStop
         mStop.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -134,6 +114,24 @@ public class MainTrainFragment extends Fragment {
             }
         });
 
+        //Filtro para el paso de mensajes
+        IntentFilter filter = new IntentFilter();
+        filter.addAction(GpsIntentService.LISTA_PUNTOS);
+        filter.addAction(GpsIntentService.TIEMPO);
+        mMainRcv = new MainTrainReceiver();
+        getActivity().registerReceiver(mMainRcv, filter);
+
+        return rootView;
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+
+        if (sEstado.equals(PLAY)) {
+            mPlayPause.setImageResource(R.drawable.ic_pause);
+            subscribirService();
+        }
 
     }
 
@@ -149,6 +147,7 @@ public class MainTrainFragment extends Fragment {
         bcIntent.setAction(SUBSCRIBIR_SERVICE);
         getActivity().sendBroadcast(bcIntent);
     }
+
     //Se cancela la suscripcion al Service para actualizar cronometro
     private void cancelSubscribirService(){
         Intent bcIntent = new Intent();
@@ -163,6 +162,7 @@ public class MainTrainFragment extends Fragment {
         mStop = (ImageButton) rootView.findViewById(R.id.main_train_Ibutton_stop);
 
     }
+
     //Comprueba si gps esta activo
     private boolean gpsActivado(){
         LocationManager locManager = (LocationManager) getActivity().getSystemService(Context.LOCATION_SERVICE);
@@ -171,6 +171,7 @@ public class MainTrainFragment extends Fragment {
         }
         else return true;
     }
+
     //Actualiza Cronometro
     private void actualizarCronometro(Long tiempo){
         mCronometro.setBase(tiempo);
@@ -186,7 +187,6 @@ public class MainTrainFragment extends Fragment {
             if(intent.getAction().equals(GpsIntentService.LISTA_PUNTOS)) {
                 //Aqui va el código que se necesita
             }
-
                 if(intent.getAction().equals(GpsIntentService.TIEMPO)){
                     actualizarCronometro(intent.getLongExtra("tiempo", 0));
                 }
