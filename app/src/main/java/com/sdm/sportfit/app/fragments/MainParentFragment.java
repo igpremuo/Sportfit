@@ -16,7 +16,7 @@ import com.sdm.sportfit.app.R;
  */
 public class MainParentFragment extends Fragment{
 
-    private final static String CURRENT_POSITION = "fragment_position";
+    public final static String CURRENT_POSITION = "fragment_position";
     /**
      * The {@link android.support.v4.view.PagerAdapter} that will provide
      * fragments for each of the sections. We use a
@@ -54,7 +54,9 @@ public class MainParentFragment extends Fragment{
         mViewPager.setAdapter(mSectionsPagerAdapter);
 
         if (savedInstanceState != null) {
-            mViewPager.setCurrentItem(savedInstanceState.getInt(CURRENT_POSITION,2));
+            mViewPager.setCurrentItem(savedInstanceState.getInt(CURRENT_POSITION, 2));
+        } else if (getArguments() != null) {
+            mViewPager.setCurrentItem(getArguments().getInt(CURRENT_POSITION));
         } else {
             mViewPager.setCurrentItem(1);
         }

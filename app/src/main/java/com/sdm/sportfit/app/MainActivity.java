@@ -96,6 +96,20 @@ public class MainActivity extends ActionBarActivity
         fragmentManager.beginTransaction().replace(R.id.container, newFragment).commit();
     }
 
+    public void openFragment(Fragment newFragment) {
+        FragmentManager fragmentManager = getSupportFragmentManager();
+        fragmentManager.beginTransaction().replace(R.id.container, newFragment).addToBackStack(null).commit();
+    }
+
+    public void openFragmentAtPos(int position, int pagerItem) {
+        Fragment fragment = new MainParentFragment();
+        Bundle bundle = new Bundle();
+        bundle.putInt(MainParentFragment.CURRENT_POSITION, pagerItem);
+        fragment.setArguments(bundle);
+
+        replaceFragment(fragment, getSectionTitle(position));
+    }
+
     private String getSectionTitle(int pos) {
         String[] sectionTitles = getResources().getStringArray(R.array.drawer_titles);
         if (pos < sectionTitles.length) return sectionTitles[pos];

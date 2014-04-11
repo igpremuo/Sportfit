@@ -13,6 +13,8 @@ import com.sdm.sportfit.app.R;
  */
 public class TrainReviewFragment extends Fragment {
 
+    public final static String ID_KEY = "session_id";
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {

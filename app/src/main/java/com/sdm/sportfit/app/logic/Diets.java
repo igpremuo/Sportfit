@@ -1,4 +1,4 @@
-package com.sdm.sportfit.app;
+package com.sdm.sportfit.app.logic;
 
 import java.sql.Time;
 import java.util.Date;
@@ -7,6 +7,7 @@ import java.util.Date;
  * Created by Jess on 8/04/14.
  */
 public class Diets {
+
     private String nameDiet;
     private int idFood;
     private String typeMeal;

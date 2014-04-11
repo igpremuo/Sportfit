@@ -3,7 +3,7 @@ package com.sdm.sportfit.app.logic;
 /**
  * Created by nacho on 8/04/14.
  */
-public class RoutePoint {
+public class Point {
 
     private int mId;
     private float mLatitude;

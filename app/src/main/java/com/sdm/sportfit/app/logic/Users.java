@@ -1,4 +1,4 @@
-package com.sdm.sportfit.app;
+package com.sdm.sportfit.app.logic;
 
 import java.sql.Timestamp;
 

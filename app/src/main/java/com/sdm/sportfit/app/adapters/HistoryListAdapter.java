@@ -1,30 +1,46 @@
 package com.sdm.sportfit.app.adapters;
 
 import android.content.Context;
-import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
+import android.widget.BaseAdapter;
+import android.widget.Chronometer;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.sdm.sportfit.app.R;
-import com.sdm.sportfit.app.logic.Route;
+import com.sdm.sportfit.app.logic.Session;
 
 import java.util.List;
 
 /**
  * Created by nacho on 9/04/14.
  */
-public class HistoryListAdapter extends ArrayAdapter<Route> {
+public class HistoryListAdapter extends BaseAdapter {
 
-    List<Route> mHistoryList;
+    List<Session> mHistoryList;
     Context mContext;
 
-    public HistoryListAdapter(Context context, int resource, List<Route> historyList) {
-        super(context, resource, historyList);
+    public HistoryListAdapter(Context context, List<Session> historyList) {
         mHistoryList = historyList;
         mContext = context;
+    }
+
+    @Override
+    public int getCount() {
+        return mHistoryList.size();
+    }
+
+    @Override
+    public Session getItem(int position) {
+        return mHistoryList.get(position);
+    }
+
+    @Override
+    public long getItemId(int position) {
+        return position;
     }
 
     @Override
@@ -32,23 +48,26 @@ public class HistoryListAdapter extends ArrayAdapter<Route> {
 
         View rowView = convertView;
         if (rowView == null) {
-            LayoutInflater inflater = (LayoutInflater) getContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+            LayoutInflater inflater = (LayoutInflater) mContext.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
             rowView = inflater.inflate(R.layout.listitem_history, null);
         }
 
-        Route route =  mHistoryList.get(position);
+        rowView.setEnabled(true);
 
-        if (route != null) {
-            TextView routeType = (TextView) rowView.findViewById(R.id.listitem_history_type);
-            TextView time = (TextView) rowView.findViewById(R.id.listitem_history_time);
+        Session session =  getItem(position);
+
+        if (session != null) {
+            ImageView image = (ImageView) rowView.findViewById(R.id.listitem_history_icon);
+            TextView sessionType = (TextView) rowView.findViewById(R.id.listitem_history_type);
+            Chronometer time = (Chronometer) rowView.findViewById(R.id.listitem_history_time);
             TextView speed = (TextView) rowView.findViewById(R.id.listitem_history_speed);
-            TextView calories = (TextView) rowView.findViewById(R.id.listitem_history_calories);
+            TextView date = (TextView) rowView.findViewById(R.id.listitem_history_date);
 
-            routeType.setText(mContext.getResources().getString(route.getRouteSringId()));
-            time.setText(route.getDuration()+"");
-            speed.setText(route.getRouteSringId());
-            calories.setText(route.getRouteSringId());
-
+            image.setImageDrawable(mContext.getResources().getDrawable(session.getImageId()));
+            sessionType.setText(session.getSringId());
+            speed.setText(session.getAvgSpeed()+" km/h");
+            time.setBase(session.getDuration());
+            date.setText(session.getDate());
         }
 
         return rowView;

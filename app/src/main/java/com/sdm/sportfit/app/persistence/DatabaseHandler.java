@@ -1,4 +1,4 @@
-package com.sdm.sportfit.app;
+package com.sdm.sportfit.app.persistence;
 
 import android.content.ContentValues;
 import android.content.Context;
@@ -8,6 +8,14 @@ import android.database.sqlite.SQLiteException;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.util.Log;
 import android.widget.Toast;
+
+import com.sdm.sportfit.app.R;
+import com.sdm.sportfit.app.logic.Diets;
+import com.sdm.sportfit.app.logic.Foods;
+import com.sdm.sportfit.app.logic.Points;
+import com.sdm.sportfit.app.logic.Statistics;
+import com.sdm.sportfit.app.logic.Trainings;
+import com.sdm.sportfit.app.logic.Users;
 
 import java.sql.Date;
 import java.text.ParseException;

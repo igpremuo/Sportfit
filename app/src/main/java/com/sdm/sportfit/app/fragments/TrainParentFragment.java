@@ -79,8 +79,8 @@ public class TrainParentFragment extends Fragment {
                     return new TrainHistoryFragment();
                 case 1:
                     return new TrainTrainingFragment();
-                case 2:
-                    return new TrainReviewFragment();
+                //case 2:
+                    //return new TrainReviewFragment();
             }
             return new TrainTrainingFragment();
         }
@@ -88,7 +88,7 @@ public class TrainParentFragment extends Fragment {
         @Override
         public int getCount() {
             // Show 3 total pages.
-            return 3;
+            return 2;
         }
 
         @Override

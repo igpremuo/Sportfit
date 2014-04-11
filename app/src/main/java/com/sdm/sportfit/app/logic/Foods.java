@@ -1,4 +1,4 @@
-package com.sdm.sportfit.app;
+package com.sdm.sportfit.app.logic;
 
 /**
  * Created by Jess on 8/04/14.
