@@ -46,17 +46,6 @@ public class GpsIntentService extends IntentService {
 
 
         mCronometro = new Chronometer(this);
-        mCronometro.setOnChronometerTickListener(new Chronometer.OnChronometerTickListener() {
-            @Override
-            public void onChronometerTick(Chronometer chronometer) {
-
-
-                Intent bcIntent = new Intent();
-                bcIntent.setAction(TIEMPO);
-                bcIntent.putExtra("tiempo", mCronometro.getBase());
-                sendBroadcast(bcIntent);
-            }
-        });
 
         while(!mCerrarIntentService){
 
@@ -73,8 +62,8 @@ public class GpsIntentService extends IntentService {
     }
     //Pausar mCronometro
     private void pauseCronometro(){
-        guardarTiempoCronometro();
         mCronometro.stop();
+        guardarTiempoCronometro();
     }
     //Stop mCronometro
     private void stopCronometro(){
