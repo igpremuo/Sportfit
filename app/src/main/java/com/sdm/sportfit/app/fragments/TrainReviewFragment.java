@@ -32,9 +32,9 @@ public class TrainReviewFragment extends Fragment {
         textView.setText("Resumen Fragment");*/
         MapsInitializer.initialize(getActivity());
 
-        mMapView = (MapView) rootView.findViewById(R.id.map);
-        mMapView.onCreate(mBundle);
-        setUpMapIfNeeded(rootView);
+        //mMapView = (MapView) rootView.findViewById(R.id.map);
+        //mMapView.onCreate(mBundle);
+        //setUpMapIfNeeded(rootView);
         return rootView;
     }
     @Override
@@ -59,18 +59,18 @@ public class TrainReviewFragment extends Fragment {
     @Override
     public void onResume() {
         super.onResume();
-        mMapView.onResume();
+       // mMapView.onResume();
     }
 
     @Override
     public void onPause() {
         super.onPause();
-        mMapView.onPause();
+       // mMapView.onPause();
     }
 
     @Override
     public void onDestroy() {
-        mMapView.onDestroy();
+        //mMapView.onDestroy();
         super.onDestroy();
     }
 }
