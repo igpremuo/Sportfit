@@ -17,23 +17,24 @@ import android.view.View.OnClickListener;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
-import com.sdm.sportfit.app.persistence.JSONParser;
+
 import com.sdm.sportfit.app.persistence.DatabaseHandler;
-
-
-import java.util.ArrayList;
-import java.util.List;
+import com.sdm.sportfit.app.persistence.JSONParser;
 
 import org.apache.http.NameValuePair;
 import org.apache.http.message.BasicNameValuePair;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.util.ArrayList;
+import java.util.List;
+
 
 public class LoginActivity extends Activity implements OnClickListener{
 
     private EditText user, pass;
     private Button mSubmit, mRegister;
+    private DatabaseHandler dh;
 
     // Progress Dialog
     private ProgressDialog pDialog;
@@ -45,7 +46,6 @@ public class LoginActivity extends Activity implements OnClickListener{
 
     //JSON element ids from repsonse of php script:
     private static final String TAG_MESSAGE = "message";
-    private DatabaseHandler databaseHandler = new DatabaseHandler(this);
 
     private boolean isNetworkAvailable() {
         ConnectivityManager connectivityManager
@@ -58,6 +58,7 @@ public class LoginActivity extends Activity implements OnClickListener{
         // TODO Auto-generated method stub
         super.onCreate(savedInstanceState);
         setContentView(R.layout.login);
+        dh = dh.getInstance(this);;
 
         user = (EditText)findViewById(R.id.username);
         pass = (EditText)findViewById(R.id.password);
@@ -81,7 +82,22 @@ public class LoginActivity extends Activity implements OnClickListener{
         switch (v.getId()) {
             case R.id.login:
                 if(isNetworkAvailable()) new AttemptLogin().execute();
-                else databaseHandler.checkLogin(user.getText().toString(), pass.getText().toString());
+                else {
+                    try {
+                        Log.v("VERBOSE","entro sin conexión");
+                    boolean logued = dh.checkLogin(user.getText().toString().trim(), pass.getText().toString().trim());
+                        if(logued) {
+                            Intent i = new Intent(LoginActivity.this, MainActivity.class);
+                            finish();
+                            startActivity(i);
+                        }
+                        else {
+                            Toast.makeText(LoginActivity.this, "Login incorrect. Are you already registered?", Toast.LENGTH_LONG).show();
+                        }
+                 }catch (Exception e){
+                        Toast.makeText(LoginActivity.this, "Login incorrect. Are you already registered?", Toast.LENGTH_LONG).show();
+                    }
+                }
                 break;
             case R.id.register:
                 Intent i = new Intent(this, RegisterActivity.class);

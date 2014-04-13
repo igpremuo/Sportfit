@@ -2,6 +2,7 @@
 <resources>
 
     <string name="app_name">Sport fit</string>
+    <string name="language">ES</string>
 
     <!-- Navigation Drawer -->
     <string name="navigation_drawer_open">Open navigation drawer</string>
@@ -48,6 +49,14 @@
     <string name="main_train_tv4_DISTANCIA">DISTANCIA</string>
     <string name="main_train_tv4_distancia">2.15Km</string>
 
+    <!--fragment_main_diet-->
+    <string name="tip">Consejos</string>
+    <string name="breakfast">Desayuno</string>
+    <string name="brunch">Almuerzo</string>
+    <string name="lunch">Comida</string>
+    <string name="afternoonSnack">Merienda</string>
+    <string name="dinner">Cena</string>
+
     <!-- login register texts -->
     <string name="password">Contraseña</string>
     <string name="login">Iniciar</string>
@@ -64,5 +73,6 @@
     <string name="selectError">ERROR. No se ha podido ejecutar la consulta</string>
     <string name="deleteError">ERROR. No se ha podido borrar la tabla</string>
     <string name="dateError">ERROR. Al formatear la fecha</string>
+    <string name="insertError">ERROR. Fallo al insertar los datos en la base de datos</string>
 </resources>
 

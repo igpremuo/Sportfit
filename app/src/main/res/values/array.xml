@@ -33,4 +33,18 @@
         <item>Ganar peso</item>
     </string-array>
 
+    <!--fragment_main_diet-->
+    <string-array name="tips">
+        <item>Evita grasas e hidratos por las noches</item>
+        <item>Evita comer fruta despúes de las comidas</item>
+        <item>Come con moderación</item>
+        <item>Realiza 5 comidads al día</item>
+        <item>Mastica bien los alimentos</item>
+        <item>Bebe agua antes comer</item>
+        <item>No realizes deporte con el estomago vacio</item>
+        <item>Espera al menos una hora antes de realizar una actividad física</item>
+        <item>Repón sales minerales tras a ver realizado ejercicio</item>
+        <item>Ingiere proteinas después de realizar ejercio para tonificar el músculo</item>
+    </string-array>
+
 </resources>

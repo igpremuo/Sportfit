@@ -1,7 +1,11 @@
 package com.sdm.sportfit.app.logic;
 
-import java.sql.Time;
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 /**
  * Created by Jess on 8/04/14.
@@ -11,9 +15,11 @@ public class Diets {
     private String nameDiet;
     private int idFood;
     private String typeMeal;
-    private Time timeMeal;
+    private Date timeMeal;
     private Date dateMeal;
-    private Double earnedCalories;
+    private List<Foods> listFoods;
+
+
 
     public Diets() {
         this.nameDiet = "";
@@ -21,17 +27,18 @@ public class Diets {
         this.typeMeal = "";
         this.timeMeal = null;
         this.dateMeal = null;
-        this.earnedCalories = 0.0;
+        this.listFoods = new ArrayList<Foods>();
     }
 
-    public Diets(String nameDiet, int idFood, String typeMeal, Time timeMeal, Date dateMeal, Double earnedCalories) {
+    public Diets(String nameDiet, int idFood, String typeMeal, Date timeMeal, Date dateMeal, ArrayList<Foods> listFoods) {
         this.nameDiet = nameDiet;
         this.idFood = idFood;
         this.typeMeal = typeMeal;
         this.timeMeal = timeMeal;
         this.dateMeal = dateMeal;
-        this.earnedCalories = earnedCalories;
+        this.listFoods = listFoods;
     }
+
 
     public String getNameDiet() {
         return nameDiet;
@@ -57,27 +64,50 @@ public class Diets {
         this.typeMeal = typeMeal;
     }
 
-    public Time getTimeMeal() {
+    public Date getTimeMeal() {
+        DateFormat sdf = new SimpleDateFormat("hh:mm:ss");
+        try {
+            timeMeal = sdf.parse(timeMeal.toString());
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
         return timeMeal;
     }
 
-    public void setTimeMeal(Time timeMeal) {
-        this.timeMeal = timeMeal;
+    public void setTimeMeal(String timeMeal) {
+        DateFormat sdf = new SimpleDateFormat("hh:mm:ss");
+        try {
+            this.timeMeal = sdf.parse(timeMeal);
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
     }
 
     public Date getDateMeal() {
+        DateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+        try {
+            dateMeal = sdf.parse(dateMeal.toString());
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
         return dateMeal;
     }
 
-    public void setDateMeal(Date dateMeal) {
-        this.dateMeal = dateMeal;
+    public void setDateMeal(String dateMeal)  {
+        DateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+        try {
+            this.dateMeal = sdf.parse(dateMeal);
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
     }
 
-    public Double getEarnedCalories() {
-        return earnedCalories;
+
+    public List<Foods> getListFoods() {
+        return listFoods;
     }
 
-    public void setEarnedCalories(Double earnedCalories) {
-        this.earnedCalories = earnedCalories;
+    public void setListFoods(List<Foods> listFoods) {
+        this.listFoods = listFoods;
     }
 }

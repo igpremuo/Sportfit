@@ -5,7 +5,7 @@ package com.sdm.sportfit.app.logic;
  */
 public class Trainings {
     private int idTraining;
-    private String typeTrainig;
+    private String typeTraining;
     private Double caloriesBurned;
     private Double duration;
     private Double averageSpeed;
@@ -14,7 +14,7 @@ public class Trainings {
 
     public Trainings() {
         this.idTraining = 0;
-        this.typeTrainig = "";
+        this.typeTraining = "";
         this.caloriesBurned = 0.0;
         this.duration = 0.0;
         this.averageSpeed = 0.0;
@@ -22,9 +22,9 @@ public class Trainings {
         this.distance = 0.0;
     }
 
-    public Trainings(int idTraining, String typeTrainig, Double caloriesBurned, Double duration, Double averageSpeed, Double averageRate, Double distance) {
+    public Trainings(int idTraining, String typeTraining, Double caloriesBurned, Double duration, Double averageSpeed, Double averageRate, Double distance) {
         this.idTraining = idTraining;
-        this.typeTrainig = typeTrainig;
+        this.typeTraining = typeTraining;
         this.caloriesBurned = caloriesBurned;
         this.duration = duration;
         this.averageSpeed = averageSpeed;
@@ -40,12 +40,12 @@ public class Trainings {
         this.idTraining = idTraining;
     }
 
-    public String getTypeTrainig() {
-        return typeTrainig;
+    public String getTypeTraining() {
+        return typeTraining;
     }
 
-    public void setTypeTrainig(String typeTrainig) {
-        this.typeTrainig = typeTrainig;
+    public void setTypeTraining(String typeTraining) {
+        this.typeTraining = typeTraining;
     }
 
     public Double getCaloriesBurned() {

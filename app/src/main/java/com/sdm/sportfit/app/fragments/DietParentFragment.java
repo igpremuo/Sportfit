@@ -14,7 +14,7 @@ import com.sdm.sportfit.app.R;
 /**
  * Created by nacho on 31/03/14.
  */
-public class DietParentFragment extends Fragment {
+public class  DietParentFragment extends Fragment {
 
     private final static String CURRENT_POSITION = "fragment_position";
 

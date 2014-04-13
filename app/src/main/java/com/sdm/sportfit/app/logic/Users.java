@@ -6,7 +6,7 @@ public class Users {
 	private int id;
 	private String name;
 	private String email;
-	private String password_hash;
+	private String password;
 	private String api_key;
 	private Timestamp created_at;
 	private double locationx;
@@ -17,7 +17,7 @@ public class Users {
 		id = 0;
 		name = "";
 		email = "";
-		password_hash = "";
+		password = "";
 		api_key = "";
 		created_at = new Timestamp(0);
 		locationx = 0.0;
@@ -25,11 +25,11 @@ public class Users {
 		picture = "";
 	}
 	
-	public Users(int id, String name, String email, String password_hash, String api_key, Timestamp created_at, double locationx, double locationy, String picture) {
+	public Users(int id, String name, String email, String password, String api_key, Timestamp created_at, double locationx, double locationy, String picture) {
 		this.id = id;
 		this.name = name;
 		this.email = email;
-		this.password_hash = password_hash;
+		this.password = password;
 		this.api_key = api_key;
 		this.created_at = created_at;
 		this.locationx = locationx;
@@ -49,8 +49,8 @@ public class Users {
 		return email;
 	}
 	
-	public String getPassword_hash() {
-		return password_hash;
+	public String getPassword() {
+		return password;
 	}
 	
 	public String getApi_key() {
@@ -84,8 +84,8 @@ public class Users {
 		this.email = email;
 	}
 	
-	public void setPassword_hash(String password_hash) {
-		this.password_hash = password_hash;
+	public void setPassword(String password) {
+		this.password = password;
 	}
 	
 	public void setApi_key(String api_key) {

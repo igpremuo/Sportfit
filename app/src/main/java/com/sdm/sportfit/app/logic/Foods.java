@@ -12,7 +12,10 @@ public class Foods {
     private Double carbohydrates;
     private Double fats;
     private Double water;
-    private String category;
+    private String categoryES;
+    private String categoryEN;
+    private Double earnedCalories;
+    private Double quantity;
 
     public Foods() {
         this.id = 0;
@@ -23,10 +26,14 @@ public class Foods {
         this.carbohydrates = 0.0;
         this.fats = 0.0;
         this.water = 0.0;
-        this.category = "";
+        this.categoryES = "";
+        this.categoryEN = "";
+        this.earnedCalories = 0.0;
+        this.quantity = 0.0;
     }
 
-    public Foods(int id, String nameES, String nameEN, Double calories, Double proteins, Double carbohydrates, Double fats, Double water, String category) {
+
+    public Foods(int id, String nameES, String nameEN, Double calories, Double proteins, Double carbohydrates, Double fats, Double water, String categoryES, String categoryEN, Double earnedCalories, Double quantity) {
         this.id = id;
         this.nameES = nameES;
         this.nameEN = nameEN;
@@ -35,7 +42,43 @@ public class Foods {
         this.carbohydrates = carbohydrates;
         this.fats = fats;
         this.water = water;
-        this.category = category;
+        this.categoryES = categoryES;
+        this.categoryEN = categoryEN;
+        this.earnedCalories = earnedCalories;
+        this.quantity = quantity;
+    }
+
+    public Double getQuantity() {
+        return quantity;
+    }
+
+    public void setQuantity(Double quantity) {
+        this.quantity = quantity;
+    }
+
+    public Double getEarnedCalories() {
+        return earnedCalories;
+    }
+
+    public void setEarnedCalories(Double earnedCalories) {
+        this.earnedCalories = earnedCalories;
+    }
+
+
+    public String getCategoryES() {
+        return categoryES;
+    }
+
+    public void setCategoryES(String categoryES) {
+        this.categoryES = categoryES;
+    }
+
+    public String getCategoryEN() {
+        return categoryEN;
+    }
+
+    public void setCategoryEN(String categoryEN) {
+        this.categoryEN = categoryEN;
     }
 
     public int getId() {
@@ -102,11 +145,5 @@ public class Foods {
         this.water = water;
     }
 
-    public String getCategory() {
-        return category;
-    }
 
-    public void setCategory(String category) {
-        this.category = category;
-    }
 }

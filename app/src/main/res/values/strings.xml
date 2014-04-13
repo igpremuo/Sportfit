@@ -2,6 +2,7 @@
 <resources>
 
     <string name="app_name">Sport fit</string>
+    <string name="language">EN</string>
 
     <!-- Navigation Drawer -->
     <string name="navigation_drawer_open">Open navigation drawer</string>
@@ -63,6 +64,7 @@
         <string name="dropError">ERROR. Not been able to clear tables database</string>
         <string name="createError">ERROR. Have not been able to create tables in the database</string>
         <string name="insertUserError">ERROR. Not been able to be inserted by the user in the database</string>
+        <string name="insertError">ERROR. Not been able to be inserted in the database</string>
         <string name="selectError">ERROR. Could not execute query</string>
         <string name="deleteError">ERROR. Could not delete table</string>
         <string name="dateError">Parse format date error</string>
@@ -79,5 +81,12 @@
     <string name="train_walking">Caminata</string>
     <string name="att"> </string>
 
+    <!--fragment_main_diet-->
+    <string name="tip">Tips</string>
+    <string name="breakfast">Breakfast</string>
+    <string name="brunch">Brunch</string>
+    <string name="lunch">Lunch</string>
+    <string name="afternoonSnack">Afternoon snack</string>
+    <string name="dinner">Dinner</string>
 
 </resources>
