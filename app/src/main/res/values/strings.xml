@@ -48,6 +48,16 @@
     <string name="main_train_tv4_DISTANCIA">DISTANCIA</string>
     <string name="main_train_tv4_distancia">2.15Km</string>
 
+
+    <!-- login register texts -->
+    <string name="password">Password</string>
+    <string name="login">Login</string>
+    <string name="username">Username</string>
+    <string name="register">Register</string>
+    <string name="mail">Mail</string>
+    <string name="attemptingLogin">Attempting login...</string>
+
+
     <!-- Messages error-->
         <!-- Errors DatabaseHandler-->
         <string name="dropError">ERROR. Not been able to clear tables database</string>
@@ -67,6 +77,7 @@
     <string name="train_running">Correr</string>
     <string name="train_cycling">Bicicleta</string>
     <string name="train_walking">Caminata</string>
+    <string name="att"> </string>
 
 
 </resources>

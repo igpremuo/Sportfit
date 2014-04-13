@@ -48,6 +48,14 @@
     <string name="main_train_tv4_DISTANCIA">DISTANCIA</string>
     <string name="main_train_tv4_distancia">2.15Km</string>
 
+    <!-- login register texts -->
+    <string name="password">Contraseña</string>
+    <string name="login">Iniciar</string>
+    <string name="username">Nombre usuario</string>
+    <string name="register">Registro</string>
+    <string name="mail">Mail</string>
+    <string name="attemptingLogin">Iniciando sesión...</string>
+
     <!-- Messages error-->
     <!-- Errors DatabaseHandler-->
     <string name="dropError">ERROR. No se han podido borrar las tablas de la base de datos</string>
