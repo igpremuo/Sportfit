@@ -8,12 +8,15 @@ import android.location.LocationManager;
 import android.os.Bundle;
 import android.os.SystemClock;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentTransaction;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Chronometer;
 import android.widget.ImageButton;
 
+import com.google.android.gms.maps.GoogleMapOptions;
+import com.google.android.gms.maps.SupportMapFragment;
 import com.sdm.sportfit.app.R;
 import com.sdm.sportfit.app.services.GpsIntentService;
 
@@ -44,10 +47,22 @@ public class MainTrainFragment extends Fragment {
     //Variables
     MainTrainReceiver mMainRcv;
 
+    private SupportMapFragment mMapFragment;
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.fragment_main_train, container, false);
+
+        GoogleMapOptions options = new GoogleMapOptions();
+        //options.mapType(GoogleMap.MAP_TYPE_TERRAIN);
+        options.zoomControlsEnabled(false);
+
+        // Añadir el fragment a su espacio
+        mMapFragment = SupportMapFragment.newInstance(options);
+        FragmentTransaction fragmentTransaction = getFragmentManager().beginTransaction();
+        fragmentTransaction.add(R.id.fragmenttrain_map, mMapFragment);
+        fragmentTransaction.commit();
 
         //Inicializa los Views
         iniciarViews(rootView);

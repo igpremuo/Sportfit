@@ -45,12 +45,11 @@
         </TableRow>
     </TableLayout>
 
-    <fragment
-        android:id="@+id/mapfragment"
-        android:layout_width="wrap_content"
+    <FrameLayout
+        android:id="@+id/fragmenttrain_map"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_weight="0.4"
-        class="com.sdm.sportfit.app.fragments.MapFragment" />
+        android:layout_weight="0.4" />
 
     <TableLayout
         android:layout_width="match_parent"

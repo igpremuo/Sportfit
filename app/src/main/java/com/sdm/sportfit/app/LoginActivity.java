@@ -68,6 +68,11 @@ public class LoginActivity extends Activity implements OnClickListener{
         mSubmit.setOnClickListener(this);
         mRegister.setOnClickListener(this);
 
+
+         /**** Quitar esto para realizar el login ****/
+        Intent i = new Intent(LoginActivity.this, MainActivity.class);
+        finish();
+        startActivity(i);
     }
 
     @Override
