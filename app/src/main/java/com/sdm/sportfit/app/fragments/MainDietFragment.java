@@ -2,16 +2,12 @@ package com.sdm.sportfit.app.fragments;
 
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentManager;
-import android.support.v4.app.FragmentPagerAdapter;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.sdm.sportfit.app.R;
-
-import java.util.Locale;
 
 /**
  * Created by nacho on 1/04/14.

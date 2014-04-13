@@ -57,7 +57,9 @@ public class TrainParentFragment extends Fragment {
     @Override
     public void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
-        outState.putInt(CURRENT_POSITION, mViewPager.getCurrentItem());
+        if (mViewPager != null) {
+            outState.putInt(CURRENT_POSITION, mViewPager.getCurrentItem());
+        }
     }
 
     /**

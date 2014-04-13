@@ -2,8 +2,6 @@ package com.sdm.sportfit.app.fragments;
 
 import android.os.Bundle;
 import android.preference.PreferenceActivity;
-import android.preference.PreferenceFragment;
-import android.support.v7.app.ActionBarActivity;
 
 import com.sdm.sportfit.app.R;
 
