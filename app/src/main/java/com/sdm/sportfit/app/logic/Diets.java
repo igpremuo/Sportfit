@@ -1,10 +1,6 @@
 package com.sdm.sportfit.app.logic;
 
-import java.text.DateFormat;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 /**
@@ -15,8 +11,8 @@ public class Diets {
     private String nameDiet;
     private int idFood;
     private String typeMeal;
-    private Date timeMeal;
-    private Date dateMeal;
+    private String timeMeal;
+    private String dateMeal;
     private List<Foods> listFoods;
 
 
@@ -30,7 +26,7 @@ public class Diets {
         this.listFoods = new ArrayList<Foods>();
     }
 
-    public Diets(String nameDiet, int idFood, String typeMeal, Date timeMeal, Date dateMeal, ArrayList<Foods> listFoods) {
+    public Diets(String nameDiet, int idFood, String typeMeal, String timeMeal, String dateMeal, ArrayList<Foods> listFoods) {
         this.nameDiet = nameDiet;
         this.idFood = idFood;
         this.typeMeal = typeMeal;
@@ -64,42 +60,20 @@ public class Diets {
         this.typeMeal = typeMeal;
     }
 
-    public Date getTimeMeal() {
-        DateFormat sdf = new SimpleDateFormat("hh:mm:ss");
-        try {
-            timeMeal = sdf.parse(timeMeal.toString());
-        } catch (ParseException e) {
-            e.printStackTrace();
-        }
-        return timeMeal;
+    public String getTimeMeal() {
+       return timeMeal;
     }
 
     public void setTimeMeal(String timeMeal) {
-        DateFormat sdf = new SimpleDateFormat("hh:mm:ss");
-        try {
-            this.timeMeal = sdf.parse(timeMeal);
-        } catch (ParseException e) {
-            e.printStackTrace();
-        }
+            this.timeMeal= timeMeal;
     }
 
-    public Date getDateMeal() {
-        DateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
-        try {
-            dateMeal = sdf.parse(dateMeal.toString());
-        } catch (ParseException e) {
-            e.printStackTrace();
-        }
+    public String getDateMeal() {
         return dateMeal;
     }
 
     public void setDateMeal(String dateMeal)  {
-        DateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
-        try {
-            this.dateMeal = sdf.parse(dateMeal);
-        } catch (ParseException e) {
-            e.printStackTrace();
-        }
+           this.dateMeal =dateMeal;
     }
 
 

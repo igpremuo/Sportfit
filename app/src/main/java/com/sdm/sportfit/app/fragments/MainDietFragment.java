@@ -16,11 +16,9 @@ import com.sdm.sportfit.app.logic.Foods;
 import com.sdm.sportfit.app.persistence.DatabaseHandler;
 
 import java.text.DateFormat;
-import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.Date;
 import java.util.List;
 
 /**
@@ -42,29 +40,28 @@ public class MainDietFragment extends Fragment{
         timeMeal = (TextView) rootView.findViewById(R.id.timeMealMain);
         typeMeal = (TextView) rootView.findViewById(R.id.typeMealMain);
         listViewMeal = (ListView) rootView.findViewById(R.id.meal);
-        Log.v("VERBOSE", "Entrando al metodo showtMeal");
-        //showtMeal();
+        //Log.v("VERBOSE", "Entrando al metodo showtMeal");
+       // showtMeal();
         return rootView;
     }
 
     public void showtMeal() {
-
-        Log.v("VERBOSE", " Dentro del metodo showtMeal");
         Diets meal = new Diets();
         List<Foods> listFoods = new ArrayList<Foods>();
-        nameDiet.setText("Dieta generica 1");
+        nameDiet.setText("Dieta genérica 1");
+        String typeMealdb = dh.getDietByDate(obtainDateCurrency(),"Dieta genérica 1");
+        Log.v("VERBOSE", "typeMealdb : "+typeMealdb);
         List itemse	= new ArrayList();
-        meal = dh.getDietByMeal(obtainDateCurrency(), "Dieta genérica 1", getResources().getString(R.string.breakfast));
-        Log.v("VERBOSE", " valor horario: " + meal.getTimeMeal().toString());
-        timeMeal.setText(meal.getTimeMeal().toString());
-        Log.v("VERBOSE", " valor horario: " + meal.getTypeMeal());
-        typeMeal.setText(meal.getTypeMeal());
+        meal = dh.getDietByMeal(obtainDateCurrency(), "Dieta genérica 1",typeMealdb );
+        Log.v("VERBOSE","valor de meal.getTimeMeal()"+meal.getTimeMeal());
+        if(meal.getTimeMeal() != null) timeMeal.setText(meal.getTimeMeal());
+        typeMeal.setText(typeMealdb);
         listFoods = meal.getListFoods();
         for (int i = 0; i < listFoods.size(); i++){
             itemse.add(listFoods.get(i));
         }
         listViewMeal.setAdapter(new FoodListDietMainAdapter(this.getActivity(), itemse));
-        if("08:00".equals(obtainTimeCurrency())) {
+   /*     if("08:00".equals(obtainTimeCurrency())) {
             List items	= new ArrayList();
             meal = dh.getDietByMeal(obtainDateCurrency(), "Dieta genérica 1", getResources().getString(R.string.breakfast));
             Log.v("VERBOSE", " valor horario: " + meal.getTimeMeal().toString());
@@ -115,9 +112,9 @@ public class MainDietFragment extends Fragment{
             for (int i = 0; i < listFoods.size(); i++){
                 items.add(listFoods.get(i));
             }
-            listViewMeal.setAdapter(new FoodListDietMainAdapter(this.getActivity(), items));
+           listViewMeal.setAdapter(new FoodListDietMainAdapter(this.getActivity(), items));
         }
-
+    */
 
     }
 
@@ -128,20 +125,20 @@ public class MainDietFragment extends Fragment{
         return formattedTimeCurrency;
     }
 
-    public Date obtainDateCurrency(){
+    public String obtainDateCurrency(){
         Log.v("VERBOSE", "dentro de  obtainDateCurrency");
         Calendar c = Calendar.getInstance();
         DateFormat df2 = new SimpleDateFormat("yyyy-MM-dd");
         String formattedDateCurrency = df2.format(c.getTime());
         Log.v("VERBOSE", "La fecha es: " + formattedDateCurrency);
-        Date dateCurrency = null;
+       /** Date dateCurrency = null;
         try {
             dateCurrency = df2.parse(formattedDateCurrency);
         } catch (ParseException e) {
             e.printStackTrace();
         }
-        Log.v("VERBOSE", "La date a enviar es: " + dateCurrency.toString());
-        return dateCurrency;
+        Log.v("VERBOSE", "La date a enviar es: " + dateCurrency.toString());*/
+        return formattedDateCurrency;
     }
 
 

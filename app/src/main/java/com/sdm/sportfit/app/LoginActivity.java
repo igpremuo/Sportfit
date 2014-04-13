@@ -58,7 +58,7 @@ public class LoginActivity extends Activity implements OnClickListener{
         // TODO Auto-generated method stub
         super.onCreate(savedInstanceState);
         setContentView(R.layout.login);
-        dh = dh.getInstance(this);;
+        dh = dh.getInstance(this);
 
         user = (EditText)findViewById(R.id.username);
         pass = (EditText)findViewById(R.id.password);

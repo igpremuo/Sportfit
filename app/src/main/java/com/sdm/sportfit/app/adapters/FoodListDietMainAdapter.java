@@ -11,6 +11,7 @@ import com.sdm.sportfit.app.R;
 import com.sdm.sportfit.app.logic.Foods;
 
 import java.util.List;
+import java.util.Locale;
 
 /**
  * Created by Jess on 13/04/2014.
@@ -56,12 +57,12 @@ public class FoodListDietMainAdapter  extends BaseAdapter  {
             TextView calories = (TextView) rowView.findViewById(R.id.calories);
 
             Foods food = this.foods.get(position);
-            if ("ES".equals(R.string.language)){
+            if ("es".equals(Locale.getDefault().getLanguage())){
                 nameFood.setText(food.getNameES());
             } else {
                 nameFood.setText(food.getNameEN());
             }
-            calories.setText(String.valueOf(food.getCalories()));
+            calories.setText(String.valueOf(food.getEarnedCalories()));
             return rowView;
         }
 
