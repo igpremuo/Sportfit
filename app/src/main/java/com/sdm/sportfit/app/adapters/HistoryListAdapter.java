@@ -4,14 +4,13 @@ import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ArrayAdapter;
 import android.widget.BaseAdapter;
 import android.widget.Chronometer;
 import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.sdm.sportfit.app.R;
-import com.sdm.sportfit.app.logic.Session;
+import com.sdm.sportfit.app.logic.Trainings;
 
 import java.util.List;
 
@@ -20,10 +19,10 @@ import java.util.List;
  */
 public class HistoryListAdapter extends BaseAdapter {
 
-    List<Session> mHistoryList;
+    List<Trainings> mHistoryList;
     Context mContext;
 
-    public HistoryListAdapter(Context context, List<Session> historyList) {
+    public HistoryListAdapter(Context context, List<Trainings> historyList) {
         mHistoryList = historyList;
         mContext = context;
     }
@@ -34,7 +33,7 @@ public class HistoryListAdapter extends BaseAdapter {
     }
 
     @Override
-    public Session getItem(int position) {
+    public Trainings getItem(int position) {
         return mHistoryList.get(position);
     }
 
@@ -54,7 +53,7 @@ public class HistoryListAdapter extends BaseAdapter {
 
         rowView.setEnabled(true);
 
-        Session session =  getItem(position);
+        Trainings session =  getItem(position);
 
         if (session != null) {
             ImageView image = (ImageView) rowView.findViewById(R.id.listitem_history_icon);
@@ -65,7 +64,7 @@ public class HistoryListAdapter extends BaseAdapter {
 
             image.setImageDrawable(mContext.getResources().getDrawable(session.getImageId()));
             sessionType.setText(session.getSringId());
-            speed.setText(session.getAvgSpeed()+" km/h");
+            speed.setText(session.getAverageSpeed()+" km/h");
             time.setBase(session.getDuration());
             date.setText(session.getDate());
         }
