@@ -6,71 +6,89 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.os.SystemClock;
+import android.util.Log;
 import android.widget.Chronometer;
 
 import com.sdm.sportfit.app.fragments.MainTrainFragment;
+import com.sdm.sportfit.app.logic.Trainings;
 
 /**
  * Created by juan on 8/04/14.
  */
 public class GpsIntentService extends IntentService {
 
-    //Variables de mensajes
-    public static final String LISTA_PUNTOS = "com.sdm.sportfit.app.intent.action.LISTA_PUNTOS";
-    public static final String TIEMPO = "com.sdm.sportfit.app.intent.action.TIEMPO";
+    public static enum State {RUNNING, PAUSED, STOPPED};
 
-    Chronometer mCronometro;
-    boolean mCerrarIntentService =false;
-    int mStoppedMilliseconds =0;
-    gprIntentServiceReceiver mGpsRcv;
-    boolean mEstadoSuscrito=false;
+    public static final String NOTIFICATION = "com.sdm.sportfit.app.services.receiver";
+
+    //Variables de mensajes
+    public static final String CHRONOMETER = "cronometer";
+    public static final String POINTS = "points";
+
+    private IntentServiceReceiver mReceiver;
+
+    private Chronometer mCronometro;
+    private boolean mCerrarIntentService = false;
+    private int mStoppedMilliseconds = 0;
+    private boolean mEstadoSuscrito;
+
+    private Trainings session;
 
     public GpsIntentService() {
         super("GpsIntentService");
     }
 
+    public static State sState = State.STOPPED;
 
     @Override
     protected void onHandleIntent(Intent intent) {
+        sState = State.RUNNING;
+        mEstadoSuscrito = true;
+
         //filtro para las comunicaciones
-        IntentFilter filter = new IntentFilter();
-        filter.addAction(MainTrainFragment.DAR_PUNTOS);
-        filter.addAction(MainTrainFragment.PLAY_SERVICE_GPS);
+        IntentFilter filter = new IntentFilter(MainTrainFragment.NOTIFICATION);
+        filter.addAction(MainTrainFragment.RUN_SERVICE_GPS);
         filter.addAction(MainTrainFragment.PAUSE_SERVICE_GPS);
         filter.addAction(MainTrainFragment.STOP_SERVICE_GPS);
         filter.addAction(MainTrainFragment.SUBSCRIBIR_SERVICE);
         filter.addAction(MainTrainFragment.CANCELAR_SUSCRIBIR_SERVICE);
-        filter.addAction(MainTrainFragment.FIN_SERVICE_GPS);
-        mGpsRcv = new gprIntentServiceReceiver();
-        registerReceiver(mGpsRcv, filter);
-
+        mReceiver = new IntentServiceReceiver();
+        registerReceiver(mReceiver, filter);
 
         mCronometro = new Chronometer(this);
+        session = new Trainings();
 
         while(!mCerrarIntentService){
 
-            if(mEstadoSuscrito == true){
-                enviarValorCronometro();
+            if(mEstadoSuscrito && sState == State.RUNNING){
+                sendDataToFragment();
             }
-            dormir();
+            sleep();
         }
+        sState = State.STOPPED;
     }
     //Play mCronometro
-    private void playCronometro(){
-        mCronometro.setBase(SystemClock.elapsedRealtime() - mStoppedMilliseconds);
+    private void run(){
         mCronometro.start();
+        mCronometro.setBase(SystemClock.elapsedRealtime() - mStoppedMilliseconds);
+
+        sState = State.RUNNING;
     }
     //Pausar mCronometro
-    private void pauseCronometro(){
+    private void pause(){
         mCronometro.stop();
         guardarTiempoCronometro();
+
+        sState = State.PAUSED;
     }
     //Stop mCronometro
-    private void stopCronometro(){
+    private void stop(){
         mCronometro.stop();
         mCronometro.setBase(SystemClock.elapsedRealtime());
-        unregisterReceiver(mGpsRcv);
-        mCerrarIntentService =true;
+        unregisterReceiver(mReceiver);
+        mCerrarIntentService = true;
+
+        sState = State.STOPPED;
     }
     //Guardar tiempo del mCronometro
     private void guardarTiempoCronometro(){
@@ -87,50 +105,39 @@ public class GpsIntentService extends IntentService {
                     + Integer.parseInt(array[2]) * 1000;
         }
     }
-    //Envia el Valor de Cronometro
-    private void enviarValorCronometro(){
-        Intent bcIntent = new Intent();
-        bcIntent.setAction(TIEMPO);
-        bcIntent.putExtra("tiempo", mCronometro.getBase());
-        sendBroadcast(bcIntent);
+
+    private void sendDataToFragment(){
+        Intent intent = new Intent(NOTIFICATION);
+        intent.putExtra(CHRONOMETER, mCronometro.getBase());
+        sendBroadcast(intent);
     }
-    private void dormir(){
+
+    private void sleep(){
         try {
             Thread.sleep(1000);
-        } catch(InterruptedException e) {}
+        } catch(InterruptedException e) {
+            Log.e(getClass().getName(), "Error while sleeping");
+        }
     }
 
     //Control de los Mensajes
-    public class gprIntentServiceReceiver extends BroadcastReceiver {
+    public class IntentServiceReceiver extends BroadcastReceiver {
 
         @Override
         public void onReceive(Context context, Intent intent) {
-            if(intent.getAction().equals(MainTrainFragment.DAR_PUNTOS)) {
-                enviar_lista();
-            }
-            else if(intent.getAction().equals(MainTrainFragment.SUBSCRIBIR_SERVICE)){
-                mEstadoSuscrito = true;
-            }
-            else if(intent.getAction().equals(MainTrainFragment.CANCELAR_SUSCRIBIR_SERVICE)){
-                mEstadoSuscrito = false;
-            }
-            else if(intent.getAction().equals(MainTrainFragment.PLAY_SERVICE_GPS)){
-                playCronometro();
-            }
-            else if(intent.getAction().equals(MainTrainFragment.PAUSE_SERVICE_GPS)){
-                pauseCronometro();
-            }
-            else if(intent.getAction().equals(MainTrainFragment.STOP_SERVICE_GPS)){
-                stopCronometro();
+            if (intent.getAction() != null) {
+                if (intent.getAction().equals(MainTrainFragment.SUBSCRIBIR_SERVICE)) {
+                    mEstadoSuscrito = true;
+                } else if (intent.getAction().equals(MainTrainFragment.CANCELAR_SUSCRIBIR_SERVICE)) {
+                    mEstadoSuscrito = false;
+                } else if (intent.getAction().equals(MainTrainFragment.RUN_SERVICE_GPS)) {
+                    run();
+                } else if (intent.getAction().equals(MainTrainFragment.PAUSE_SERVICE_GPS)) {
+                    pause();
+                } else if (intent.getAction().equals(MainTrainFragment.STOP_SERVICE_GPS)) {
+                    stop();
+                }
             }
         }
     }
-    private void enviar_lista(){
-        Intent bcIntent = new Intent();
-        bcIntent.setAction(LISTA_PUNTOS);
-        bcIntent.putExtra("lista_puntos","lista_puntos");
-        sendBroadcast(bcIntent);
-    }
-
-
 }

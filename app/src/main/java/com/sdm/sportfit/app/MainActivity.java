@@ -7,6 +7,7 @@ import android.content.SharedPreferences;
 import android.location.Location;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.os.SystemClock;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.widget.DrawerLayout;
@@ -90,6 +91,9 @@ public class MainActivity extends ActionBarActivity
         mNavigationDrawerFragment.setUp(
                 R.id.navigation_drawer,
                 (DrawerLayout) findViewById(R.id.drawer_layout));
+
+        long elapsedRealtimeOffset = System.currentTimeMillis() - SystemClock.elapsedRealtime();
+
         dh = dh.getInstance(this);
         Location location1 = new Location("Location1");
         location1.setLongitude(45.125225);
@@ -99,8 +103,8 @@ public class MainActivity extends ActionBarActivity
         location2.setLatitude(48.154578);
         dh.addPoint(new Points(location1, 5.6, 1));
         dh.addPoint(new Points(location2, 7.2, 1));
-        dh.addTraining(new Trainings(1, idUser, "Run", 152.25, 125, 10.0, 5.5, 1000.0, "08:00"));
-        dh.addTraining(new Trainings(2,idUser, "Run", 189.25, 168, 12.0, 6.5, 2000.0, "09:00"));
+        dh.addTraining(new Trainings(1, idUser, "Run", 152.25, 30000 + elapsedRealtimeOffset, 10.0, 5.5, 1000.0, "08:00"));
+        dh.addTraining(new Trainings(2,idUser, "Run", 189.25, 30000 + SystemClock.elapsedRealtime(), 12.0, 6.5, 2000.0, "09:00"));
         List<Trainings> list = dh.getAllTrainings();
 
         ConnectionDetector cd = new ConnectionDetector(getApplicationContext());

@@ -8,44 +8,43 @@ import android.location.LocationManager;
 import android.os.Bundle;
 import android.os.SystemClock;
 import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentTransaction;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Chronometer;
 import android.widget.ImageButton;
 
-import com.google.android.gms.maps.GoogleMapOptions;
+import com.google.android.gms.maps.MapView;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.sdm.sportfit.app.R;
+import com.sdm.sportfit.app.logic.MapManager;
 import com.sdm.sportfit.app.services.GpsIntentService;
+import com.sdm.sportfit.app.services.GpsIntentService.State;
 
 /**
  * Created by nacho on 1/04/14.
  */
 public class MainTrainFragment extends Fragment {
 
+    public static final String NOTIFICATION = "com.sdm.sportfit.app.main.receiver";
+
     //Variables para el paso de mensajes
-    public static final String DAR_PUNTOS = "com.sdm.sportfit.app.intent.action.DAR_PUNTOS";
-    public static final String PLAY_SERVICE_GPS = "com.sdm.sportfit.app.intent.action.PLAY_SERVICE_GPS";
+    public static final String RUN_SERVICE_GPS = "com.sdm.sportfit.app.intent.action.RUN_SERVICE_GPS";
     public static final String PAUSE_SERVICE_GPS = "com.sdm.sportfit.app.intent.action.PAUSE_SERVICE_GPS";
     public static final String STOP_SERVICE_GPS = "com.sdm.sportfit.app.intent.action.STOP_SERVICE_GPS";
     public static final String SUBSCRIBIR_SERVICE = "com.sdm.sportfit.app.intent.action.SUBSCRIBIR_CRONOMETRO";
     public static final String CANCELAR_SUSCRIBIR_SERVICE = "com.sdm.sportfit.app.intent.action.CANCELAR_SUSCRIBIR_CRONOMETRO";
-    public static final String FIN_SERVICE_GPS = "com.sdm.sportfit.app.intent.action.FIN_SERVICE_GPS";
 
-    //Variables de estado
-    public static final String PLAY="play";
-    public static final String PAUSE="pause";
-    public static final String STOP="stop";
-    private static String sEstado;
+    private MapView mMapView;
+    private MapManager mMapManager;
+
 
     //Views
-    Chronometer mCronometro;
-    ImageButton mPlayPause;
-    ImageButton mStop;
+    private Chronometer mCronometro;
+    private ImageButton mPlayPause;
+    private ImageButton mStop;
     //Variables
-    MainTrainReceiver mMainRcv;
+    private MainTrainReceiver mReceiver;
 
     private SupportMapFragment mMapFragment;
 
@@ -54,60 +53,53 @@ public class MainTrainFragment extends Fragment {
                              Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.fragment_main_train, container, false);
 
-        GoogleMapOptions options = new GoogleMapOptions();
-        //options.mapType(GoogleMap.MAP_TYPE_TERRAIN);
-        options.zoomControlsEnabled(false);
+        mMapView = (MapView) rootView.findViewById(R.id.fragmentmain_mapview);
+        mMapView.onCreate(savedInstanceState);
 
-        // Añadir el fragment a su espacio
-        mMapFragment = SupportMapFragment.newInstance(options);
-        FragmentTransaction fragmentTransaction = getFragmentManager().beginTransaction();
-        fragmentTransaction.add(R.id.fragmenttrain_map, mMapFragment);
-        fragmentTransaction.commit();
+        mMapManager = new MapManager(mMapView.getMap());
 
         //Inicializa los Views
         iniciarViews(rootView);
-
-        if(sEstado == null){
-            sEstado = STOP;
-        }
 
         //Funcion del boton mPlayPause
         mPlayPause.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                Intent bcIntent = new Intent(NOTIFICATION);
+                switch(GpsIntentService.sState) {
+                    case STOPPED:
+                        //Me subscribo
+                        subscribirService();
 
-                if (sEstado.equals(STOP)) {
-                    //Creo el IntentService
-                    Intent msgIntent = new Intent(getActivity(), GpsIntentService.class);
-                    getActivity().startService(msgIntent);
-                    //Le digo que empieze el Cronometro
-                    Intent bcIntent = new Intent();
-                    bcIntent.setAction(PLAY_SERVICE_GPS);
-                    getActivity().sendBroadcast(bcIntent);
-                    //Cambios necesarios en la interfaz
-                    sEstado = PLAY;
-                    mPlayPause.setImageResource(R.drawable.ic_pause);
-                    //Me subscribo
-                    subscribirService();
-                } else if (sEstado.equals(PAUSE)) {
-                    Intent bcIntent = new Intent();
-                    bcIntent.setAction(PLAY_SERVICE_GPS);
-                    getActivity().sendBroadcast(bcIntent);
-                    //Cambios necesarios en la interfaz
-                    sEstado = PLAY;
-                    mPlayPause.setImageResource(R.drawable.ic_pause);
-                    //Me subscribo
-                    subscribirService();
-                } else if (sEstado.equals(PLAY)) {
-                    Intent bcIntent = new Intent();
-                    bcIntent.setAction(PAUSE_SERVICE_GPS);
-                    getActivity().sendBroadcast(bcIntent);
-                    //Cambios necesarios en la interfaz
-                    sEstado = PAUSE;
-                    mPlayPause.setImageResource(R.drawable.ic_play);
-                    //cancelo subscribir
-                    cancelSubscribirService();
+                        //Creo el IntentService
+                        Intent msgIntent = new Intent(getActivity(), GpsIntentService.class);
+                        getActivity().startService(msgIntent);
+
+                        bcIntent.setAction(RUN_SERVICE_GPS);
+
+                        //Cambios necesarios en la interfaz
+                        mPlayPause.setImageResource(R.drawable.ic_pause);
+                        break;
+                    case PAUSED :
+                        bcIntent.setAction(RUN_SERVICE_GPS);
+
+                        //Cambios necesarios en la interfaz
+                        mPlayPause.setImageResource(R.drawable.ic_pause);
+
+                        //Me subscribo
+                        subscribirService();
+                        break;
+                    case RUNNING :
+                        bcIntent.setAction(PAUSE_SERVICE_GPS);
+
+                        //Cambios necesarios en la interfaz
+                        mPlayPause.setImageResource(R.drawable.ic_play);
+
+                        //cancelo subscribir
+                        cancelSubscribirService();
+                        break;
                 }
+                getActivity().sendBroadcast(bcIntent);
             }
         });
 
@@ -115,13 +107,12 @@ public class MainTrainFragment extends Fragment {
         mStop.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
-                if (!sEstado.equals(STOP)) {
+                if (GpsIntentService.sState != State.STOPPED) {
                     Intent bcIntent = new Intent();
                     bcIntent.setAction(STOP_SERVICE_GPS);
                     getActivity().sendBroadcast(bcIntent);
                     //Cambios necesarios en la interfaz
-                    sEstado = STOP;
+                    GpsIntentService.sState = State.STOPPED;
                     mPlayPause.setImageResource(R.drawable.ic_play);
                     //Pone el cronometro a 0
                     mCronometro.setBase(SystemClock.elapsedRealtime());
@@ -136,33 +127,45 @@ public class MainTrainFragment extends Fragment {
     @Override
     public void onResume() {
         super.onResume();
+        mMapView.onResume();
 
-        if (sEstado.equals(PLAY)) {
+        if (GpsIntentService.sState == State.RUNNING) {
             mPlayPause.setImageResource(R.drawable.ic_pause);
             subscribirService();
         }
-
     }
 
     @Override
     public void onPause() {
         super.onPause();
         cancelSubscribirService();
+        mMapView.onPause();
+
+    }
+
+    @Override
+    public void onDestroy() {
+        mMapView.onDestroy();
+        super.onDestroy();
+    }
+
+    @Override
+    public void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+        mMapView.onSaveInstanceState(outState);
     }
 
     //Se suscribe al Service para actualizar cronometro
     private void subscribirService(){
-        //Filtro para el paso de mensajes
-        IntentFilter filter = new IntentFilter();
-        filter.addAction(GpsIntentService.LISTA_PUNTOS);
-        filter.addAction(GpsIntentService.TIEMPO);
-        mMainRcv = new MainTrainReceiver();
-        getActivity().registerReceiver(mMainRcv, filter);
-
         // Avisar al servicio
         Intent bcIntent = new Intent();
         bcIntent.setAction(SUBSCRIBIR_SERVICE);
         getActivity().sendBroadcast(bcIntent);
+
+        // Registrar el recibidor de mensajes
+        IntentFilter filter = new IntentFilter(GpsIntentService.NOTIFICATION);
+        mReceiver = new MainTrainReceiver();
+        getActivity().registerReceiver(mReceiver, filter);
     }
 
     //Se cancela la suscripcion al Service para actualizar cronometro
@@ -170,6 +173,11 @@ public class MainTrainFragment extends Fragment {
         Intent bcIntent = new Intent();
         bcIntent.setAction(CANCELAR_SUSCRIBIR_SERVICE);
         getActivity().sendBroadcast(bcIntent);
+
+        if (mReceiver != null) {
+            getActivity().unregisterReceiver(mReceiver);
+            mReceiver = null;
+        }
     }
 
     //inicialia todos los View necesario de la interfaz
@@ -189,25 +197,23 @@ public class MainTrainFragment extends Fragment {
         else return true;
     }
 
-    //Actualiza Cronometro
-    private void actualizarCronometro(Long tiempo){
-        mCronometro.setBase(tiempo);
-    }
-
-
-
-    //Clase para mensajes con Intentservice
+    /**
+     * Clase para recibir los mensajes del servidor
+     */
     public class MainTrainReceiver extends BroadcastReceiver {
 
         @Override
         public void onReceive(Context context, Intent intent) {
-            if(intent.getAction().equals(GpsIntentService.LISTA_PUNTOS)) {
-                //Aqui va el código que se necesita
-            }
-                if(intent.getAction().equals(GpsIntentService.TIEMPO)){
-                    actualizarCronometro(intent.getLongExtra("tiempo", 0));
+            Bundle bundle = intent.getExtras();
+            if (bundle != null) {
+                /*if (intent.getAction().equals(GpsIntentService.LISTA_PUNTOS)) {
+                    //Aqui va el código que se necesita
                 }
-
+                if (intent.getAction().equals(GpsIntentService.TIEMPO)) {
+                    actualizarCronometro(intent.getLongExtra("tiempo", 0));
+                }*/
+                mCronometro.setBase((bundle.getLong(GpsIntentService.CHRONOMETER, 0)));
+            }
         }
     }
 }

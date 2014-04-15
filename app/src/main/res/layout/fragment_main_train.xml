@@ -45,8 +45,8 @@
         </TableRow>
     </TableLayout>
 
-    <FrameLayout
-        android:id="@+id/fragmenttrain_map"
+    <com.google.android.gms.maps.MapView
+        android:id="@+id/fragmentmain_mapview"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_weight="0.4" />

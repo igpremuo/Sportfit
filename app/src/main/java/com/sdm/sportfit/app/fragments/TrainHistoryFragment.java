@@ -56,7 +56,7 @@ public class TrainHistoryFragment extends Fragment {
         session.setDate("01/04/2014");
         session.setDistance(20.5);
         session.setAverageSpeed(5.5);
-        session.setDuration(2165466);
+        session.setDuration(300000);
         session.setCaloriesBurned(700.0);
         history.add(session);
 
@@ -65,7 +65,7 @@ public class TrainHistoryFragment extends Fragment {
         session.setDate("02/04/2014");
         session.setDistance(110.5);
         session.setAverageSpeed(40.2);
-        session.setDuration(212354566);
+        session.setDuration(124);
         session.setCaloriesBurned(1200.0);
         history.add(session);
 
