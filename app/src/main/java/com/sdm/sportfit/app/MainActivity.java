@@ -35,6 +35,8 @@ import com.sdm.sportfit.app.services.ConnectionDetector;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.util.List;
+
 public class MainActivity extends ActionBarActivity
 
         implements NavigationDrawerFragment.NavigationDrawerCallbacks {
@@ -92,14 +94,15 @@ public class MainActivity extends ActionBarActivity
         Location location1 = new Location("Location1");
         location1.setLongitude(45.125225);
         location1.setLatitude(46.154578);
-        //LocationManager locManager = (LocationManager) getActivity().getSystemService(Context.LOCATION_SERVICE);
         Location location2 = new Location("Location2");
         location2.setLongitude(47.125225);
         location2.setLatitude(48.154578);
         dh.addPoint(new Points(location1, 5.6, 1));
         dh.addPoint(new Points(location2, 7.2, 1));
-        dh.addTraining(new Trainings(1,idUser, "Run", 152.25, 125, 10.0, 5.5, 1000.0));
-        dh.addTraining(new Trainings(2,idUser, "Run", 189.25, 168, 12.0, 6.5, 2000.0));
+        dh.addTraining(new Trainings(1, idUser, "Run", 152.25, 125, 10.0, 5.5, 1000.0, "08:00"));
+        dh.addTraining(new Trainings(2,idUser, "Run", 189.25, 168, 12.0, 6.5, 2000.0, "09:00"));
+        List<Trainings> list = dh.getAllTrainings();
+
         ConnectionDetector cd = new ConnectionDetector(getApplicationContext());
 
         if (!dh.existsDataInTable("Foods") && cd.isConnectingToInternet()) new AttemptFoods().execute();

@@ -265,7 +265,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
             values.put("typeMeal", diet.getTypeMeal());
             values.put("timeMeal", diet.getTimeMeal().toString());
             values.put("dateMeal", diet.getDateMeal().toString());
-             //aqui insertar lo otros dos datos
+            //aqui insertar lo otros dos datos
 
 
             // Inserting Row
@@ -310,8 +310,8 @@ public class DatabaseHandler extends SQLiteOpenHelper {
             c = db.rawQuery("SELECT id FROM " + TABLE_USERS + " WHERE email = '" + email + "' AND password = '"+ pass +"';", null);
 
             if (c.moveToFirst()) {
-                    return c.getInt(0);
-                }
+                return c.getInt(0);
+            }
             else {
                 return 0;
             }
@@ -349,19 +349,19 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         }
         SQLiteDatabase db = this.getReadableDatabase();
         try{
-           c = db.rawQuery("SELECT timeMeal, typeMeal FROM "+ TABLE_DIETS +" WHERE dateMeal = '" + dateDiet + "' AND nameDiet = '" + nameDiet + "' ORDER BY timeMeal DESC;", null);
+            c = db.rawQuery("SELECT timeMeal, typeMeal FROM "+ TABLE_DIETS +" WHERE dateMeal = '" + dateDiet + "' AND nameDiet = '" + nameDiet + "' ORDER BY timeMeal DESC;", null);
             Log.v("VERBOSE", "Resultados de la consulta timeMeal: "+c.getCount());
             if (c.moveToFirst()) {
-              do {
-                Date timeMeal = null;
-                 timeMeal= formatedDate.parse(c.getString(0));
-                  Log.v("VERBOSE", "Valor de tiempo actual :"+ System.currentTimeMillis()/30000);
-                  Log.v("VERBOSE", "Valor de tiempo limit :"+ limit.getTime());
-                  Log.v("VERBOSE", "Valor de tiempo recogido :"+ timeMeal.getTime());
-                if(timeMeal.getTime() >= System.currentTimeMillis()/30000 && timeMeal.getTime() <= limit.getTime() ){
-                    Log.v("VERBOSE","entro al if del metodo");
-                    limit = timeMeal;
-                    typeMeal = c.getString(1);
+                do {
+                    Date timeMeal = null;
+                    timeMeal= formatedDate.parse(c.getString(0));
+                    Log.v("VERBOSE", "Valor de tiempo actual :"+ System.currentTimeMillis()/30000);
+                    Log.v("VERBOSE", "Valor de tiempo limit :"+ limit.getTime());
+                    Log.v("VERBOSE", "Valor de tiempo recogido :"+ timeMeal.getTime());
+                    if(timeMeal.getTime() >= System.currentTimeMillis()/30000 && timeMeal.getTime() <= limit.getTime() ){
+                        Log.v("VERBOSE","entro al if del metodo");
+                        limit = timeMeal;
+                        typeMeal = c.getString(1);
                     }
                 } while (c.moveToNext());
             }
@@ -408,7 +408,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
                 Log.v("VERBOSE", "timeMeal de getDietByMeal" +c.getString(3));
                 diet.setTimeMeal(c.getString(3));
                 diet.setDateMeal(c.getString(4));
-            // looping through all rows and adding to list
+                // looping through all rows and adding to list
                 do {
                     Foods food = new Foods();
                     food.setId(Integer.parseInt(c.getString(1)));
@@ -547,9 +547,9 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         SQLiteDatabase db = this.getWritableDatabase();
 
         try{
-
-            db.rawQuery("SELECT * FROM " + TABLE_TRAINING + ";", null);
-
+            Log.v("VERBOSE", "valor de la consulta: " + "SELECT * FROM " + TABLE_TRAINING + "; " );
+            cursor = db.rawQuery("SELECT * FROM " + TABLE_TRAINING + ";", null);
+            Log.v("VERBOSE", "valor de la consulta: " +   cursor.getCount());
             // looping through all rows and adding to list
             if (cursor.moveToFirst()) {
                 do {

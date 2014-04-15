@@ -42,9 +42,10 @@ public class Trainings extends ArrayList<Points> {
         this.averageSpeed = 0.0;
         this.averageRate = 0.0;
         this.distance = 0.0;
+        this.date = "";
     }
 
-    public Trainings(int idTraining, int idUser, String typeTraining, Double caloriesBurned, long duration, Double averageSpeed, Double averageRate, Double distance) {
+    public Trainings(int idTraining, int idUser, String typeTraining, Double caloriesBurned, long duration, Double averageSpeed, Double averageRate, Double distance, String date) {
         this.idTraining = idTraining;
         this.idUser = idUser;
         this.typeTraining = getType(typeTraining);
@@ -53,6 +54,7 @@ public class Trainings extends ArrayList<Points> {
         this.averageSpeed = averageSpeed;
         this.averageRate = averageRate;
         this.distance = distance;
+        this.date = date;
     }
 
     public int getIdUser() {
