@@ -82,14 +82,14 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         db.execSQL("CREATE TABLE IF NOT EXISTS " + TABLE_POINTS + " (id INTEGER  PRIMARY KEY AUTOINCREMENT, longitude decimal(18,14) NOT NULL, latitude decimal(18,14) NOT NULL, speed double NOT NULL, idTraining int(11) NOT NULL, FOREIGN KEY (idTraining) REFERENCES Training (idTraining) ON DELETE CASCADE ON UPDATE CASCADE);");
         db.execSQL("CREATE TABLE IF NOT EXISTS " + TABLE_TRAINING + "  (idTraining INTEGER PRIMARY KEY AUTOINCREMENT, idUser int(11) NOT NULL, typeTraining VARCHAR (50) NOT NULL, caloriesBurned double NOT NULL, duration double NOT NULL, averageSpeed double NOT NULL, averageRate double NOT NULL, distance double NOT NULL, FOREIGN KEY (idUser) REFERENCES users (id) ON DELETE CASCADE ON UPDATE CASCADE);");
         db.execSQL("CREATE TABLE IF NOT EXISTS " + TABLE_USERS + " (id INTEGER  PRIMARY KEY AUTOINCREMENT, name varchar(250) DEFAULT NULL, email varchar(255) UNIQUE NOT NULL, password text NOT NULL, api_key varchar(32) NOT NULL, created_at timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP, locationx decimal(18,14) DEFAULT NULL,  locationy decimal(18,14) DEFAULT NULL, picture varchar(200) DEFAULT NULL);");
-            db.execSQL("INSERT INTO Diets (nameDiet, idFood, typeMeal, timeMeal, dateMeal, earnedCalories, quantity) VALUES ('Dieta genérica 1', 681,  'Desayuno',  '09:00',  '2014-04-13',  75.46, 200.00);");
-            db.execSQL("INSERT INTO Diets (nameDiet, idFood, typeMeal, timeMeal, dateMeal, earnedCalories,  quantity) VALUES ('Dieta genérica 1', 774, 'Desayuno', '09:00', '2014-04-13', 240.19, 100.00);");
-            db.execSQL("INSERT INTO Diets (nameDiet, idFood, typeMeal, timeMeal, dateMeal, earnedCalories,  quantity) VALUES ('Dieta genérica 1', 917,  'Almuerzo',  '11:00',  '2014-04-13',  134.51,  100.00);");
-            db.execSQL("INSERT INTO Diets (nameDiet, idFood, typeMeal, timeMeal, dateMeal, earnedCalories,  quantity) VALUES ('Dieta genérica 1', 994,  'Comida',  '14:00',  '2014-04-13',  104.32,  100.00);");
-         //   db.execSQL("INSERT INTO Diets (nameDiet, idFood, typeMeal, timeMeal, dateMeal, earnedCalories,  quantity) VALUES ('Dieta genérica 1', 2662,  'Merienda',  '14:00',  '2014-04-13',  394.51,  100.00);");
-            db.execSQL("INSERT INTO Diets (nameDiet, idFood, typeMeal, timeMeal, dateMeal, earnedCalories,  quantity) VALUES ('Dieta genérica 1', 2387,  'Merienda',  '23:00',  '2014-04-13',  27.16,  100.00);");
-            db.execSQL("INSERT INTO Diets (nameDiet, idFood, typeMeal, timeMeal, dateMeal, earnedCalories,  quantity) VALUES ('Dieta genérica 1', 2387,  'Cena',  '23:30',  '2014-04-13',  27.16,  100.00);");
-            db.execSQL("INSERT INTO users (name, email, password, api_key) VALUES ('paco','paco@gmail.com',  'paco', '2244a06077f75b20c04defe1e6be34e1');");
+            db.execSQL("INSERT INTO Diets (nameDiet, idFood, typeMeal, timeMeal, dateMeal, earnedCalories, quantity) VALUES ('Dieta genérica 1', 681,  'Desayuno',  '09:00',  '2014-04-14',  75.46, 200.00);");
+            db.execSQL("INSERT INTO Diets (nameDiet, idFood, typeMeal, timeMeal, dateMeal, earnedCalories,  quantity) VALUES ('Dieta genérica 1', 774, 'Desayuno', '09:00', '2014-04-14', 240.19, 100.00);");
+            db.execSQL("INSERT INTO Diets (nameDiet, idFood, typeMeal, timeMeal, dateMeal, earnedCalories,  quantity) VALUES ('Dieta genérica 1', 917,  'Almuerzo',  '11:00',  '2014-04-14',  134.51,  100.00);");
+            db.execSQL("INSERT INTO Diets (nameDiet, idFood, typeMeal, timeMeal, dateMeal, earnedCalories,  quantity) VALUES ('Dieta genérica 1', 994,  'Comida',  '14:00',  '2014-04-14',  104.32,  100.00);");
+            db.execSQL("INSERT INTO Diets (nameDiet, idFood, typeMeal, timeMeal, dateMeal, earnedCalories,  quantity) VALUES ('Dieta genérica 1', 2662,  'Merienda',  '19:00',  '2014-04-13',  394.51,  100.00);");
+            db.execSQL("INSERT INTO Diets (nameDiet, idFood, typeMeal, timeMeal, dateMeal, earnedCalories,  quantity) VALUES ('Dieta genérica 1', 2387,  'Merienda',  '19:00',  '2014-04-14',  27.16,  100.00);");
+            db.execSQL("INSERT INTO Diets (nameDiet, idFood, typeMeal, timeMeal, dateMeal, earnedCalories,  quantity) VALUES ('Dieta genérica 1', 2387,  'Cena',  '23:30',  '2014-04-14',  27.16,  100.00);");
+          //  db.execSQL("INSERT INTO users (name, email, password, api_key) VALUES ('paco','paco@gmail.com',  'paco', '2244a06077f75b20c04defe1e6be34e1');");
             Log.v("VERBOSE", "Tablas creadas");
         } catch (SQLiteException sqlError){
             Toast toast = Toast.makeText(this.myContext, R.string.createError, Toast.LENGTH_SHORT);
@@ -163,12 +163,12 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         SQLiteDatabase db = this.getWritableDatabase();
         try{
             Log.v("VERBOSE", "Creando dietas");
-        db.execSQL("INSERT INTO Diets (nameDiet, idFood, typeMeal, timeMeal, dateMeal, earnedCalories, quantity) VALUES ('Dieta genérica 1', 681,  'Desayuno',  '09:00',  '2014-04-13',  75.46, 200.00);");
-        db.execSQL("INSERT INTO Diets (nameDiet, idFood, typeMeal, timeMeal, dateMeal, earnedCalories,  quantity) VALUES ('Dieta genérica 1', 774, 'Desayuno', '09:00', '2014-04-13', 240.19, 100.00);");
-        db.execSQL("INSERT INTO Diets (nameDiet, idFood, typeMeal, timeMeal, dateMeal, earnedCalories,  quantity) VALUES ('Dieta genérica 1', 917,  'Almuerzo',  '11:00',  '2014-04-13',  134.51,  100.00);");
-        db.execSQL("INSERT INTO Diets (nameDiet, idFood, typeMeal, timeMeal, dateMeal, earnedCalories,  quantity) VALUES ('Dieta genérica 1', 994,  'Comida',  '14:00',  '2014-04-13',  104.32,  100.00);");
-        db.execSQL("INSERT INTO Diets (nameDiet, idFood, typeMeal, timeMeal, dateMeal, earnedCalories,  quantity) VALUES ('Dieta genérica 1', 2662,  'Merienda',  '14:00',  '2014-04-13',  394.51,  100.00);");
-        db.execSQL("INSERT INTO Diets (nameDiet, idFood, typeMeal, timeMeal, dateMeal, earnedCalories,  quantity) VALUES ('Dieta genérica 1', 2387,  'Cena',  '23:30',  '2014-04-13',  27.16,  100.00);");
+        db.execSQL("INSERT INTO Diets (nameDiet, idFood, typeMeal, timeMeal, dateMeal, earnedCalories, quantity) VALUES ('Dieta genérica 1', 681,  'Desayuno',  '09:00',  '2014-04-14',  75.46, 200.00);");
+        db.execSQL("INSERT INTO Diets (nameDiet, idFood, typeMeal, timeMeal, dateMeal, earnedCalories,  quantity) VALUES ('Dieta genérica 1', 774, 'Desayuno', '09:00', '2014-04-14', 240.19, 100.00);");
+        db.execSQL("INSERT INTO Diets (nameDiet, idFood, typeMeal, timeMeal, dateMeal, earnedCalories,  quantity) VALUES ('Dieta genérica 1', 917,  'Almuerzo',  '11:00',  '2014-04-14',  134.51,  100.00);");
+        db.execSQL("INSERT INTO Diets (nameDiet, idFood, typeMeal, timeMeal, dateMeal, earnedCalories,  quantity) VALUES ('Dieta genérica 1', 994,  'Comida',  '14:00',  '2014-04-14',  104.32,  100.00);");
+        db.execSQL("INSERT INTO Diets (nameDiet, idFood, typeMeal, timeMeal, dateMeal, earnedCalories,  quantity) VALUES ('Dieta genérica 1', 2662,  'Merienda',  '14:00',  '2014-04-14',  394.51,  100.00);");
+        db.execSQL("INSERT INTO Diets (nameDiet, idFood, typeMeal, timeMeal, dateMeal, earnedCalories,  quantity) VALUES ('Dieta genérica 1', 2387,  'Cena',  '23:30',  '2014-04-14',  27.16,  100.00);");
         } catch (SQLiteException sqlError){
             Toast toast = Toast.makeText(this.myContext, R.string.insertError, Toast.LENGTH_SHORT);
             toast.show();
@@ -359,7 +359,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
                   Log.v("VERBOSE", "Valor de tiempo limit :"+ limit.getTime());
                   Log.v("VERBOSE", "Valor de tiempo recogido :"+ timeMeal.getTime());
                 if(timeMeal.getTime() >= System.currentTimeMillis()/30000 && timeMeal.getTime() <= limit.getTime() ){
-                    Log.v("VERBOSE","entro al if del puto metodo");
+                    Log.v("VERBOSE","entro al if del metodo");
                     limit = timeMeal;
                     typeMeal = c.getString(1);
                     }

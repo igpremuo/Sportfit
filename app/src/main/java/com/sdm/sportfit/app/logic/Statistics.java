@@ -1,7 +1,5 @@
 package com.sdm.sportfit.app.logic;
 
-import java.sql.Date;
-
 /**
  * Created by sdm on 9/04/14.
  */
@@ -9,13 +7,14 @@ public class Statistics {
 
     private int idStatistics;
     private int idUser;
-    private Date dateStatistics;
+    private String dateStatistics;
     private Double weight;
     private int age;
     private String gender;
     private Double height;
     private Double imc;
     private Double water;
+    private Double mg;
 
     public Statistics() {
         this.idStatistics = 0;
@@ -27,9 +26,11 @@ public class Statistics {
         this.height = 0.0;
         this.imc = 0.0;
         this.water = 0.0;
+        this.mg = 0.0;
     }
 
-    public Statistics(int idStatistics, int idUser, Date dateStatistics, Double weight, int age, String gender, Double height, Double imc, Double water) {
+
+    public Statistics(int idStatistics, int idUser, String dateStatistics, Double weight, int age, String gender, Double height, Double imc, Double water, Double mg) {
         this.idStatistics = idStatistics;
         this.idUser = idUser;
         this.dateStatistics = dateStatistics;
@@ -39,6 +40,8 @@ public class Statistics {
         this.height = height;
         this.imc = imc;
         this.water = water;
+        this.mg = mg;
+
     }
 
     public int getIdStatistics() {
@@ -57,11 +60,11 @@ public class Statistics {
         this.idUser = idUser;
     }
 
-    public Date getDateStatistics() {
+    public String getDateStatistics() {
         return dateStatistics;
     }
 
-    public void setDateStatistics(Date dateStatistics) {
+    public void setDateStatistics(String dateStatistics) {
         this.dateStatistics = dateStatistics;
     }
 
@@ -105,11 +108,12 @@ public class Statistics {
         this.imc = imc;
     }
 
-    public Double getWater() {
-        return water;
-    }
+    public Double getWater() { return water;  }
 
-    public void setWater(Double water) {
-        this.water = water;
-    }
+    public void setWater(Double water) { this.water = water; }
+
+    public Double getMg() { return mg;  }
+
+    public void setMg(Double mg) { this.mg = mg; }
+
 }

@@ -1,12 +1,7 @@
 package com.sdm.sportfit.app;
-import java.util.ArrayList;
-import java.util.List;
-import org.apache.http.NameValuePair;
-import org.apache.http.message.BasicNameValuePair;
-import org.json.JSONException;
-import org.json.JSONObject;
 import android.app.Activity;
 import android.app.ProgressDialog;
+import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
@@ -16,7 +11,18 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import com.sdm.sportfit.app.logic.Users;
+import com.sdm.sportfit.app.persistence.DatabaseHandler;
 import com.sdm.sportfit.app.persistence.JSONParser;
+import com.sdm.sportfit.app.services.ConnectionDetector;
+
+import org.apache.http.NameValuePair;
+import org.apache.http.message.BasicNameValuePair;
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Created by max on 12/04/2014.
@@ -24,9 +30,9 @@ import com.sdm.sportfit.app.persistence.JSONParser;
 
 public class RegisterActivity extends Activity implements OnClickListener{
 
-    private EditText user, pass, mailText;
+    private EditText user, pass, mail;
     private Button  mRegister;
-
+    private DatabaseHandler dh;
     // Progress Dialog
     private ProgressDialog pDialog;
 
@@ -42,10 +48,11 @@ public class RegisterActivity extends Activity implements OnClickListener{
     protected void onCreate(Bundle savedInstanceState) {
         // TODO Auto-generated method stub
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.register);
+        setContentView(R.layout.register_layout);
+        dh = dh.getInstance(this);
 
         user = (EditText)findViewById(R.id.username);
-        mailText = (EditText)findViewById(R.id.mail);
+        mail = (EditText)findViewById(R.id.mail);
         pass = (EditText)findViewById(R.id.password);
 
         mRegister = (Button)findViewById(R.id.register);
@@ -56,8 +63,11 @@ public class RegisterActivity extends Activity implements OnClickListener{
     @Override
     public void onClick(View v) {
         // TODO Auto-generated method stub
+        ConnectionDetector cd = new ConnectionDetector(getApplicationContext());
 
-        new CreateUser().execute();
+        Boolean isInternetPresent = cd.isConnectingToInternet();
+        if(isInternetPresent) new CreateUser().execute();
+        else Toast.makeText(RegisterActivity.this, R.string.internetRequired, Toast.LENGTH_LONG).show();
 
     }
 
@@ -84,13 +94,14 @@ public class RegisterActivity extends Activity implements OnClickListener{
             // Check for success tag
             String success;
             String username = user.getText().toString();
-            String mail = mailText.getText().toString();
+            String textMail = mail.getText().toString();
             String password = pass.getText().toString();
+            Users user = new Users(username,textMail, password,"", String.valueOf(System.currentTimeMillis()),0.0, 0.0, "");
             try {
                 // Building Parameters
                 List<NameValuePair> params = new ArrayList<NameValuePair>();
                 params.add(new BasicNameValuePair("name", username));
-                params.add(new BasicNameValuePair("email", mail));
+                params.add(new BasicNameValuePair("email", textMail));
                 params.add(new BasicNameValuePair("password", password));
 
                 Log.d("request!", "starting");
@@ -106,7 +117,10 @@ public class RegisterActivity extends Activity implements OnClickListener{
                 success = json.getString("error");
                 if (success == "false") {
                     Log.d("User Created!", json.toString());
-                    finish();
+                     dh.addUser(user);
+                    Intent i = new Intent(RegisterActivity.this, userStats.class);
+                   // finish();
+                    startActivity(i);
                     return json.getString(TAG_MESSAGE);
                 }else{
                     Log.d("Login Failure!", json.getString(TAG_MESSAGE));

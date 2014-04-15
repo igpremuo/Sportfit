@@ -1,14 +1,12 @@
 package com.sdm.sportfit.app.logic;
 
-import java.sql.Timestamp;
-
 public class Users {
 	private int id;
 	private String name;
 	private String email;
 	private String password;
 	private String api_key;
-	private Timestamp created_at;
+	private String created_at;
 	private double locationx;
 	private double locationy;
 	private String picture;
@@ -19,14 +17,13 @@ public class Users {
 		email = "";
 		password = "";
 		api_key = "";
-		created_at = new Timestamp(0);
+		created_at = "";
 		locationx = 0.0;
 		locationy = 0.0;
 		picture = "";
 	}
 	
-	public Users(int id, String name, String email, String password, String api_key, Timestamp created_at, double locationx, double locationy, String picture) {
-		this.id = id;
+	public Users(String name, String email, String password, String api_key, String created_at, double locationx, double locationy, String picture) {
 		this.name = name;
 		this.email = email;
 		this.password = password;
@@ -57,7 +54,7 @@ public class Users {
 		return api_key;
 	}
 	
-	public Timestamp getCreated_at() {
+	public String getCreated_at() {
 		return created_at;
 	}
 	
@@ -92,7 +89,7 @@ public class Users {
 		this.api_key = api_key;
 	}
 	
-	public void setCreated_at(Timestamp created_at) {
+	public void setCreated_at(String created_at) {
 		this.created_at = created_at;
 	}
 	

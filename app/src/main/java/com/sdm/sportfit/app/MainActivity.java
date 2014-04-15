@@ -26,6 +26,7 @@ import com.sdm.sportfit.app.fragments.TrainParentFragment;
 import com.sdm.sportfit.app.logic.Foods;
 import com.sdm.sportfit.app.persistence.DatabaseHandler;
 import com.sdm.sportfit.app.persistence.JSONParser;
+import com.sdm.sportfit.app.services.ConnectionDetector;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -82,7 +83,9 @@ public class MainActivity extends ActionBarActivity
                 R.id.navigation_drawer,
                 (DrawerLayout) findViewById(R.id.drawer_layout));
         dh = dh.getInstance(this);
-        if (!dh.existsDataInTable("Foods")) new AttemptFoods().execute();
+        ConnectionDetector cd = new ConnectionDetector(getApplicationContext());
+
+        if (!dh.existsDataInTable("Foods") && cd.isConnectingToInternet()) new AttemptFoods().execute();
 
     }
 

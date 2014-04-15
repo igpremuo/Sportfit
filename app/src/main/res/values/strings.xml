@@ -57,6 +57,21 @@
     <string name="register">Register</string>
     <string name="mail">Mail</string>
     <string name="attemptingLogin">Attempting login...</string>
+    <string name="internetRequired">Requiere conexión a internet</string>
+
+
+    <!-- user stats texts -->
+    <string name="userStatsDescription">Complete all, if you know it. Stats with * are needed.</string>
+    <string name="age">*Age</string>
+    <string name="height">*Height</string>
+    <string name="weight">*Weight</string>
+    <string name="genre">*Genre</string>
+    <string name="imc">Body mass ratio</string>
+    <string name="water">Body water</string>
+    <string name="mg">Body fats</string>
+    <string name="save">Guardar</string>
+    <string name="man">Men</string>
+    <string name="woman">Woman</string>
 
 
     <!-- Messages error-->

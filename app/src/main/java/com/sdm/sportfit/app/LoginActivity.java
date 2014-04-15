@@ -7,8 +7,6 @@ package com.sdm.sportfit.app;
 import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Intent;
-import android.net.ConnectivityManager;
-import android.net.NetworkInfo;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
@@ -20,6 +18,7 @@ import android.widget.Toast;
 
 import com.sdm.sportfit.app.persistence.DatabaseHandler;
 import com.sdm.sportfit.app.persistence.JSONParser;
+import com.sdm.sportfit.app.services.ConnectionDetector;
 
 import org.apache.http.NameValuePair;
 import org.apache.http.message.BasicNameValuePair;
@@ -32,7 +31,7 @@ import java.util.List;
 
 public class LoginActivity extends Activity implements OnClickListener{
 
-    private EditText user, pass;
+    private EditText mail, pass;
     private Button mSubmit, mRegister;
     private DatabaseHandler dh;
 
@@ -47,20 +46,14 @@ public class LoginActivity extends Activity implements OnClickListener{
     //JSON element ids from repsonse of php script:
     private static final String TAG_MESSAGE = "message";
 
-    private boolean isNetworkAvailable() {
-        ConnectivityManager connectivityManager
-                = (ConnectivityManager) getSystemService(this.CONNECTIVITY_SERVICE);
-        NetworkInfo activeNetworkInfo = connectivityManager.getActiveNetworkInfo();
-        return activeNetworkInfo != null;
-    }
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         // TODO Auto-generated method stub
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.login);
+        setContentView(R.layout.login_layout);
         dh = dh.getInstance(this);
 
-        user = (EditText)findViewById(R.id.username);
+        mail = (EditText)findViewById(R.id.mail);
         pass = (EditText)findViewById(R.id.password);
 
         mSubmit = (Button)findViewById(R.id.login);
@@ -81,11 +74,13 @@ public class LoginActivity extends Activity implements OnClickListener{
         // TODO Auto-generated method stub
         switch (v.getId()) {
             case R.id.login:
-                if(isNetworkAvailable()) new AttemptLogin().execute();
+                ConnectionDetector cd = new ConnectionDetector(getApplicationContext());
+
+                Boolean isInternetPresent = cd.isConnectingToInternet();
+                if(isInternetPresent) new AttemptLogin().execute();
                 else {
                     try {
-                        Log.v("VERBOSE","entro sin conexión");
-                    boolean logued = dh.checkLogin(user.getText().toString().trim(), pass.getText().toString().trim());
+                    boolean logued = dh.checkLogin(mail.getText().toString().trim(), pass.getText().toString().trim());
                         if(logued) {
                             Intent i = new Intent(LoginActivity.this, MainActivity.class);
                             finish();
@@ -131,7 +126,7 @@ public class LoginActivity extends Activity implements OnClickListener{
             // TODO Auto-generated method stub
             // Check for success tag
             String success;
-            String username = user.getText().toString();
+            String username = mail.getText().toString();
             String password = pass.getText().toString();
 
 
