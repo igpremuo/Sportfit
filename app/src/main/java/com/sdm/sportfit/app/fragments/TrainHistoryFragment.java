@@ -14,8 +14,8 @@ import com.sdm.sportfit.app.MainActivity;
 import com.sdm.sportfit.app.R;
 import com.sdm.sportfit.app.adapters.HistoryListAdapter;
 import com.sdm.sportfit.app.logic.Trainings;
+import com.sdm.sportfit.app.persistence.DatabaseHandler;
 
-import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -25,7 +25,7 @@ public class TrainHistoryFragment extends Fragment {
 
     private MainActivity mMainActivity;
     private ListView mHistoryList;
-
+    DatabaseHandler dh;
     @Override
     public void onAttach(Activity activity) {
         super.onAttach(activity);
@@ -47,7 +47,7 @@ public class TrainHistoryFragment extends Fragment {
             }
         });
 
-        List<Trainings> history = new ArrayList<Trainings>();
+       /* List<Trainings> history = new ArrayList<Trainings>();
 
         Trainings session;
 
@@ -105,7 +105,13 @@ public class TrainHistoryFragment extends Fragment {
         session.setCaloriesBurned(800.0);
         history.add(session);
 
-        loadHistoryList(history);
+        loadHistoryList(history);*/
+        Trainings session;
+        dh = dh.getInstance(getActivity());
+        List<Trainings> history = dh.getAllTrainings();
+        if (!history.isEmpty()){
+            loadHistoryList(history);
+        }
 
         return rootView;
     }

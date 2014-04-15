@@ -89,11 +89,11 @@ public class MainActivity extends ActionBarActivity
                 R.id.navigation_drawer,
                 (DrawerLayout) findViewById(R.id.drawer_layout));
         dh = dh.getInstance(this);
-        Location location1 = null;
+        Location location1 = new Location("Location1");
         location1.setLongitude(45.125225);
         location1.setLatitude(46.154578);
         //LocationManager locManager = (LocationManager) getActivity().getSystemService(Context.LOCATION_SERVICE);
-        Location location2 = null;
+        Location location2 = new Location("Location2");
         location2.setLongitude(47.125225);
         location2.setLatitude(48.154578);
         dh.addPoint(new Points(location1, 5.6, 1));
