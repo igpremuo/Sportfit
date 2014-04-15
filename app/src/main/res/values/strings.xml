@@ -91,9 +91,9 @@
     <string name="train_history_routes">Numero de rutas:</string>
 
     <!-- train -->
-    <string name="train_running">Correr</string>
-    <string name="train_cycling">Bicicleta</string>
-    <string name="train_walking">Caminata</string>
+    <string name="train_running">Run</string>
+    <string name="train_cycling">Cycling</string>
+    <string name="train_walking">Walk</string>
     <string name="att"> </string>
 
     <!--fragment_main_diet-->

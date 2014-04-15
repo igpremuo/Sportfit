@@ -7,6 +7,7 @@ package com.sdm.sportfit.app;
 import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
@@ -34,6 +35,8 @@ public class LoginActivity extends Activity implements OnClickListener{
     private EditText mail, pass;
     private Button mSubmit, mRegister;
     private DatabaseHandler dh;
+    private SharedPreferences _prefs;
+    private SharedPreferences.Editor _prefsEditor;
 
     // Progress Dialog
     private ProgressDialog pDialog;
@@ -80,8 +83,12 @@ public class LoginActivity extends Activity implements OnClickListener{
                 if(isInternetPresent) new AttemptLogin().execute();
                 else {
                     try {
-                    boolean logued = dh.checkLogin(mail.getText().toString().trim(), pass.getText().toString().trim());
-                        if(logued) {
+                    int logued = dh.checkLogin(mail.getText().toString().trim(), pass.getText().toString().trim());
+                        Log.d("User logeado!", "" + logued);
+                         _prefs = getSharedPreferences("myPreferences", MODE_PRIVATE);
+                        _prefsEditor.putInt("idUser", logued);
+                        _prefsEditor.commit();
+                        if(logued > 0) {
                             Intent i = new Intent(LoginActivity.this, MainActivity.class);
                             finish();
                             startActivity(i);
@@ -147,7 +154,11 @@ public class LoginActivity extends Activity implements OnClickListener{
                 // json success tag
                 success = json.getString("error");
                 if (success == "false") {
-                    Log.d("Login Successful!", json.toString());
+                     Log.d("User logeado servidor!", json.toString());
+                    int idUser = json.getInt("id");
+                    _prefs = getSharedPreferences("myPreferences", MODE_PRIVATE);
+                    _prefsEditor.putInt("idUser", idUser);
+                    _prefsEditor.commit();
                     Intent i = new Intent(LoginActivity.this, MainActivity.class);
                     finish();
                     startActivity(i);

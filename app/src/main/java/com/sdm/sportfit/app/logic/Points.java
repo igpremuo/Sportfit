@@ -12,14 +12,12 @@ public class Points {
     private int idTraining;
 
     public Points() {
-        this.id = 0;
         this.location = null;
         this.speed = 0.0;
         this.idTraining = 0;
     }
 
-    public Points(int id, Location location, Double speed, int idTraining) {
-        this.id = id;
+    public Points(Location location, Double speed, int idTraining) {
         this.location = location;
         this.speed = speed;
         this.idTraining = idTraining;

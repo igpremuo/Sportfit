@@ -2,6 +2,7 @@ package com.sdm.sportfit.app;
 import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
@@ -35,6 +36,8 @@ public class RegisterActivity extends Activity implements OnClickListener{
     private DatabaseHandler dh;
     // Progress Dialog
     private ProgressDialog pDialog;
+    private SharedPreferences _prefs;
+    private SharedPreferences.Editor _prefsEditor;
 
     // JSON parser class
     JSONParser jsonParser = new JSONParser();
@@ -96,7 +99,7 @@ public class RegisterActivity extends Activity implements OnClickListener{
             String username = user.getText().toString();
             String textMail = mail.getText().toString();
             String password = pass.getText().toString();
-            Users user = new Users(username,textMail, password,"", String.valueOf(System.currentTimeMillis()),0.0, 0.0, "");
+
             try {
                 // Building Parameters
                 List<NameValuePair> params = new ArrayList<NameValuePair>();
@@ -117,6 +120,11 @@ public class RegisterActivity extends Activity implements OnClickListener{
                 success = json.getString("error");
                 if (success == "false") {
                     Log.d("User Created!", json.toString());
+                    int idUser = json.getInt("id");
+                    _prefs = getSharedPreferences("myPreferences", MODE_PRIVATE);
+                    _prefsEditor.putInt("idUser", idUser);
+                    _prefsEditor.commit();
+                    Users user = new Users(idUser, username,textMail, password,"", String.valueOf(System.currentTimeMillis()),0.0, 0.0, "");
                      dh.addUser(user);
                     Intent i = new Intent(RegisterActivity.this, userStats.class);
                    // finish();

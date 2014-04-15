@@ -10,7 +10,7 @@ import java.util.ArrayList;
 public class Trainings extends ArrayList<Points> {
 
     public enum Type {
-        RUNNING("run"), CYCLING("bycicle"), WALKING("walk");
+        RUNNING("Run"), CYCLING("Cycling"), WALKING("Walk");
         String mType;
 
         Type(String type) {
@@ -31,9 +31,11 @@ public class Trainings extends ArrayList<Points> {
     private Double averageRate;
     private Double distance;
     private String date;
+    private int idUser;
 
     public Trainings() {
         this.idTraining = 0;
+        this.idUser = 0;
         this.typeTraining = Type.RUNNING;
         this.caloriesBurned = 0.0;
         this.duration = 0;
@@ -42,14 +44,23 @@ public class Trainings extends ArrayList<Points> {
         this.distance = 0.0;
     }
 
-    public Trainings(int idTraining, String typeTraining, Double caloriesBurned, long duration, Double averageSpeed, Double averageRate, Double distance) {
+    public Trainings(int idTraining, int idUser, String typeTraining, Double caloriesBurned, long duration, Double averageSpeed, Double averageRate, Double distance) {
         this.idTraining = idTraining;
+        this.idUser = idUser;
         this.typeTraining = getType(typeTraining);
         this.caloriesBurned = caloriesBurned;
         this.duration = duration;
         this.averageSpeed = averageSpeed;
         this.averageRate = averageRate;
         this.distance = distance;
+    }
+
+    public int getIdUser() {
+        return idUser;
+    }
+
+    public void setIdUser(int idUser) {
+        this.idUser = idUser;
     }
 
     public int getIdTraining() {

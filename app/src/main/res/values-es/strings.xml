@@ -88,5 +88,10 @@
     <string name="deleteError">ERROR. No se ha podido borrar la tabla</string>
     <string name="dateError">ERROR. Al formatear la fecha</string>
     <string name="insertError">ERROR. Fallo al insertar los datos en la base de datos</string>
+
+    <!-- train -->
+    <string name="train_running">Correr</string>
+    <string name="train_cycling">Bicicleta</string>
+    <string name="train_walking">Andar</string>
 </resources>
 

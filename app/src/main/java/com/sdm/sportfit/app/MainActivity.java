@@ -3,6 +3,8 @@ package com.sdm.sportfit.app;
 import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Intent;
+import android.content.SharedPreferences;
+import android.location.Location;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -24,6 +26,8 @@ import com.sdm.sportfit.app.fragments.MainParentFragment;
 import com.sdm.sportfit.app.fragments.PreferencesActivity;
 import com.sdm.sportfit.app.fragments.TrainParentFragment;
 import com.sdm.sportfit.app.logic.Foods;
+import com.sdm.sportfit.app.logic.Points;
+import com.sdm.sportfit.app.logic.Trainings;
 import com.sdm.sportfit.app.persistence.DatabaseHandler;
 import com.sdm.sportfit.app.persistence.JSONParser;
 import com.sdm.sportfit.app.services.ConnectionDetector;
@@ -63,13 +67,15 @@ public class MainActivity extends ActionBarActivity
     private TrainParentFragment mTrainFragment = null;
     private HiitParentFragment mHiitFragment = null;
 
-
+    private SharedPreferences _prefs;
+    private int idUser;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
+        _prefs = getSharedPreferences("myPreferences", MODE_PRIVATE);
+        idUser = _prefs.getInt("idUser", 0);
         mNavigationDrawerFragment = (NavigationDrawerFragment)
                 getSupportFragmentManager().findFragmentById(R.id.navigation_drawer);
         mNavigationDrawerFragment.setRetainInstance(true);
@@ -83,6 +89,17 @@ public class MainActivity extends ActionBarActivity
                 R.id.navigation_drawer,
                 (DrawerLayout) findViewById(R.id.drawer_layout));
         dh = dh.getInstance(this);
+        Location location1 = null;
+        location1.setLongitude(45.125225);
+        location1.setLatitude(46.154578);
+        //LocationManager locManager = (LocationManager) getActivity().getSystemService(Context.LOCATION_SERVICE);
+        Location location2 = null;
+        location2.setLongitude(47.125225);
+        location2.setLatitude(48.154578);
+        dh.addPoint(new Points(location1, 5.6, 1));
+        dh.addPoint(new Points(location2, 7.2, 1));
+        dh.addTraining(new Trainings(1,idUser, "Run", 152.25, 125, 10.0, 5.5, 1000.0));
+        dh.addTraining(new Trainings(2,idUser, "Run", 189.25, 168, 12.0, 6.5, 2000.0));
         ConnectionDetector cd = new ConnectionDetector(getApplicationContext());
 
         if (!dh.existsDataInTable("Foods") && cd.isConnectingToInternet()) new AttemptFoods().execute();

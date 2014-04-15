@@ -23,7 +23,8 @@ public class Users {
 		picture = "";
 	}
 	
-	public Users(String name, String email, String password, String api_key, String created_at, double locationx, double locationy, String picture) {
+	public Users(int id, String name, String email, String password, String api_key, String created_at, double locationx, double locationy, String picture) {
+        this.id = id;
 		this.name = name;
 		this.email = email;
 		this.password = password;
