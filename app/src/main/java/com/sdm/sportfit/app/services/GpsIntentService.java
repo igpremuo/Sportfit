@@ -5,11 +5,15 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.location.Location;
+import android.location.LocationListener;
+import android.os.Bundle;
 import android.os.SystemClock;
 import android.util.Log;
 import android.widget.Chronometer;
 
 import com.sdm.sportfit.app.fragments.MainTrainFragment;
+import com.sdm.sportfit.app.logic.Points;
 import com.sdm.sportfit.app.logic.Trainings;
 
 /**
@@ -28,11 +32,15 @@ public class GpsIntentService extends IntentService {
     private IntentServiceReceiver mReceiver;
 
     private Chronometer mCronometro;
+
     private boolean mCerrarIntentService = false;
-    private int mStoppedMilliseconds = 0;
+    private long mStoppedMilliseconds = 0;
     private boolean mEstadoSuscrito;
 
-    private Trainings session;
+    private Trainings mSession;
+    private double mSpeed;
+    private long mStartTime;
+    private long mTime;
 
     public GpsIntentService() {
         super("GpsIntentService");
@@ -56,17 +64,21 @@ public class GpsIntentService extends IntentService {
         registerReceiver(mReceiver, filter);
 
         mCronometro = new Chronometer(this);
-        session = new Trainings();
+        mSession = new Trainings();
+
+        GpsListener gpsListener = new GpsListener();
 
         while(!mCerrarIntentService){
 
             if(mEstadoSuscrito && sState == State.RUNNING){
+
                 sendDataToFragment();
             }
             sleep();
         }
         sState = State.STOPPED;
     }
+
     //Play mCronometro
     private void run(){
         mCronometro.start();
@@ -81,6 +93,7 @@ public class GpsIntentService extends IntentService {
 
         sState = State.PAUSED;
     }
+
     //Stop mCronometro
     private void stop(){
         mCronometro.stop();
@@ -90,20 +103,10 @@ public class GpsIntentService extends IntentService {
 
         sState = State.STOPPED;
     }
+
     //Guardar tiempo del mCronometro
     private void guardarTiempoCronometro(){
-        mStoppedMilliseconds = 0;
-
-        String chronoText = mCronometro.getText().toString();
-        String array[] = chronoText.split(":");
-        if (array.length == 2) {
-            mStoppedMilliseconds = Integer.parseInt(array[0]) * 60 * 1000
-                    + Integer.parseInt(array[1]) * 1000;
-        } else if (array.length == 3) {
-            mStoppedMilliseconds = Integer.parseInt(array[0]) * 60 * 60 * 1000
-                    + Integer.parseInt(array[1]) * 60 * 1000
-                    + Integer.parseInt(array[2]) * 1000;
-        }
+        mStoppedMilliseconds = SystemClock.elapsedRealtime() - mCronometro.getBase();
     }
 
     private void sendDataToFragment(){
@@ -117,6 +120,41 @@ public class GpsIntentService extends IntentService {
             Thread.sleep(1000);
         } catch(InterruptedException e) {
             Log.e(getClass().getName(), "Error while sleeping");
+        }
+    }
+
+    private class GpsListener implements LocationListener {
+
+        @Override
+        public void onLocationChanged(Location location) {
+            if (mSession.size() == 0) {
+                mSession.add(new Points(location, 0.0, -1));
+                mStartTime = System.currentTimeMillis();
+                mTime = mStartTime;
+            } else {
+                Points lastPoint = mSession.get(mSession.size()-1);
+                long time = (System.currentTimeMillis()-mTime)/1000;
+                float distance = lastPoint.getLocation().distanceTo(location);
+                double speed = (time/distance)*3.6;
+
+                mSession.add(new Points(location, speed, -1 ));
+                mTime = System.currentTimeMillis();
+            }
+        }
+
+        @Override
+        public void onStatusChanged(String provider, int status, Bundle bundle) {
+
+        }
+
+        @Override
+        public void onProviderEnabled(String provider) {
+
+        }
+
+        @Override
+        public void onProviderDisabled(String provider) {
+
         }
     }
 
