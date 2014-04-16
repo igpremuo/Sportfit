@@ -36,7 +36,6 @@ public class TrainReviewFragment extends Fragment {
     TextView mVelMedia;
     TextView mRitmoPromedio;
 
-
     MapView mMapView;
     MapManager mMapManager;
 
@@ -44,6 +43,8 @@ public class TrainReviewFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+
     }
 
     @Override
@@ -52,9 +53,11 @@ public class TrainReviewFragment extends Fragment {
 
         View rootView = inflater.inflate(R.layout.fragment_train_review, container, false);
         //inicio mapa
+
         mMapView = (MapView) rootView.findViewById(R.id.fragmenttrain_mapview);
         mMapView.onCreate(savedInstanceState);
-        mMapManager = new MapManager(mMapView.getMap());
+        mMapManager = new MapManager(mMapView.getMap(),getActivity().getApplicationContext());
+
         //inicio views
         iniciarViews(rootView);
         //obtengo id de sesion desde los argumentos pasados

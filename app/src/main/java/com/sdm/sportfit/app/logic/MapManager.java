@@ -1,8 +1,11 @@
 package com.sdm.sportfit.app.logic;
 
+import android.content.Context;
+
 import com.google.android.gms.maps.CameraUpdate;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
+import com.google.android.gms.maps.MapsInitializer;
 import com.google.android.gms.maps.model.CameraPosition;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Polyline;
@@ -11,15 +14,21 @@ import com.google.android.gms.maps.model.PolylineOptions;
 /**
  * Created by juan on 14/04/14.
  */
-public class MapManager {
+public class MapManager{
 
     private GoogleMap mMap;
 
-    public MapManager(GoogleMap map) {
+    public MapManager(GoogleMap map, Context context) {
+        try {
+            MapsInitializer.initialize(context);
+        } catch (Exception impossible) {
+
+        }
         mMap = map;
     }
 
     public void printRoute() {
+
         if (mMap != null) {
             PolylineOptions ruta = new PolylineOptions()
                     .add(new LatLng(39.474943,-0.40279))
@@ -39,11 +48,13 @@ public class MapManager {
             mMap.addPolyline(ruta);
 
             LatLng puntoEntrada= new LatLng(39.475407,-0.400368);
+
             CameraPosition camPos =new CameraPosition.Builder()
                     .target(puntoEntrada)
                     .zoom(15)
                     .bearing(10)
                     .build();
+
             CameraUpdate camPos2 = CameraUpdateFactory.newCameraPosition(camPos);
             mMap.animateCamera(camPos2);
         }

@@ -56,7 +56,7 @@ public class MainTrainFragment extends Fragment {
         mMapView = (MapView) rootView.findViewById(R.id.fragmentmain_mapview);
         mMapView.onCreate(savedInstanceState);
 
-        mMapManager = new MapManager(mMapView.getMap());
+        mMapManager = new MapManager(mMapView.getMap(),getActivity().getApplicationContext());
 
         //Inicializa los Views
         iniciarViews(rootView);
