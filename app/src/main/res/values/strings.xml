@@ -27,6 +27,7 @@
     <string name="train_training_rb_bicicleta">Bicicleta</string>
     <string name="train_training_button_entrenar">Entrenar</string>
 
+
     <!--fragment_train_review -->
     <string name="train_review_tv1_DEPORTE">DEPORTE</string>
     <string name="train_review_tv1_deporte">Correr</string>

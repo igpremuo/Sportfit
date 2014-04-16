@@ -1,6 +1,7 @@
 package com.sdm.sportfit.app.adapters;
 
 import android.content.Context;
+import android.os.SystemClock;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -65,7 +66,7 @@ public class HistoryListAdapter extends BaseAdapter {
             image.setImageDrawable(mContext.getResources().getDrawable(session.getImageId()));
             sessionType.setText(session.getSringId());
             speed.setText(session.getAverageSpeed()+" km/h");
-            time.setBase(session.getDuration());
+            time.setBase(SystemClock.elapsedRealtime() - session.getDuration());
             date.setText(session.getDate());
         }
 

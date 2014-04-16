@@ -555,14 +555,14 @@ public class DatabaseHandler extends SQLiteOpenHelper {
                 do {
                     Trainings training = new Trainings();
                     training.setIdTraining(Integer.parseInt(cursor.getString(0)));
-                    training.setTypeTraining(cursor.getString(1));
-                    training.setCaloriesBurned(cursor.getDouble(2));
-                    training.setDuration(cursor.getLong(3));
-                    training.setAverageSpeed(cursor.getDouble(4));
-                    training.setAverageRate(cursor.getDouble(5));
-                    training.setDistance(cursor.getDouble(6));
-                    Log.v("VERBOSE", "valor dateTraining " +  cursor.getString(7));
-                    training.setDate(cursor.getString(7));
+                    training.setTypeTraining(cursor.getString(2));
+                    training.setCaloriesBurned(cursor.getDouble(3));
+                    training.setDuration(cursor.getLong(4));
+                    training.setAverageSpeed(cursor.getDouble(5));
+                    training.setAverageRate(cursor.getDouble(6));
+                    training.setDistance(cursor.getDouble(7));
+                    Log.v("VERBOSE", "valor dateTraining " +  cursor.getString(8));
+                    training.setDate(cursor.getString(8));
 
                     // Adding contact to list
                     trainingsList.add(training);

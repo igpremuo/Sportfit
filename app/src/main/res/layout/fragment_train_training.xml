@@ -17,13 +17,53 @@
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:text="@string/train_training_tv1_tipo_entrenamiento"
-            android:id="@+id/training_frag_tv1" />
+            android:id="@+id/training_frag_tv1"
+            android:textSize="18sp" />
+
+        <LinearLayout
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center_horizontal">
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/imageView"
+                android:src="@drawable/ic_walking"
+                android:paddingLeft="10dp"
+                android:paddingRight="10dp"
+                android:layout_marginLeft="5dp"
+                android:layout_marginRight="5dp" />
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/imageView2"
+                android:src="@drawable/ic_correr"
+                android:paddingLeft="10dp"
+                android:paddingRight="10dp"
+                android:layout_marginLeft="5dp"
+                android:layout_marginRight="5dp" />
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/imageView3"
+                android:src="@drawable/ic_cycling"
+                android:paddingLeft="10dp"
+                android:paddingRight="10dp"
+                android:layout_marginLeft="5dp"
+                android:layout_marginRight="5dp" />
+        </LinearLayout>
 
         <RadioGroup
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
-            android:gravity="center_horizontal">
+            android:gravity="center_horizontal"
+            android:paddingTop="10dp"
+            android:paddingBottom="10dp">
 
             <RadioButton
                 android:layout_width="wrap_content"
@@ -44,17 +84,21 @@
                 android:layout_height="wrap_content"
                 android:text="@string/train_training_rb_bicicleta"
                 android:id="@+id/train_training_rb_bicicleta" />
+
         </RadioGroup>
 
         <RadioGroup
             android:layout_width="fill_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="wrap_content"
+            android:paddingTop="10dp"
+            android:paddingBottom="10dp">
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/train_training_tv2_avisos"
-                android:id="@+id/train_training_tv2_avisos" />
+                android:id="@+id/train_training_tv2_avisos"
+                android:textSize="18sp" />
 
             <RadioButton
                 android:layout_width="wrap_content"
@@ -64,11 +108,12 @@
                 android:checked="true" />
 
             <TextView
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:textAppearance="?android:attr/textAppearanceSmall"
                 android:text="@string/train_training_tv3_avisos_distancia"
-                android:id="@+id/train_training_tv3_avisos_distancia" />
+                android:id="@+id/train_training_tv3_avisos_distancia"
+                android:gravity="right" />
 
             <RadioButton
                 android:layout_width="wrap_content"
@@ -77,22 +122,23 @@
                 android:id="@+id/train_training_rb_aviso_tiempo" />
 
             <TextView
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:textAppearance="?android:attr/textAppearanceSmall"
                 android:text="@string/train_training_tv4_avisos_tiempo"
-                android:id="@+id/train_training_tv4_avisos_tiempo" />
+                android:id="@+id/train_training_tv4_avisos_tiempo"
+                android:gravity="right" />
 
         </RadioGroup>
 
         <LinearLayout
             android:orientation="vertical"
-            android:layout_width="fill_parent"
-            android:layout_height="fill_parent"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
             android:gravity="center_horizontal|bottom">
 
             <Button
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="@string/train_training_button_entrenar"
                 android:id="@+id/train_training_button" />
