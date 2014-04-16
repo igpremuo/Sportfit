@@ -93,5 +93,9 @@
     <string name="train_running">Correr</string>
     <string name="train_cycling">Bicicleta</string>
     <string name="train_walking">Andar</string>
+
+    <!-- Map Manager -->
+    <string name="mapmangaer_start">Inicio</string>
+    <string name="mapmangaer_end">Fin</string>
 </resources>
 

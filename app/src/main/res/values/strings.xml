@@ -104,4 +104,9 @@
     <string name="afternoonSnack">Afternoon snack</string>
     <string name="dinner">Dinner</string>
 
+    <!-- Map Manager -->
+    <string name="mapmangaer_start">Start</string>
+    <string name="mapmangaer_end">End</string>
+
+
 </resources>

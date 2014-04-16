@@ -1,5 +1,6 @@
 package com.sdm.sportfit.app.fragments;
 
+import android.location.Location;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
@@ -12,7 +13,9 @@ import android.widget.TextView;
 import com.google.android.gms.maps.MapView;
 import com.sdm.sportfit.app.R;
 import com.sdm.sportfit.app.logic.MapManager;
+import com.sdm.sportfit.app.logic.Points;
 import com.sdm.sportfit.app.logic.Trainings;
+import com.sdm.sportfit.app.persistence.DatabaseHandler;
 
 /**
  * Created by nacho on 1/04/14.
@@ -43,14 +46,10 @@ public class TrainReviewFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
-
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-
-
         View rootView = inflater.inflate(R.layout.fragment_train_review, container, false);
         //inicio mapa
 
@@ -62,8 +61,10 @@ public class TrainReviewFragment extends Fragment {
         iniciarViews(rootView);
         //obtengo id de sesion desde los argumentos pasados
         Bundle idBundle = getArguments();
-        mIdSession =idBundle.getInt(TrainReviewFragment.ID_KEY);
+        mIdSession = idBundle.getInt(TrainReviewFragment.ID_KEY);
 
+        DatabaseHandler dbHandler = DatabaseHandler.getInstance(getActivity().getApplicationContext());
+        //mSession = dbHandler.getTraining().get(0);
 
         //pruebas
         obtenerTraining();
@@ -75,7 +76,7 @@ public class TrainReviewFragment extends Fragment {
         super.onResume();
         mMapView.onResume();
         //imprimo mapa
-        mMapManager.printRoute();
+        mMapManager.printRoute(mSession);
 
         //pruebas
         ponerDatosViews(mSession);
@@ -113,7 +114,7 @@ public class TrainReviewFragment extends Fragment {
     }
     //Carga los datos en los view
     private void ponerDatosViews(Trainings session){
-        mDeporte.setText(session.getTypeTraining());
+        mDeporte.setText(session.getSringId());
         mCalorias.setText(String.valueOf(session.getCaloriesBurned())+"Kcal");
         //mDuracion.setText(String.valueOf(session.getDuration()));
         mCronometro.setText(String.valueOf(session.getDuration()));
@@ -121,7 +122,6 @@ public class TrainReviewFragment extends Fragment {
         mVelMedia.setText(String.valueOf(session.getAverageSpeed())+"Km/h");
         mRitmoPromedio.setText(String.valueOf(session.getAverageRate())+"min/Km");
         mImageDeporte.setImageResource(session.getImageId());
-
     }
     //obtener la session para acceder a sus datos
     private void obtenerTraining(){
@@ -132,6 +132,14 @@ public class TrainReviewFragment extends Fragment {
         mSession.setDuration(125);
         mSession.setAverageSpeed(9.8);
         mSession.setAverageRate(5.32);
+        Location location1 = new Location("Location1");
+        location1.setLongitude(45.125225);
+        location1.setLatitude(46.154578);
+        Location location2 = new Location("Location2");
+        location2.setLongitude(47.125225);
+        location2.setLatitude(48.154578);
+        mSession.add(new Points(location1, 5.6, 1));
+        mSession.add(new Points(location2, 7.2, 1));
     }
 
 }

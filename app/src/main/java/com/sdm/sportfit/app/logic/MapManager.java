@@ -1,6 +1,8 @@
 package com.sdm.sportfit.app.logic;
 
 import android.content.Context;
+import android.graphics.Color;
+import android.util.Log;
 
 import com.google.android.gms.maps.CameraUpdate;
 import com.google.android.gms.maps.CameraUpdateFactory;
@@ -8,8 +10,10 @@ import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.MapsInitializer;
 import com.google.android.gms.maps.model.CameraPosition;
 import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.maps.model.Polyline;
 import com.google.android.gms.maps.model.PolylineOptions;
+import com.sdm.sportfit.app.R;
 
 /**
  * Created by juan on 14/04/14.
@@ -17,37 +21,43 @@ import com.google.android.gms.maps.model.PolylineOptions;
 public class MapManager{
 
     private GoogleMap mMap;
+    private Context mContext;
 
     public MapManager(GoogleMap map, Context context) {
         try {
             MapsInitializer.initialize(context);
         } catch (Exception impossible) {
-
+            Log.e(getClass().getName(),"Can not initialize google map");
         }
         mMap = map;
+        mContext = context;
     }
 
-    public void printRoute() {
-
+    public void printRoute(Trainings training) {
         if (mMap != null) {
-            PolylineOptions ruta = new PolylineOptions()
-                    .add(new LatLng(39.474943,-0.40279))
-                    .add(new LatLng(39.474962,-0.402697))
-                    .add(new LatLng(39.475071, -0.402123))
-                    .add(new LatLng(39.475202,-0.401398))
-                    .add(new LatLng(39.475407, -0.400368))
-                    .add(new LatLng(39.475771,-0.398558))
-                    .add(new LatLng(39.475479, -0.39844))
-                    .add(new LatLng(39.475196,-0.398357))
-                    .add(new LatLng(39.474722, -0.400706));
+            PolylineOptions ruta = new PolylineOptions();
+            for(Points point : training) {
+                ruta.add(new LatLng(point.getLocation().getLatitude(), point.getLocation().getLongitude()));
+            }
 
+            ruta.color(Color.BLUE);
             Polyline polyline = mMap.addPolyline(ruta);
 
+            LatLng puntoEntrada= new LatLng(
+                    training.get(0).getLocation().getLatitude(),
+                    training.get(0).getLocation().getLongitude());
 
-            ruta.add(new LatLng(39.474943,-0.40279));
-            mMap.addPolyline(ruta);
+            LatLng puntoFin = new LatLng(
+                    training.get(training.size()-1).getLocation().getLatitude(),
+                    training.get(training.size()-1).getLocation().getLongitude());
 
-            LatLng puntoEntrada= new LatLng(39.475407,-0.400368);
+            mMap.addMarker(new MarkerOptions()
+                    .position(puntoEntrada)
+                    .title(mContext.getResources().getString(R.string.mapmangaer_start)));
+
+            mMap.addMarker(new MarkerOptions()
+                    .position(puntoFin)
+                    .title(mContext.getResources().getString(R.string.mapmangaer_end)));
 
             CameraPosition camPos =new CameraPosition.Builder()
                     .target(puntoEntrada)
