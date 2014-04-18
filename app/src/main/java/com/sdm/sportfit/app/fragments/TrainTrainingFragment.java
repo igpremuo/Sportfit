@@ -2,6 +2,8 @@ package com.sdm.sportfit.app.fragments;
 
 
 import android.app.Activity;
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
@@ -13,6 +15,7 @@ import android.widget.RadioGroup;
 import com.sdm.sportfit.app.MainActivity;
 import com.sdm.sportfit.app.R;
 import com.sdm.sportfit.app.persistence.misSharedPreferences;
+import com.sdm.sportfit.app.services.GpsIntentService;
 
 /**
  * Created by nacho on 1/04/14.
@@ -88,14 +91,13 @@ public class TrainTrainingFragment extends Fragment {
                         mAviso=DISTANCIA;
                         break;
                 }
-
-                //Guarda configuracion de entreanmiento
-                misSharedPreferences.guardarConfiguracionDeporte(getActivity(),mDeporte,mAviso);
+                guardarDatos();
                 mMainActivity.openFragmentAtPos(0, 0);
             }
         });
 
     }
+    //Restaurar los datos de configuracion
     private void restaurarDatos(){
         Bundle datos = misSharedPreferences.restaurarConfiguracionDeporte(getActivity());
         mDeporte = datos.getString(misSharedPreferences.TIPODEPORTE);
@@ -113,5 +115,26 @@ public class TrainTrainingFragment extends Fragment {
             mRadioGroupAviso.check(R.id.train_training_rb_aviso_distancia);
         }
         else mRadioGroupAviso.check(R.id.train_training_rb_aviso_tiempo);
+    }
+    //Guarda los datos de configuración
+    private void guardarDatos(){
+        //Comprueba antes si esta en marcha alguna sesion, si es asi, no deja cambiar la configuracion
+        if (GpsIntentService.sState == GpsIntentService.State.RUNNING) {
+            AlertDialog.Builder alertDialog;
+            alertDialog = new AlertDialog.Builder(getActivity());
+            alertDialog.setTitle(getResources().getString(R.string.alert_train_training_titulo));
+            alertDialog.setMessage(getResources().getString(R.string.alert_train_training_mensaje));
+            alertDialog.setCancelable(false);
+            alertDialog.setPositiveButton(getResources().getString(R.string.alert_train_training_ok), new DialogInterface.OnClickListener() {
+                public void onClick(DialogInterface dialogo1, int id) {
+
+                }
+            });
+            alertDialog.show();
+        }
+        else{
+            misSharedPreferences.guardarConfiguracionDeporte(getActivity(),mDeporte,mAviso);
+        }
+
     }
 }

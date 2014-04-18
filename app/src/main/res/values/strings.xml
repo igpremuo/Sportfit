@@ -106,5 +106,9 @@
     <string name="mapmangaer_start">Start</string>
     <string name="mapmangaer_end">End</string>
 
+    <!-- Mensajes de alerta Train training-->
+    <string name="alert_train_training_ok">OK</string>
+    <string name="alert_train_training_titulo">Session ON</string>
+    <string name="alert_train_training_mensaje">Ends the session to change the settings.</string>
 
 </resources>
