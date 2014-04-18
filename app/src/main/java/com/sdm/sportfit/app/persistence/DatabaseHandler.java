@@ -18,11 +18,9 @@ import com.sdm.sportfit.app.logic.Statistics;
 import com.sdm.sportfit.app.logic.Trainings;
 import com.sdm.sportfit.app.logic.Users;
 
-import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 import java.util.Locale;
@@ -77,7 +75,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
             db.execSQL("DROP TABLE IF EXISTS " + TABLE_TRAINING);
             db.execSQL("DROP TABLE IF EXISTS " + TABLE_USERS);
             Log.v("VERBOSE", " Creo las tablas");
-        db.execSQL("CREATE TABLE IF NOT EXISTS " + TABLE_DIETS + " (nameDiet VARCHAR( 200 ) NOT NULL , idFood INT( 11 ) NOT NULL , typeMeal VARCHAR( 50 ) NOT NULL , timeMeal DATE NOT NULL ,dateMeal DATE NOT NULL , earnedCalories DOUBLE( 4,2 ) NOT NULL, quantity DOUBLE( 6,2 ), PRIMARY KEY (nameDiet , idFood, typeMeal, dateMeal))");
+        db.execSQL("CREATE TABLE IF NOT EXISTS " + TABLE_DIETS + " (nameDiet VARCHAR( 200 ) NOT NULL , idFood INT( 11 ) NOT NULL , typeMeal VARCHAR( 50 ) NOT NULL , timeMeal VARCHAR(30) NOT NULL , dateMeal INTEGER(2) NOT NULL, earnedCalories DOUBLE( 4,2 ) NOT NULL, quantity DOUBLE( 6,2 ), PRIMARY KEY (nameDiet , idFood, typeMeal, dateMeal))");
         db.execSQL("CREATE TABLE IF NOT EXISTS " + TABLE_FOODS + " (id int(4)  PRIMARY KEY, nameES varchar(200) NOT NULL, nameEN varchar(200) NOT NULL, categoryES varchar(200) NOT NULL, categoryEN varchar(200) NOT NULL,calories double NOT NULL, proteins double NOT NULL, carbohydrates double NOT NULL, fats double NOT NULL, water double NOT NULL)");
         db.execSQL("CREATE TABLE IF NOT EXISTS " + TABLE_STATISTICS + " (idStatistic int(5), idUser INT( 11 ) NOT NULL ,dateStatistics DATE NOT NULL ,weight DOUBLE( 3, 2 ) NOT NULL ,age INT( 3 ) NOT NULL ,sex VARCHAR(50) NOT NULL ,height DOUBLE( 4, 2 ) NOT NULL ,imc DOUBLE( 2, 2 ) NOT NULL ,water DOUBLE( 2, 2 ) NOT NULL , PRIMARY KEY (  idStatistic ,  idUser ,  dateStatistics ), FOREIGN KEY (idUser) REFERENCES users (id) ON DELETE CASCADE ON UPDATE CASCADE);");
         db.execSQL("CREATE TABLE IF NOT EXISTS " + TABLE_POINTS + " (id INTEGER  PRIMARY KEY AUTOINCREMENT, longitude decimal(18,14) NOT NULL, latitude decimal(18,14) NOT NULL, speed double NOT NULL, idTraining INTEGER NOT NULL, FOREIGN KEY (idTraining) REFERENCES Training (idTraining) ON DELETE CASCADE ON UPDATE CASCADE);");
@@ -127,6 +125,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         SQLiteDatabase db = this.getReadableDatabase();
         boolean exists = false;
         Cursor c = db.rawQuery("SELECT * FROM " + nameTable + ";", null);
+        Log.v("VERBOSE", "HAy datos en foods" + c.getCount());
         if (c.getCount() > 0){
             exists = true;
         }
@@ -265,8 +264,8 @@ public class DatabaseHandler extends SQLiteOpenHelper {
             values.put("nameDiet", diet.getNameDiet());
             values.put("idFood", diet.getIdFood());
             values.put("typeMeal", diet.getTypeMeal());
-            values.put("timeMeal", diet.getTimeMeal().toString());
-            values.put("dateMeal", diet.getDateMeal().toString());
+            values.put("timeMeal", diet.getTimeMeal());
+            values.put("dateMeal", diet.getDateMeal());
             //aqui insertar lo otros dos datos
 
 
@@ -335,14 +334,6 @@ public class DatabaseHandler extends SQLiteOpenHelper {
     public String getDietByDate(String dateDiet, String nameDiet){
         Cursor c = null;
         Diets diet = null;
-        DateFormat formatedDate = new SimpleDateFormat("HH:mm");
-        Date limit = null;
-        try {
-            limit = formatedDate.parse("23:59");
-        }catch (ParseException e) {
-            e.printStackTrace();
-        }
-        Long actual = Calendar.getInstance().getTimeInMillis();
         String typeMeal = "";
         if ("es".equals(Locale.getDefault().getLanguage())) {
             typeMeal = "Almuerzo";
@@ -355,24 +346,17 @@ public class DatabaseHandler extends SQLiteOpenHelper {
             Log.v("VERBOSE", "Resultados de la consulta timeMeal: "+c.getCount());
             if (c.moveToFirst()) {
                 do {
-                    Date timeMeal = null;
-                    timeMeal= formatedDate.parse(c.getString(0));
-                    Log.v("VERBOSE", "Valor de tiempo actual :"+ System.currentTimeMillis()/30000);
-                    Log.v("VERBOSE", "Valor de tiempo limit :"+ limit.getTime());
-                    Log.v("VERBOSE", "Valor de tiempo recogido :"+ timeMeal.getTime());
-                    if(timeMeal.getTime() >= System.currentTimeMillis()/30000 && timeMeal.getTime() <= limit.getTime() ){
-                        Log.v("VERBOSE","entro al if del metodo");
-                        limit = timeMeal;
-                        typeMeal = c.getString(1);
-                    }
+                    String timeMeal = "";
+                    timeMeal= c.getString(0);
+
+                    // falta tratar
+
                 } while (c.moveToNext());
             }
         } catch (SQLiteException sqlError){
             Toast toast = Toast.makeText(this.myContext, R.string.selectError, Toast.LENGTH_SHORT);
             toast.show();
             sqlError.getStackTrace();
-        } catch (ParseException e) {
-            e.printStackTrace();
         } finally {
             db.close();
         }
@@ -401,7 +385,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
             } else {
                 c = db.rawQuery("SELECT a.nameDiet, a.idFood, a.typeMeal, a.timeMeal, a.dateMeal, a.earnedCalories, a.quantity, b.nameEN, b.calories, b.categoryEN, b.proteins, b.carbohydrates, b.fats, b.water FROM " + TABLE_FOODS + " b, "+ TABLE_DIETS +" a WHERE a.idFood = b.id AND dateMeal = '" + dateDiet + "' AND a.nameDiet = '" + nameDiet + "'AND a.typeMeal = '" + typeMeal + "';", null);
             }
-            Log.v("VERBOSE", "Consulta realizada hay datos" + c.moveToFirst());
+            Log.v("VERBOSE", "Consulta realizada hay datos " + c.getCount());
             if (c.moveToFirst()) {
                 diet = new Diets();
                 diet.setNameDiet(c.getString(0));
@@ -409,7 +393,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
                 diet.setTypeMeal(c.getString(2));
                 Log.v("VERBOSE", "timeMeal de getDietByMeal" +c.getString(3));
                 diet.setTimeMeal(c.getString(3));
-                diet.setDateMeal(c.getString(4));
+                diet.setDateMeal(Integer.parseInt(c.getString(4)));
                 // looping through all rows and adding to list
                 do {
                     Foods food = new Foods();
@@ -489,6 +473,41 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 
         // return contact list
         return foodsList;
+    }
+
+    public Foods getFood(int idFood) {
+        Cursor cursor = null;
+        Log.v("VERBOSE", "getAllFoods");
+        SQLiteDatabase db = this.getWritableDatabase();
+        Foods food = null;
+
+        try{
+             cursor = db.rawQuery("SELECT * FROM " + TABLE_FOODS + " WHERE id = " + idFood + ";", null);
+
+
+            // looping through all rows and adding to list
+            if (cursor.moveToFirst()) {
+                    food = new Foods();
+                    food.setId(Integer.parseInt(cursor.getString(0)));
+                    food.setNameES(cursor.getString(1));
+                    food.setNameEN(cursor.getString(2));
+                    food.setCategoryES(cursor.getString(3));
+                    food.setCategoryEN(cursor.getString(4));
+                    food.setCalories(cursor.getDouble(5));
+                    food.setProteins(cursor.getDouble(6));
+                    food.setCarbohydrates(cursor.getDouble(7));
+                    food.setFats(cursor.getDouble(8));
+                    food.setWater(cursor.getDouble(9));
+            }
+        } catch (SQLiteException sqlError){
+            Toast toast = Toast.makeText(this.myContext, R.string.selectError, Toast.LENGTH_SHORT);
+            toast.show();
+        } finally{
+            db.close(); // Closing database connection
+        }
+
+        // return contact list
+        return food;
     }
 
     // Getting Training
@@ -699,4 +718,6 @@ public class DatabaseHandler extends SQLiteOpenHelper {
             db.close(); // Closing database connection
         }
     }
+
+
 }

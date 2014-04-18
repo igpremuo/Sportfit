@@ -122,6 +122,7 @@ public class RegisterActivity extends Activity implements OnClickListener{
                     Log.d("User Created!", json.toString());
                     int idUser = json.getInt("id");
                     _prefs = getSharedPreferences("myPreferences", MODE_PRIVATE);
+                    _prefsEditor = _prefs.edit();
                     _prefsEditor.putInt("idUser", idUser);
                     _prefsEditor.commit();
                     Users user = new Users(idUser, username,textMail, password,"", String.valueOf(System.currentTimeMillis()),0.0, 0.0, "");

@@ -102,6 +102,7 @@
     <string name="lunch">Lunch</string>
     <string name="afternoonSnack">Afternoon snack</string>
     <string name="dinner">Dinner</string>
+    <string name="confirm">Confirm</string>
 
     <!-- Map Manager -->
     <string name="mapmangaer_start">Start</string>

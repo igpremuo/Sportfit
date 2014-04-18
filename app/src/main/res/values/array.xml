@@ -47,6 +47,23 @@
         <item>Ingiere proteinas después de realizar ejercio para tonificar el músculo</item>
     </string-array>
 
+    <string-array name="food_category_array">
+        <item>Lácteos</item>
+        <item>Aceites y grasas</item>
+        <item>Hielos</item>
+        <item>Frutas y vegetales</item>
+        <item>Confitería</item>
+        <item>Cereales</item>
+        <item>Panadería</item>
+        <item>Carne y pollo</item>
+        <item>Pescado</item>
+        <item>Huevos</item>
+        <item>Dulces</item>
+        <item>Sales y especias</item>
+        <item>Bebidas</item>
+        <item>Comidas preparadas</item>
+    </string-array>
+
     <string-array name="ageArray">
         <item>1</item>
         <item>2</item>
