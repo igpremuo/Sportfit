@@ -81,7 +81,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         db.execSQL("CREATE TABLE IF NOT EXISTS " + TABLE_FOODS + " (id int(4)  PRIMARY KEY, nameES varchar(200) NOT NULL, nameEN varchar(200) NOT NULL, categoryES varchar(200) NOT NULL, categoryEN varchar(200) NOT NULL,calories double NOT NULL, proteins double NOT NULL, carbohydrates double NOT NULL, fats double NOT NULL, water double NOT NULL)");
         db.execSQL("CREATE TABLE IF NOT EXISTS " + TABLE_STATISTICS + " (idStatistic int(5), idUser INT( 11 ) NOT NULL ,dateStatistics DATE NOT NULL ,weight DOUBLE( 3, 2 ) NOT NULL ,age INT( 3 ) NOT NULL ,sex VARCHAR(50) NOT NULL ,height DOUBLE( 4, 2 ) NOT NULL ,imc DOUBLE( 2, 2 ) NOT NULL ,water DOUBLE( 2, 2 ) NOT NULL , PRIMARY KEY (  idStatistic ,  idUser ,  dateStatistics ), FOREIGN KEY (idUser) REFERENCES users (id) ON DELETE CASCADE ON UPDATE CASCADE);");
         db.execSQL("CREATE TABLE IF NOT EXISTS " + TABLE_POINTS + " (id INTEGER  PRIMARY KEY AUTOINCREMENT, longitude decimal(18,14) NOT NULL, latitude decimal(18,14) NOT NULL, speed double NOT NULL, idTraining INTEGER NOT NULL, FOREIGN KEY (idTraining) REFERENCES Training (idTraining) ON DELETE CASCADE ON UPDATE CASCADE);");
-        db.execSQL("CREATE TABLE IF NOT EXISTS " + TABLE_TRAINING + "  (idTraining INTEGER PRIMARY KEY, idUser INTEGER, typeTraining VARCHAR (50) NOT NULL, caloriesBurned double NOT NULL, duration long NOT NULL, averageSpeed double NOT NULL, averageRate double NOT NULL, distance double NOT NULL, dateTraining DATETIME DEFAULT CURRENT_TIMESTAMP, FOREIGN KEY (idUser) REFERENCES users (id) ON DELETE CASCADE ON UPDATE CASCADE);");
+        db.execSQL("CREATE TABLE IF NOT EXISTS " + TABLE_TRAINING + "  (idTraining INTEGER PRIMARY KEY AUTOINCREMENT, idUser INTEGER, typeTraining VARCHAR (50) NOT NULL, caloriesBurned double NOT NULL, duration long NOT NULL, averageSpeed double NOT NULL, averageRate double NOT NULL, distance double NOT NULL, dateTraining DATETIME DEFAULT CURRENT_TIMESTAMP, FOREIGN KEY (idUser) REFERENCES users (id) ON DELETE CASCADE ON UPDATE CASCADE);");
         db.execSQL("CREATE TABLE IF NOT EXISTS " + TABLE_USERS + " (id INTEGER  PRIMARY KEY, name varchar(250) DEFAULT NULL, email varchar(255) UNIQUE NOT NULL, password text NOT NULL, api_key varchar(32) NOT NULL, created_at timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP, locationx decimal(18,14) DEFAULT NULL,  locationy decimal(18,14) DEFAULT NULL, picture varchar(200) DEFAULT NULL);");
             db.execSQL("INSERT INTO Diets (nameDiet, idFood, typeMeal, timeMeal, dateMeal, earnedCalories, quantity) VALUES ('Dieta genérica 1', 681,  'Desayuno',  '09:00',  '2014-04-14',  75.46, 200.00);");
             db.execSQL("INSERT INTO Diets (nameDiet, idFood, typeMeal, timeMeal, dateMeal, earnedCalories,  quantity) VALUES ('Dieta genérica 1', 774, 'Desayuno', '09:00', '2014-04-14', 240.19, 100.00);");
@@ -210,11 +210,11 @@ public class DatabaseHandler extends SQLiteOpenHelper {
     }
 
     // Add new Training
-    public void addTraining(Trainings training) {
+    public long addTraining(Trainings training) {
         SQLiteDatabase db = this.getWritableDatabase();
+        long idTraining = -1;
         try{
             ContentValues values = new ContentValues();
-            values.put("idTraining", training.getIdTraining());
             values.put("idUser", training.getIdUser());
             values.put("typeTraining", training.getTypeTraining());
             values.put("caloriesBurned", training.getCaloriesBurned());
@@ -225,7 +225,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
             values.put("dateTraining", training.getDate());
 
             // Inserting Row
-            db.insert(TABLE_TRAINING, null, values);
+            idTraining = db.insert(TABLE_TRAINING, null, values);
         } catch (SQLiteException sqlError){
             Toast toast = Toast.makeText(this.myContext, R.string.dropError, Toast.LENGTH_SHORT);
             toast.show();
@@ -233,17 +233,19 @@ public class DatabaseHandler extends SQLiteOpenHelper {
             db.close(); // Closing database connection
         }
 
+        return idTraining;
+
     }
 
     // Add new Points
-    public void addPoint(Points point) {
+    public void addPoint(Points point, long idTraining) {
         SQLiteDatabase db = this.getWritableDatabase();
         try{
             ContentValues values = new ContentValues();
             values.put("longitude", point.getLocation().getLongitude());
             values.put("latitude", point.getLocation().getLatitude());
             values.put("speed", point.getSpeed());
-            values.put("idTraining", point.getIdTraining());
+            values.put("idTraining", idTraining);
 
             // Inserting Row
             db.insert(TABLE_POINTS, null, values);
@@ -325,7 +327,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
     }
 
     /**
-     * Recoge cada comida
+     * Recoge cada comida arreglarlo
      * @param dateDiet
      * @param nameDiet
      * @return
@@ -538,6 +540,42 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         return trainingsList;
     }
 
+    // Getting All Training
+    public void getTraining(long idTraining) {
+        List<Trainings> trainingsList = new ArrayList<Trainings>();
+        Cursor cursor = null;
+        Log.v("VERBOSE", "getAllTraining");
+        SQLiteDatabase db = this.getWritableDatabase();
+
+        try {
+            Log.v("VERBOSE", "valor de la consulta: " + "SELECT * FROM " + TABLE_TRAINING + "; ");
+            cursor = db.rawQuery("SELECT * FROM " + TABLE_TRAINING + ";", null);
+            Log.v("VERBOSE", "valor de la consulta: " + cursor.getCount());
+            // looping through all rows and adding to list
+            if (cursor.moveToFirst()) {
+                do {
+                    Trainings training = new Trainings();
+                    training.setIdTraining(Integer.parseInt(cursor.getString(0)));
+                    training.setTypeTraining(cursor.getString(2));
+                    training.setCaloriesBurned(cursor.getDouble(3));
+                    training.setDuration(cursor.getLong(4));
+                    training.setAverageSpeed(cursor.getDouble(5));
+                    training.setAverageRate(cursor.getDouble(6));
+                    training.setDistance(cursor.getDouble(7));
+                    Log.v("VERBOSE", "valor dateTraining " + cursor.getString(8));
+                    training.setDate(cursor.getString(8));
+
+                    // Adding contact to list
+                    trainingsList.add(training);
+                } while (cursor.moveToNext());
+            }
+        } catch (SQLiteException sqlError) {
+            Toast toast = Toast.makeText(this.myContext, R.string.selectError, Toast.LENGTH_SHORT);
+            toast.show();
+        } finally {
+            db.close(); // Closing database connection
+        }
+    }
 
     // Getting All Training
     public List<Trainings> getAllTrainings() {
