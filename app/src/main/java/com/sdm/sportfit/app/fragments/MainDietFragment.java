@@ -41,7 +41,7 @@ public class MainDietFragment extends Fragment{
         typeMeal = (TextView) rootView.findViewById(R.id.typeMealMain);
         listViewMeal = (ListView) rootView.findViewById(R.id.meal);
         //Log.v("VERBOSE", "Entrando al metodo showtMeal");
-       // showtMeal();
+        //showtMeal();
         return rootView;
     }
 

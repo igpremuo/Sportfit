@@ -491,7 +491,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         return foodsList;
     }
 
-    // Getting Training with your Points
+    // Getting Training
     public Trainings getTraining(long idTraining) {
         List<Trainings> trainingsList = new ArrayList<Trainings>();
         Cursor cursor = null;
@@ -501,7 +501,9 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         Trainings training = null;
         try{
 
-            cursor = db.rawQuery("SELECT t.idTraining, t.idUser, t.typeTraining, t.caloriesBurned, t.duration, t.averageSpeed, t.averageRate, t.distance, t.dateTraining, p.id, p.longitude, p.latitude, p.speed FROM " + TABLE_TRAINING + " t, " + TABLE_POINTS + "p WHERE t.idTraining = p.idTraining AND t.idTraining = " + idTraining + ";", null);
+            //cursor = db.rawQuery("SELECT t.idTraining, t.idUser, t.typeTraining, t.caloriesBurned, t.duration, t.averageSpeed, t.averageRate, t.distance, t.dateTraining, p.id, p.longitude, p.latitude, p.speed FROM " + TABLE_TRAINING + " t, " + TABLE_POINTS + "p WHERE t.idTraining = p.idTraining AND t.idTraining = " + idTraining + ";", null);
+            cursor = db.rawQuery("SELECT idTraining, idUser, typeTraining, caloriesBurned, duration, averageSpeed, averageRate, distance, dateTraining FROM " + TABLE_TRAINING + " WHERE idTraining = " + idTraining + ";", null);
+
 
             // looping through all rows and adding to list
             if (cursor.moveToFirst()) {
@@ -516,16 +518,6 @@ public class DatabaseHandler extends SQLiteOpenHelper {
                 training.setDistance(cursor.getDouble(7));
                 Log.v("VERBOSE", "valor dateTraining " + cursor.getString(8));
                 training.setDate(cursor.getString(8));
-                do {
-                    Points point = new Points();
-                    Location location = null;
-                    point.setId(Integer.parseInt(cursor.getString(9)));
-                    location.setLongitude(cursor.getDouble(10));
-                    location.setLatitude(cursor.getDouble(11));
-                    point.setLocation(location);
-                    point.setSpeed(cursor.getDouble(12));
-                    training.add(positionPoint, point);
-                } while (cursor.moveToNext());
             }
         } catch (SQLiteException sqlError){
             Toast toast = Toast.makeText(this.myContext, R.string.selectError, Toast.LENGTH_SHORT);
@@ -537,7 +529,39 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         // return contact list
         return training;
     }
+    // Getting Points
+    public List<Points> getPoints(long idTraining) {
+        List<Points> pointsList = new ArrayList<Points>();
+        Cursor cursor = null;
+        Log.v("VERBOSE", "getPoints");
+        SQLiteDatabase db = this.getWritableDatabase();
+        try{
 
+            cursor = db.rawQuery("SELECT id, longitude, latitude, speed FROM " + TABLE_POINTS + " WHERE idTraining = " + idTraining + ";", null);
+
+            // looping through all rows and adding to list
+            if (cursor.moveToFirst()) {
+                do {
+                Points point = new Points();
+                Location location = null;
+                point.setId(Integer.parseInt(cursor.getString(9)));
+                location.setLongitude(cursor.getDouble(10));
+                location.setLatitude(cursor.getDouble(11));
+                point.setLocation(location);
+                point.setSpeed(cursor.getDouble(12));
+                pointsList.add(point);
+                } while (cursor.moveToNext());
+            }
+        } catch (SQLiteException sqlError){
+            Toast toast = Toast.makeText(this.myContext, R.string.selectError, Toast.LENGTH_SHORT);
+            toast.show();
+        } finally{
+            db.close(); // Closing database connection
+        }
+
+        // return points list
+        return pointsList;
+    }
 
     // Getting All Training
     public List<Trainings> getAllTrainings() {
