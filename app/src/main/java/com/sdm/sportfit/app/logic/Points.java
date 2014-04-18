@@ -9,7 +9,7 @@ public class Points {
     private int id;
     private Location location;
     private Double speed;
-    private int idTraining;
+    private long idTraining;
 
     public Points() {
         this.location = null;
@@ -17,7 +17,7 @@ public class Points {
         this.idTraining = 0;
     }
 
-    public Points(Location location, Double speed, int idTraining) {
+    public Points(Location location, Double speed, long idTraining) {
         this.location = location;
         this.speed = speed;
         this.idTraining = idTraining;
@@ -47,7 +47,7 @@ public class Points {
         this.speed = speed;
     }
 
-    public int getIdTraining() {
+    public long getIdTraining() {
         return idTraining;
     }
 

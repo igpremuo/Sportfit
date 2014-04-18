@@ -101,10 +101,11 @@ public class MainActivity extends ActionBarActivity
         Location location2 = new Location("Location2");
         location2.setLongitude(47.125225);
         location2.setLatitude(48.154578);
-        dh.addPoint(new Points(location1, 5.6, 1));
-        dh.addPoint(new Points(location2, 7.2, 1));
-        dh.addTraining(new Trainings(1, idUser, "Run", 152.25, 50000, 10.0, 5.5, 1000.0, "16/04/2014"));
-        dh.addTraining(new Trainings(2,idUser, "Run", 189.25, 30000, 12.0, 6.5, 2000.0, "16/04/2014"));
+
+        long idTraining1 = dh.addTraining(new Trainings(1, idUser, "Run", 152.25, 50000, 10.0, 5.5, 1000.0, "16/04/2014"));
+        long idTraining2 = dh.addTraining(new Trainings(2,idUser, "Run", 189.25, 30000, 12.0, 6.5, 2000.0, "16/04/2014"));
+        dh.addPoint(new Points(location1, 5.6, idTraining1),idTraining1 );
+        dh.addPoint(new Points(location2, 7.2, idTraining2), idTraining2);
         List<Trainings> list = dh.getAllTrainings();
 
         ConnectionDetector cd = new ConnectionDetector(getApplicationContext());

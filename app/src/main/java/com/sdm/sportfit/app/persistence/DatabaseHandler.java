@@ -492,41 +492,39 @@ public class DatabaseHandler extends SQLiteOpenHelper {
     }
 
     // Getting Training with your Points
-    public List<Trainings> getTraining() {
+    public Trainings getTraining(long idTraining) {
         List<Trainings> trainingsList = new ArrayList<Trainings>();
         Cursor cursor = null;
         Log.v("VERBOSE", "getAllTraining");
         SQLiteDatabase db = this.getWritableDatabase();
         int positionPoint = 0;
+        Trainings training = null;
         try{
 
-            cursor = db.rawQuery("SELECT t.idTraining, t.idUser, t.typeTraining, t.caloriesBurned, t.duration, t.averageSpeed, t.averageRate, t.distance, t.dateTraining, p.id, p.longitude, p.latitude, p.speed FROM " + TABLE_TRAINING + " t, " + TABLE_POINTS + "p WHERE t.idTraining = p.idTraining;", null);
+            cursor = db.rawQuery("SELECT t.idTraining, t.idUser, t.typeTraining, t.caloriesBurned, t.duration, t.averageSpeed, t.averageRate, t.distance, t.dateTraining, p.id, p.longitude, p.latitude, p.speed FROM " + TABLE_TRAINING + " t, " + TABLE_POINTS + "p WHERE t.idTraining = p.idTraining AND t.idTraining = " + idTraining + ";", null);
 
             // looping through all rows and adding to list
             if (cursor.moveToFirst()) {
+                training = new Trainings();
+                training.setIdTraining(Integer.parseInt(cursor.getString(0)));
+                training.setIdUser(Integer.parseInt(cursor.getString(1)));
+                training.setTypeTraining(cursor.getString(2));
+                training.setCaloriesBurned(cursor.getDouble(3));
+                training.setDuration(cursor.getLong(4));
+                training.setAverageSpeed(cursor.getDouble(5));
+                training.setAverageRate(cursor.getDouble(6));
+                training.setDistance(cursor.getDouble(7));
+                Log.v("VERBOSE", "valor dateTraining " + cursor.getString(8));
+                training.setDate(cursor.getString(8));
                 do {
-                    Trainings training = new Trainings();
                     Points point = new Points();
                     Location location = null;
-                    training.setIdTraining(Integer.parseInt(cursor.getString(0)));
-                    training.setIdUser(Integer.parseInt(cursor.getString(1)));
-                    training.setTypeTraining(cursor.getString(2));
-                    training.setCaloriesBurned(cursor.getDouble(3));
-                    training.setDuration(cursor.getLong(4));
-                    training.setAverageSpeed(cursor.getDouble(5));
-                    training.setAverageRate(cursor.getDouble(6));
-                    training.setDistance(cursor.getDouble(7));
-                    Log.v("VERBOSE", "valor dateTraining " + cursor.getString(8));
-                    training.setDate(cursor.getString(8));
                     point.setId(Integer.parseInt(cursor.getString(9)));
                     location.setLongitude(cursor.getDouble(10));
                     location.setLatitude(cursor.getDouble(11));
                     point.setLocation(location);
                     point.setSpeed(cursor.getDouble(12));
                     training.add(positionPoint, point);
-
-                    // Adding contact to list
-                    trainingsList.add(training);
                 } while (cursor.moveToNext());
             }
         } catch (SQLiteException sqlError){
@@ -537,45 +535,9 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         }
 
         // return contact list
-        return trainingsList;
+        return training;
     }
 
-    // Getting All Training
-    public void getTraining(long idTraining) {
-        List<Trainings> trainingsList = new ArrayList<Trainings>();
-        Cursor cursor = null;
-        Log.v("VERBOSE", "getAllTraining");
-        SQLiteDatabase db = this.getWritableDatabase();
-
-        try {
-            Log.v("VERBOSE", "valor de la consulta: " + "SELECT * FROM " + TABLE_TRAINING + "; ");
-            cursor = db.rawQuery("SELECT * FROM " + TABLE_TRAINING + ";", null);
-            Log.v("VERBOSE", "valor de la consulta: " + cursor.getCount());
-            // looping through all rows and adding to list
-            if (cursor.moveToFirst()) {
-                do {
-                    Trainings training = new Trainings();
-                    training.setIdTraining(Integer.parseInt(cursor.getString(0)));
-                    training.setTypeTraining(cursor.getString(2));
-                    training.setCaloriesBurned(cursor.getDouble(3));
-                    training.setDuration(cursor.getLong(4));
-                    training.setAverageSpeed(cursor.getDouble(5));
-                    training.setAverageRate(cursor.getDouble(6));
-                    training.setDistance(cursor.getDouble(7));
-                    Log.v("VERBOSE", "valor dateTraining " + cursor.getString(8));
-                    training.setDate(cursor.getString(8));
-
-                    // Adding contact to list
-                    trainingsList.add(training);
-                } while (cursor.moveToNext());
-            }
-        } catch (SQLiteException sqlError) {
-            Toast toast = Toast.makeText(this.myContext, R.string.selectError, Toast.LENGTH_SHORT);
-            toast.show();
-        } finally {
-            db.close(); // Closing database connection
-        }
-    }
 
     // Getting All Training
     public List<Trainings> getAllTrainings() {
