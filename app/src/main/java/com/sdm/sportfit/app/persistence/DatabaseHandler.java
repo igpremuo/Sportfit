@@ -543,12 +543,12 @@ public class DatabaseHandler extends SQLiteOpenHelper {
             if (cursor.moveToFirst()) {
                 do {
                 Points point = new Points();
-                Location location = null;
-                point.setId(Integer.parseInt(cursor.getString(9)));
-                location.setLongitude(cursor.getDouble(10));
-                location.setLatitude(cursor.getDouble(11));
+                Location location = new Location("Point");
+                point.setId(Integer.parseInt(cursor.getString(0)));
+                location.setLongitude(cursor.getDouble(1));
+                location.setLatitude(cursor.getDouble(2));
                 point.setLocation(location);
-                point.setSpeed(cursor.getDouble(12));
+                point.setSpeed(cursor.getDouble(3));
                 pointsList.add(point);
                 } while (cursor.moveToNext());
             }

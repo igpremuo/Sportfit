@@ -64,10 +64,11 @@ public class TrainReviewFragment extends Fragment {
         mIdSession = idBundle.getInt(TrainReviewFragment.ID_KEY);
 
         DatabaseHandler dbHandler = DatabaseHandler.getInstance(getActivity().getApplicationContext());
-        //mSession = dbHandler.getTraining().get(0);
+        mSession = dbHandler.getTraining(mIdSession);
+        mSession.addAll(dbHandler.getPoints(mIdSession));
 
         //pruebas
-        obtenerTraining();
+        //obtenerTraining();
         return rootView;
     }
 
@@ -76,7 +77,7 @@ public class TrainReviewFragment extends Fragment {
         super.onResume();
         mMapView.onResume();
         //imprimo mapa
-        mMapManager.printRoute(mSession);
+        mMapManager.printFinishedRoute(mSession);
 
         //pruebas
         ponerDatosViews(mSession);

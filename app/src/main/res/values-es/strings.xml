@@ -42,9 +42,10 @@
     <string name="train_review_tv6_ritmo_promedio">6:43min/Km</string>
 
     <!--fragment_main_train -->
-    <string name="main_train_train">ENTRENAMIENTO:</string>
     <string name="main_train_time">Tiempo</string>
     <string name="main_train_distance">Distancia</string>
+    <string name="main_train_speed">Velocidad</string>
+    <string name="main_train_alert">Avisar:</string>
 
     <!--fragment_main_diet-->
     <string name="tip">Consejos</string>

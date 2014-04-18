@@ -16,6 +16,11 @@ import android.widget.Chronometer;
 import com.sdm.sportfit.app.fragments.MainTrainFragment;
 import com.sdm.sportfit.app.logic.Points;
 import com.sdm.sportfit.app.logic.Trainings;
+import com.sdm.sportfit.app.persistence.DatabaseHandler;
+
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
 
 /**
  * Created by juan on 8/04/14.
@@ -49,8 +54,7 @@ public class GpsIntentService extends IntentService {
     private long mSavedChronoTime;
     private double mTotalDistance;
     private double mCurrentSpeed;
-    private long mStartTime;
-    private long mTime;
+    private double mAvgSpeed;
 
     // Gps variables
     private LocationManager mLocationManager;
@@ -88,7 +92,9 @@ public class GpsIntentService extends IntentService {
         mSavedChronoTime = 0;
         mTotalDistance = 0;
         mCurrentSpeed = 0;
+        mAvgSpeed = 0;
 
+        sleep(1000);
         run();
         while (!mFinishService) {
 
@@ -96,7 +102,7 @@ public class GpsIntentService extends IntentService {
                 sendDataToFragment();
             }
 
-            sleep();
+            sleep(1000);
         }
         sState = State.STOPPED;
     }
@@ -114,7 +120,7 @@ public class GpsIntentService extends IntentService {
     //Pausar mCronometro
     private void pause(){
         mCronometro.stop();
-        saveChronoTime();
+        mSavedChronoTime = SystemClock.elapsedRealtime() - mCronometro.getBase();
 
         mLocationManager.removeUpdates(mLocationListener);
 
@@ -122,13 +128,32 @@ public class GpsIntentService extends IntentService {
     }
 
     //Stop mCronometro
-    private void stop(){
+    private void stop() {
         mCronometro.stop();
         mCronometro.setBase(SystemClock.elapsedRealtime());
         unregisterReceiver(mReceiver);
         mFinishService = true;
 
         mLocationManager.removeUpdates(mLocationListener);
+
+        if (mSession.size() > 0) {
+            DateFormat dateFormat = new SimpleDateFormat("dd/MM/yyy");
+            Calendar calendar = Calendar.getInstance();
+            mSession.setDate(dateFormat.format(calendar.getTime()));
+            mSession.setDistance(mTotalDistance);
+            mSession.setAverageSpeed(mAvgSpeed);
+            long time = SystemClock.elapsedRealtime() - mCronometro.getBase();
+            if (sState == State.PAUSED) {
+                time = mSavedChronoTime;
+            }
+            mSession.setDuration(time);
+
+            DatabaseHandler dbHandler = DatabaseHandler.getInstance(getApplicationContext());
+            long id = dbHandler.addTraining(mSession);
+            for (Points point : mSession) {
+                dbHandler.addPoint(point, id);
+            }
+        }
 
         sState = State.STOPPED;
 
@@ -137,11 +162,6 @@ public class GpsIntentService extends IntentService {
         } catch (Throwable throwable) {
             throwable.printStackTrace();
         }
-    }
-
-    //Guardar tiempo del mCronometro
-    private void saveChronoTime(){
-        mSavedChronoTime = SystemClock.elapsedRealtime() - mCronometro.getBase();
     }
 
     private void sendDataToFragment(){
@@ -155,9 +175,9 @@ public class GpsIntentService extends IntentService {
         sendBroadcast(intent);
     }
 
-    private void sleep(){
+    private void sleep(int time){
         try {
-            Thread.sleep(1000);
+            Thread.sleep(time);
         } catch(InterruptedException e) {
             Log.e(getClass().getName(), "Error while sleeping service");
         }
@@ -168,20 +188,20 @@ public class GpsIntentService extends IntentService {
         @Override
         public void onLocationChanged(Location location) {
             mLocation = location;
-            if (mSession.size() == 0) {
-                mSession.add(new Points(location, 0.0, -1));
-                mStartTime = System.currentTimeMillis();
-                mTime = mStartTime;
-            } else {
-                Points lastPoint = mSession.get(mSession.size()-1);
-                long time = (System.currentTimeMillis()-mTime)/1000;
-                float distance = lastPoint.getLocation().distanceTo(location);
-                double speed = (time/distance)*3.6;
+            if (location.getAccuracy() != 0 && location.getAccuracy() < 5) {
+                if (mSession.size() == 0) {
+                    mSession.add(new Points(location, 0.0, -1));
+                } else {
+                    Points lastPoint = mSession.get(mSession.size() - 1);
+                    long time = SystemClock.elapsedRealtime() - mCronometro.getBase();
+                    float distance = lastPoint.getLocation().distanceTo(location);
+                    double speed = (distance / time) * 3.6;
 
-                mSession.add(new Points(location, speed, -1 ));
-                mTotalDistance += distance;
-                mCurrentSpeed = speed;
-                mTime = System.currentTimeMillis();
+                    mSession.add(new Points(location, speed, -1));
+                    mTotalDistance += distance;
+                    mAvgSpeed = (mCurrentSpeed + speed) / 2.0;
+                    mCurrentSpeed = speed;
+                }
             }
         }
 

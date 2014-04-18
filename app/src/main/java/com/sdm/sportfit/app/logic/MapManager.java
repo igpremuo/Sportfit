@@ -44,7 +44,6 @@ public class MapManager{
 
     public void printRoute(Trainings training) {
         if (mMap != null) {
-
             mMap.clear();
 
             PolylineOptions ruta = new PolylineOptions();
@@ -53,7 +52,14 @@ public class MapManager{
             }
 
             ruta.color(Color.BLUE);
-            Polyline polyline = mMap.addPolyline(ruta);
+            mMap.addPolyline(ruta);
+        }
+    }
+
+    public void printFinishedRoute(Trainings training) {
+        if (mMap != null) {
+
+            printRoute(training);
 
             LatLng puntoEntrada= new LatLng(
                     training.get(0).getLocation().getLatitude(),
@@ -87,7 +93,8 @@ public class MapManager{
                     .icon(BitmapDescriptorFactory.fromResource(R.drawable.ic_launcher))
                     .position(location)
                     .flat(true)
-                    .rotation(245));
+                    //.rotation(245)
+            );
 
         }
 

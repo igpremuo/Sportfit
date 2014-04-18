@@ -5,7 +5,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.location.Location;
-import android.location.LocationManager;
 import android.os.Bundle;
 import android.os.SystemClock;
 import android.support.v4.app.Fragment;
@@ -24,6 +23,9 @@ import com.sdm.sportfit.app.logic.MapManager;
 import com.sdm.sportfit.app.logic.Trainings;
 import com.sdm.sportfit.app.services.GpsIntentService;
 import com.sdm.sportfit.app.services.GpsIntentService.State;
+
+import java.text.DecimalFormat;
+import java.text.NumberFormat;
 
 /**
  * Created by nacho on 1/04/14.
@@ -46,6 +48,7 @@ public class MainTrainFragment extends Fragment {
     //Views
     private Chronometer mCronometro;
     private TextView mDistance;
+    private TextView mSpeed;
     private ImageButton mPlayPause;
     private ImageButton mStop;
 
@@ -190,6 +193,7 @@ public class MainTrainFragment extends Fragment {
     private void iniciarViews(View rootView){
         mCronometro = (Chronometer) rootView.findViewById(R.id.main_train_chronometer);
         mDistance = (TextView) rootView.findViewById(R.id.main_train_distance);
+        mSpeed = (TextView) rootView.findViewById(R.id.main_train_speed);
         mPlayPause = (ImageButton) rootView.findViewById(R.id.main_train_button_play);
         mStop = (ImageButton) rootView.findViewById(R.id.main_train_button_stop);
 
@@ -205,17 +209,21 @@ public class MainTrainFragment extends Fragment {
             Bundle bundle = intent.getExtras();
             if (bundle != null) {
                 mCronometro.setBase(bundle.getLong(GpsIntentService.TIME, 0));
-                mDistance.setText(bundle.getDouble(GpsIntentService.DISTANCE, 0.0) + " Km");
-                Location location = (Location ) bundle.get(GpsIntentService.LOCATION);
-                if (location != null) {
-                    LatLng position = new LatLng(location.getLatitude(), location.getLongitude());
-                    mMapManager.goToPosition(position, 20, true);
-                }
+
+                NumberFormat decimalFormat = new DecimalFormat("##0.0");
+                mDistance.setText(decimalFormat.format(bundle.getDouble(GpsIntentService.DISTANCE, 0.0)) + " km");
+                mSpeed.setText(decimalFormat.format(bundle.getDouble(GpsIntentService.SPEED, 0.0)) + " km/h");
 
                 //Trainings session = (Trainings) bundle.get(GpsIntentService.POINTS);
                 Trainings session = GpsIntentService.mSession;
                 if (session != null && session.size() > 0) {
                     mMapManager.printRoute(session);
+                }
+
+                Location location = (Location ) bundle.get(GpsIntentService.LOCATION);
+                if (location != null) {
+                    LatLng position = new LatLng(location.getLatitude(), location.getLongitude());
+                    mMapManager.goToPosition(position, 20, true);
                 }
             }
         }
