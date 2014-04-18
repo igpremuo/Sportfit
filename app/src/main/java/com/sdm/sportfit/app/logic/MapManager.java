@@ -101,4 +101,8 @@ public class MapManager{
         CameraUpdate camPos2 = CameraUpdateFactory.newCameraPosition(camPos);
         mMap.animateCamera(camPos2);
     }
+
+    public void clear() {
+        mMap.clear();
+    }
 }

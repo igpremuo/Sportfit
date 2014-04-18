@@ -41,6 +41,7 @@ public class GpsIntentService extends IntentService {
     // GPS variables
     private final static int MIN_TIME_UPDATE = 3000;
     private final static int MIN_DISTANCE_UPDATE = 0;
+    private final static int GPS_ACCURACY = 50;
 
     private IntentServiceReceiver mReceiver;
 
@@ -55,6 +56,7 @@ public class GpsIntentService extends IntentService {
     private double mTotalDistance;
     private double mCurrentSpeed;
     private double mAvgSpeed;
+    private long mAuxTime;
 
     // Gps variables
     private LocationManager mLocationManager;
@@ -188,19 +190,21 @@ public class GpsIntentService extends IntentService {
         @Override
         public void onLocationChanged(Location location) {
             mLocation = location;
-            if (location.getAccuracy() != 0 && location.getAccuracy() < 5) {
+            if (location.getAccuracy() != 0 && location.getAccuracy() < GPS_ACCURACY) {
                 if (mSession.size() == 0) {
                     mSession.add(new Points(location, 0.0, -1));
+                    mAuxTime = 0;
                 } else {
                     Points lastPoint = mSession.get(mSession.size() - 1);
-                    long time = SystemClock.elapsedRealtime() - mCronometro.getBase();
+                    long time = ((SystemClock.elapsedRealtime()-mCronometro.getBase())-mAuxTime)/1000;
                     float distance = lastPoint.getLocation().distanceTo(location);
-                    double speed = (distance / time) * 3.6;
+                    double speed = (distance/time)*3.6;
 
                     mSession.add(new Points(location, speed, -1));
                     mTotalDistance += distance;
                     mAvgSpeed = (mCurrentSpeed + speed) / 2.0;
                     mCurrentSpeed = speed;
+                    mAuxTime = (SystemClock.elapsedRealtime() - mCronometro.getBase());
                 }
             }
         }

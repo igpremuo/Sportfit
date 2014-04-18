@@ -208,10 +208,11 @@ public class MainTrainFragment extends Fragment {
         public void onReceive(Context context, Intent intent) {
             Bundle bundle = intent.getExtras();
             if (bundle != null) {
+                mMapManager.clear();
                 mCronometro.setBase(bundle.getLong(GpsIntentService.TIME, 0));
 
                 NumberFormat decimalFormat = new DecimalFormat("##0.0");
-                mDistance.setText(decimalFormat.format(bundle.getDouble(GpsIntentService.DISTANCE, 0.0)) + " km");
+                mDistance.setText(decimalFormat.format(bundle.getDouble(GpsIntentService.DISTANCE, 0.0)/1000f) + " km");
                 mSpeed.setText(decimalFormat.format(bundle.getDouble(GpsIntentService.SPEED, 0.0)) + " km/h");
 
                 //Trainings session = (Trainings) bundle.get(GpsIntentService.POINTS);
