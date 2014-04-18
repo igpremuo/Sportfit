@@ -58,6 +58,7 @@
         </LinearLayout>
 
         <RadioGroup
+            android:id="@+id/train_training_rg_tipo_deporte"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
@@ -88,6 +89,7 @@
         </RadioGroup>
 
         <RadioGroup
+            android:id="@+id/train_training_rg_tipo_aviso"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:paddingTop="10dp"
