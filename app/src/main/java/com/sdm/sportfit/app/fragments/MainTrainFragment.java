@@ -4,6 +4,7 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.location.Location;
 import android.location.LocationManager;
 import android.os.Bundle;
 import android.os.SystemClock;
@@ -13,11 +14,14 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Chronometer;
 import android.widget.ImageButton;
+import android.widget.TextView;
 
 import com.google.android.gms.maps.MapView;
 import com.google.android.gms.maps.SupportMapFragment;
+import com.google.android.gms.maps.model.LatLng;
 import com.sdm.sportfit.app.R;
 import com.sdm.sportfit.app.logic.MapManager;
+import com.sdm.sportfit.app.logic.Trainings;
 import com.sdm.sportfit.app.services.GpsIntentService;
 import com.sdm.sportfit.app.services.GpsIntentService.State;
 
@@ -41,8 +45,10 @@ public class MainTrainFragment extends Fragment {
 
     //Views
     private Chronometer mCronometro;
+    private TextView mDistance;
     private ImageButton mPlayPause;
     private ImageButton mStop;
+
     //Variables
     private MainTrainReceiver mReceiver;
 
@@ -68,9 +74,6 @@ public class MainTrainFragment extends Fragment {
                 Intent bcIntent = new Intent(NOTIFICATION);
                 switch(GpsIntentService.sState) {
                     case STOPPED:
-                        //Me subscribo
-                        subscribirService();
-
                         //Creo el IntentService
                         Intent msgIntent = new Intent(getActivity(), GpsIntentService.class);
                         getActivity().startService(msgIntent);
@@ -79,6 +82,9 @@ public class MainTrainFragment extends Fragment {
 
                         //Cambios necesarios en la interfaz
                         mPlayPause.setImageResource(R.drawable.ic_pause);
+
+                        //Me subscribo
+                        subscribirService();
                         break;
                     case PAUSED :
                         bcIntent.setAction(RUN_SERVICE_GPS);
@@ -182,19 +188,11 @@ public class MainTrainFragment extends Fragment {
 
     //inicialia todos los View necesario de la interfaz
     private void iniciarViews(View rootView){
-        mCronometro = (Chronometer) rootView.findViewById(R.id.chronometer);
-        mPlayPause = (ImageButton) rootView.findViewById(R.id.main_train_Ibutton_play);
-        mStop = (ImageButton) rootView.findViewById(R.id.main_train_Ibutton_stop);
+        mCronometro = (Chronometer) rootView.findViewById(R.id.main_train_chronometer);
+        mDistance = (TextView) rootView.findViewById(R.id.main_train_distance);
+        mPlayPause = (ImageButton) rootView.findViewById(R.id.main_train_button_play);
+        mStop = (ImageButton) rootView.findViewById(R.id.main_train_button_stop);
 
-    }
-
-    //Comprueba si gps esta activo
-    private boolean gpsActivado(){
-        LocationManager locManager = (LocationManager) getActivity().getSystemService(Context.LOCATION_SERVICE);
-        if(!locManager.isProviderEnabled(LocationManager.GPS_PROVIDER)){
-            return false;
-        }
-        else return true;
     }
 
     /**
@@ -206,13 +204,19 @@ public class MainTrainFragment extends Fragment {
         public void onReceive(Context context, Intent intent) {
             Bundle bundle = intent.getExtras();
             if (bundle != null) {
-                /*if (intent.getAction().equals(GpsIntentService.LISTA_PUNTOS)) {
-                    //Aqui va el código que se necesita
+                mCronometro.setBase(bundle.getLong(GpsIntentService.TIME, 0));
+                mDistance.setText(bundle.getDouble(GpsIntentService.DISTANCE, 0.0) + " Km");
+                Location location = (Location ) bundle.get(GpsIntentService.LOCATION);
+                if (location != null) {
+                    LatLng position = new LatLng(location.getLatitude(), location.getLongitude());
+                    mMapManager.goToPosition(position, 20, true);
                 }
-                if (intent.getAction().equals(GpsIntentService.TIEMPO)) {
-                    actualizarCronometro(intent.getLongExtra("tiempo", 0));
-                }*/
-                mCronometro.setBase((bundle.getLong(GpsIntentService.CHRONOMETER, 0)));
+
+                //Trainings session = (Trainings) bundle.get(GpsIntentService.POINTS);
+                Trainings session = GpsIntentService.mSession;
+                if (session != null && session.size() > 0) {
+                    mMapManager.printRoute(session);
+                }
             }
         }
     }

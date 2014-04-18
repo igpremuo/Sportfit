@@ -2,12 +2,13 @@ package com.sdm.sportfit.app.logic;
 
 import com.sdm.sportfit.app.R;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 
 /**
  * Created by Jess on 8/04/14.
  */
-public class Trainings extends ArrayList<Points> {
+public class Trainings extends ArrayList<Points> implements Serializable {
 
     public enum Type {
         RUNNING("Run"), CYCLING("Cycling"), WALKING("Walk");

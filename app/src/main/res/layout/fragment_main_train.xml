@@ -22,22 +22,21 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="@string/main_train_tv1"
-                    android:id="@+id/main_train_tv1"
+                    android:text="@string/main_train_train"
                     android:textSize="22sp"
                     android:paddingRight="10dp" />
 
                 <ImageView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:id="@+id/imageView"
+                    android:id="@+id/main_train_imageView"
                     android:src="@drawable/ic_correr" />
 
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:text="@string/main_train_tv2"
-                    android:id="@+id/main_train_tv2"
+                    android:text="Correr"
+                    android:id="@+id/main_train_type"
                     android:textSize="22sp"
                     android:gravity="center_vertical" />
             </LinearLayout>
@@ -71,7 +70,6 @@
             <ImageView
                 android:layout_width="wrap_content"
                 android:layout_height="fill_parent"
-                android:id="@+id/i"
                 android:src="@drawable/ic_duracion" />
 
                 <LinearLayout
@@ -82,14 +80,13 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="@string/main_train_tv3_TIEMPO"
-                    android:id="@+id/main_train_tv3_TIEMPO"
+                    android:text="@string/main_train_time"
                     android:textStyle="bold" />
 
                     <Chronometer
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
-                        android:id="@+id/chronometer"
+                        android:id="@+id/main_train_chronometer"
                         android:textSize="22sp"
                         android:gravity="center_horizontal" />
 
@@ -107,7 +104,6 @@
                 <ImageView
                     android:layout_width="wrap_content"
                     android:layout_height="fill_parent"
-                    android:id="@+id/iv6"
                     android:src="@drawable/ic_distancia" />
 
                 <LinearLayout
@@ -118,15 +114,14 @@
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="@string/main_train_tv4_DISTANCIA"
-                        android:id="@+id/main_train_tv4_DISTANCIA"
+                        android:text="@string/main_train_distance"
                         android:textStyle="bold" />
 
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="@string/main_train_tv4_distancia"
-                        android:id="@+id/main_train_tv4_distancia"
+                        android:text="0 km"
+                        android:id="@+id/main_train_distance"
                         android:textSize="22sp" />
                 </LinearLayout>
             </LinearLayout>
@@ -143,21 +138,21 @@
         <ImageButton
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:id="@+id/main_train_Ibutton_play"
+            android:id="@+id/main_train_button_play"
             android:src="@drawable/ic_play"
             android:layout_weight="1" />
 
         <ImageButton
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:id="@+id/main_train_Ibutton_stop"
+            android:id="@+id/main_train_button_stop"
             android:src="@drawable/ic_stop"
             android:layout_weight="1" />
 
         <ImageButton
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:id="@+id/main_train_Ibutton_config"
+            android:id="@+id/main_train_button_config"
             android:src="@drawable/ic_config"
             android:layout_weight="1" />
 

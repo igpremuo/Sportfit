@@ -7,6 +7,7 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.location.Location;
 import android.location.LocationListener;
+import android.location.LocationManager;
 import android.os.Bundle;
 import android.os.SystemClock;
 import android.util.Log;
@@ -25,22 +26,35 @@ public class GpsIntentService extends IntentService {
 
     public static final String NOTIFICATION = "com.sdm.sportfit.app.services.receiver";
 
-    //Variables de mensajes
-    public static final String CHRONOMETER = "cronometer";
+    // Variables de mensajes
+    public static final String TIME = "cronometer";
+    public static final String DISTANCE = "distance";
+    public static final String SPEED = "speed";
+    public static final String LOCATION = "location";
     public static final String POINTS = "points";
+
+    // GPS variables
+    private final static int MIN_TIME_UPDATE = 3000;
+    private final static int MIN_DISTANCE_UPDATE = 0;
 
     private IntentServiceReceiver mReceiver;
 
-    private Chronometer mCronometro;
-
-    private boolean mCerrarIntentService = false;
-    private long mStoppedMilliseconds = 0;
+    private boolean mFinishService = false;
     private boolean mEstadoSuscrito;
 
-    private Trainings mSession;
-    private double mSpeed;
+    // Training variables
+    public static Trainings mSession;
+    private Chronometer mCronometro;
+    private Location mLocation;
+    private long mSavedChronoTime;
+    private double mTotalDistance;
+    private double mCurrentSpeed;
     private long mStartTime;
     private long mTime;
+
+    // Gps variables
+    private LocationManager mLocationManager;
+    private GpsListener mLocationListener;
 
     public GpsIntentService() {
         super("GpsIntentService");
@@ -53,7 +67,7 @@ public class GpsIntentService extends IntentService {
         sState = State.RUNNING;
         mEstadoSuscrito = true;
 
-        //filtro para las comunicaciones
+        // Filtro para las comunicaciones
         IntentFilter filter = new IntentFilter(MainTrainFragment.NOTIFICATION);
         filter.addAction(MainTrainFragment.RUN_SERVICE_GPS);
         filter.addAction(MainTrainFragment.PAUSE_SERVICE_GPS);
@@ -63,17 +77,25 @@ public class GpsIntentService extends IntentService {
         mReceiver = new IntentServiceReceiver();
         registerReceiver(mReceiver, filter);
 
+        // Gps options
+        mLocationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
+        mLocationListener = new GpsListener();
+        mLocation = mLocationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
+
+        // Inicializar variables
         mCronometro = new Chronometer(this);
         mSession = new Trainings();
+        mSavedChronoTime = 0;
+        mTotalDistance = 0;
+        mCurrentSpeed = 0;
 
-        GpsListener gpsListener = new GpsListener();
+        run();
+        while (!mFinishService) {
 
-        while(!mCerrarIntentService){
-
-            if(mEstadoSuscrito && sState == State.RUNNING){
-
+            if (mEstadoSuscrito && sState == State.RUNNING) {
                 sendDataToFragment();
             }
+
             sleep();
         }
         sState = State.STOPPED;
@@ -82,14 +104,19 @@ public class GpsIntentService extends IntentService {
     //Play mCronometro
     private void run(){
         mCronometro.start();
-        mCronometro.setBase(SystemClock.elapsedRealtime() - mStoppedMilliseconds);
+        mCronometro.setBase(SystemClock.elapsedRealtime() - mSavedChronoTime);
+
+        mLocationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, MIN_TIME_UPDATE, MIN_DISTANCE_UPDATE, mLocationListener);
 
         sState = State.RUNNING;
     }
+
     //Pausar mCronometro
     private void pause(){
         mCronometro.stop();
-        guardarTiempoCronometro();
+        saveChronoTime();
+
+        mLocationManager.removeUpdates(mLocationListener);
 
         sState = State.PAUSED;
     }
@@ -99,19 +126,32 @@ public class GpsIntentService extends IntentService {
         mCronometro.stop();
         mCronometro.setBase(SystemClock.elapsedRealtime());
         unregisterReceiver(mReceiver);
-        mCerrarIntentService = true;
+        mFinishService = true;
+
+        mLocationManager.removeUpdates(mLocationListener);
 
         sState = State.STOPPED;
+
+        try {
+            finalize();
+        } catch (Throwable throwable) {
+            throwable.printStackTrace();
+        }
     }
 
     //Guardar tiempo del mCronometro
-    private void guardarTiempoCronometro(){
-        mStoppedMilliseconds = SystemClock.elapsedRealtime() - mCronometro.getBase();
+    private void saveChronoTime(){
+        mSavedChronoTime = SystemClock.elapsedRealtime() - mCronometro.getBase();
     }
 
     private void sendDataToFragment(){
         Intent intent = new Intent(NOTIFICATION);
-        intent.putExtra(CHRONOMETER, mCronometro.getBase());
+        intent.putExtra(TIME, mCronometro.getBase());
+        intent.putExtra(DISTANCE, mTotalDistance);
+        intent.putExtra(SPEED, mCurrentSpeed);
+        intent.putExtra(LOCATION, mLocation);
+        //intent.putExtra(POINTS, mSession);
+
         sendBroadcast(intent);
     }
 
@@ -119,7 +159,7 @@ public class GpsIntentService extends IntentService {
         try {
             Thread.sleep(1000);
         } catch(InterruptedException e) {
-            Log.e(getClass().getName(), "Error while sleeping");
+            Log.e(getClass().getName(), "Error while sleeping service");
         }
     }
 
@@ -127,6 +167,7 @@ public class GpsIntentService extends IntentService {
 
         @Override
         public void onLocationChanged(Location location) {
+            mLocation = location;
             if (mSession.size() == 0) {
                 mSession.add(new Points(location, 0.0, -1));
                 mStartTime = System.currentTimeMillis();
@@ -138,22 +179,24 @@ public class GpsIntentService extends IntentService {
                 double speed = (time/distance)*3.6;
 
                 mSession.add(new Points(location, speed, -1 ));
+                mTotalDistance += distance;
+                mCurrentSpeed = speed;
                 mTime = System.currentTimeMillis();
             }
         }
 
         @Override
-        public void onStatusChanged(String provider, int status, Bundle bundle) {
+        public void onStatusChanged(String s, int i, Bundle bundle) {
 
         }
 
         @Override
-        public void onProviderEnabled(String provider) {
+        public void onProviderEnabled(String s) {
 
         }
 
         @Override
-        public void onProviderDisabled(String provider) {
+        public void onProviderDisabled(String s) {
 
         }
     }

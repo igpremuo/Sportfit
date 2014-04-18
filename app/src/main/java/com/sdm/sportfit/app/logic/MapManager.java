@@ -8,6 +8,8 @@ import com.google.android.gms.maps.CameraUpdate;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.MapsInitializer;
+import com.google.android.gms.maps.UiSettings;
+import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.CameraPosition;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
@@ -29,12 +31,22 @@ public class MapManager{
         } catch (Exception impossible) {
             Log.e(getClass().getName(),"Can not initialize google map");
         }
+        configureMap(map);
         mMap = map;
         mContext = context;
     }
 
+    private void configureMap(GoogleMap map) {
+        UiSettings settings = map.getUiSettings();
+        settings.setMyLocationButtonEnabled(true);
+        settings.setZoomControlsEnabled(false);
+    }
+
     public void printRoute(Trainings training) {
         if (mMap != null) {
+
+            mMap.clear();
+
             PolylineOptions ruta = new PolylineOptions();
             for(Points point : training) {
                 ruta.add(new LatLng(point.getLocation().getLatitude(), point.getLocation().getLongitude()));
@@ -59,14 +71,27 @@ public class MapManager{
                     .position(puntoFin)
                     .title(mContext.getResources().getString(R.string.mapmangaer_end)));
 
-            CameraPosition camPos =new CameraPosition.Builder()
-                    .target(puntoEntrada)
-                    .zoom(15)
-                    .bearing(10)
-                    .build();
-
-            CameraUpdate camPos2 = CameraUpdateFactory.newCameraPosition(camPos);
-            mMap.animateCamera(camPos2);
+            goToPosition(puntoEntrada,16, false);
         }
+    }
+
+    public void goToPosition(LatLng location, int zoomlevel, boolean showMarker) {
+        CameraPosition camPos =new CameraPosition.Builder()
+                .target(location)
+                .zoom(zoomlevel)
+                //.bearing(10)
+                .build();
+
+        if (showMarker) {
+            mMap.addMarker(new MarkerOptions()
+                    .icon(BitmapDescriptorFactory.fromResource(R.drawable.ic_launcher))
+                    .position(location)
+                    .flat(true)
+                    .rotation(245));
+
+        }
+
+        CameraUpdate camPos2 = CameraUpdateFactory.newCameraPosition(camPos);
+        mMap.animateCamera(camPos2);
     }
 }
