@@ -88,6 +88,10 @@
     <string name="train_cycling">Bicicleta</string>
     <string name="train_walking">Andar</string>
 
+    <!-- type de alert -->
+    <string name="alert_distance">Distancia</string>
+    <string name="alert_time">Tiempo</string>
+
     <!-- Map Manager -->
     <string name="mapmangaer_start">Inicio</string>
     <string name="mapmangaer_end">Fin</string>

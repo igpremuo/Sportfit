@@ -145,13 +145,29 @@
                             android:text="@string/main_train_distance"
                             android:textStyle="bold" />
 
-                        <TextView
+                        <LinearLayout
+                            android:orientation="horizontal"
                             android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="0 km"
-                            android:id="@+id/main_train_distance"
-                            android:textSize="22sp"
-                            android:textStyle="bold"/>
+                            android:layout_height="wrap_content">
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="0,00"
+                                android:id="@+id/main_train_distance"
+                                android:textSize="22sp"
+                                android:textStyle="bold"/>
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginLeft="4dp"
+                                android:text="km"
+                                android:id="@+id/train_review_distance_units"
+                                android:textSize="14sp" />
+
+                        </LinearLayout>
+
                     </LinearLayout>
 
                 <ImageView
@@ -182,13 +198,29 @@
                         android:text="@string/main_train_speed"
                         android:textStyle="bold" />
 
-                    <TextView
+                    <LinearLayout
+                        android:orientation="horizontal"
                         android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="0 km/h"
-                        android:id="@+id/main_train_speed"
-                        android:textSize="22sp"
-                        android:textStyle="bold"/>
+                        android:layout_height="wrap_content">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="0,00"
+                            android:id="@+id/main_train_speed"
+                            android:textSize="22sp"
+                            android:textStyle="bold"/>
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginLeft="4dp"
+                            android:text="km/h"
+                            android:id="@+id/train_review_avg_speed_units"
+                            android:textSize="14sp" />
+
+                    </LinearLayout>
+
                 </LinearLayout>
 
                 <ImageView

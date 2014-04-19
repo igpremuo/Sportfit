@@ -238,8 +238,8 @@ public class MainTrainFragment extends Fragment {
         if(mDeporte.equals(TrainTrainingFragment.ANDAR)){
             mImageSport.setImageResource(R.drawable.ic_walking);
             mSport.setText(getResources().getString(R.string.train_walking));
-
         }
+
         else if(mDeporte.equals(TrainTrainingFragment.CORRER)){
             mImageSport.setImageResource(R.drawable.ic_correr);
             mSport.setText(getResources().getString(R.string.train_running));
@@ -268,8 +268,8 @@ public class MainTrainFragment extends Fragment {
                 mCronometro.setBase(bundle.getLong(GpsIntentService.TIME, 0));
 
                 NumberFormat decimalFormat = new DecimalFormat("##0.00");
-                mDistance.setText(decimalFormat.format(bundle.getDouble(GpsIntentService.DISTANCE, 0.0)/1000f) + " km");
-                mSpeed.setText(decimalFormat.format(bundle.getDouble(GpsIntentService.SPEED, 0.0)) + " km/h");
+                mDistance.setText(decimalFormat.format(bundle.getDouble(GpsIntentService.DISTANCE, 0.0)/1000f));
+                mSpeed.setText(decimalFormat.format(bundle.getDouble(GpsIntentService.SPEED, 0.0)));
 
                 //Trainings session = (Trainings) bundle.get(GpsIntentService.POINTS);
                 Trainings session = GpsIntentService.mSession;
