@@ -103,7 +103,7 @@ public class MainActivity extends ActionBarActivity
     @Override
     public void onNavigationDrawerItemSelected(int position) {
         // update the main content by replacing fragments
-        FragmentManager fragmentManager = getSupportFragmentManager();
+        /*FragmentManager fragmentManager = getSupportFragmentManager();
         Fragment fragment = null;
         switch (position) {
             case 0:
@@ -126,7 +126,8 @@ public class MainActivity extends ActionBarActivity
 
         if (fragment != null) {
             replaceFragment(fragment, getSectionTitle(position));
-        }
+        }*/
+        openFragmentAtPos(position, -1);
     }
 
     private void replaceFragment(Fragment newFragment, CharSequence title) {
@@ -141,12 +142,34 @@ public class MainActivity extends ActionBarActivity
     }
 
     public void openFragmentAtPos(int position, int pagerItem) {
-        Fragment fragment = new MainParentFragment();
-        Bundle bundle = new Bundle();
-        bundle.putInt(MainParentFragment.CURRENT_POSITION, pagerItem);
-        fragment.setArguments(bundle);
+        Fragment fragment = null;
+        switch (position) {
+            case 0:
+                //if (mMapFragment == null) mMapFragment = new MainParentFragment();
+                fragment = new MainParentFragment();
+                break;
+            case 1:
+                //if (mDietFragment == null) mDietFragment = new DietParentFragment();
+                fragment = new DietParentFragment();
+                break;
+            case 2:
+                //if (mTrainFragment == null) mTrainFragment = new TrainParentFragment();
+                fragment = new TrainParentFragment();
+                break;
+            case 3:
+                if (mHiitFragment == null) mHiitFragment = new HiitParentFragment();
+                fragment = mHiitFragment;
+                break;
+        }
 
-        replaceFragment(fragment, getSectionTitle(position));
+        if (fragment != null) {
+            if (pagerItem >= 0) {
+                Bundle bundle = new Bundle();
+                bundle.putInt(MainParentFragment.CURRENT_POSITION, pagerItem);
+                fragment.setArguments(bundle);
+            }
+            replaceFragment(fragment, getSectionTitle(position));
+        }
     }
 
     private String getSectionTitle(int pos) {

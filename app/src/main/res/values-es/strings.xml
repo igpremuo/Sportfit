@@ -39,7 +39,7 @@
     <string name="main_train_time">Tiempo</string>
     <string name="main_train_distance">Distancia</string>
     <string name="main_train_speed">Velocidad</string>
-    <string name="main_train_alert">Avisar:</string>
+    <string name="main_train_alert">Aviso:</string>
 
     <!--fragment_main_diet-->
     <string name="tip">Consejos</string>

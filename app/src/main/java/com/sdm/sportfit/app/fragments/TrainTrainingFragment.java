@@ -14,7 +14,7 @@ import android.widget.RadioGroup;
 
 import com.sdm.sportfit.app.MainActivity;
 import com.sdm.sportfit.app.R;
-import com.sdm.sportfit.app.persistence.misSharedPreferences;
+import com.sdm.sportfit.app.persistence.PreferencesManager;
 import com.sdm.sportfit.app.services.GpsIntentService;
 
 /**
@@ -45,25 +45,17 @@ public class TrainTrainingFragment extends Fragment {
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.fragment_train_training, container, false);
 
         mButton = (Button) rootView.findViewById(R.id.train_training_button);
         mRadioGroupDeporte =(RadioGroup)rootView.findViewById(R.id.train_training_rg_tipo_deporte);
         mRadioGroupAviso =(RadioGroup)rootView.findViewById(R.id.train_training_rg_tipo_aviso);
 
-
-        return rootView;
-    }
-
-    @Override
-    public void onResume() {
-        super.onResume();
-        restaurarDatos();
         mButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+
                 int deporte = mRadioGroupDeporte.getCheckedRadioButtonId();
                 switch (deporte) {
                     case R.id.train_training_rb_andar:
@@ -79,7 +71,8 @@ public class TrainTrainingFragment extends Fragment {
                         mDeporte=CORRER;
                         break;
                 }
-                int aviso =mRadioGroupAviso.getCheckedRadioButtonId();
+
+                int aviso = mRadioGroupAviso.getCheckedRadioButtonId();
                 switch (aviso){
                     case R.id.train_training_rb_aviso_distancia:
                         mAviso = DISTANCIA;
@@ -91,17 +84,26 @@ public class TrainTrainingFragment extends Fragment {
                         mAviso=DISTANCIA;
                         break;
                 }
+
                 guardarDatos();
                 mMainActivity.openFragmentAtPos(0, 0);
             }
         });
 
+        return rootView;
     }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        restaurarDatos();
+    }
+
     //Restaurar los datos de configuracion
     private void restaurarDatos(){
-        Bundle datos = misSharedPreferences.restaurarConfiguracionDeporte(getActivity());
-        mDeporte = datos.getString(misSharedPreferences.TIPODEPORTE);
-        mAviso =datos.getString(misSharedPreferences.TIPOAVISO);
+        Bundle datos = PreferencesManager.restaurarConfiguracionDeporte(getActivity());
+        mDeporte = datos.getString(PreferencesManager.TIPODEPORTE);
+        mAviso =datos.getString(PreferencesManager.TIPOAVISO);
 
         if(mDeporte.equals(ANDAR)){
             mRadioGroupDeporte.check(R.id.train_training_rb_andar);
@@ -116,6 +118,7 @@ public class TrainTrainingFragment extends Fragment {
         }
         else mRadioGroupAviso.check(R.id.train_training_rb_aviso_tiempo);
     }
+
     //Guarda los datos de configuración
     private void guardarDatos(){
         //Comprueba antes si esta en marcha alguna sesion, si es asi, no deja cambiar la configuracion
@@ -133,7 +136,7 @@ public class TrainTrainingFragment extends Fragment {
             alertDialog.show();
         }
         else{
-            misSharedPreferences.guardarConfiguracionDeporte(getActivity(),mDeporte,mAviso);
+            PreferencesManager.guardarConfiguracionDeporte(getActivity(), mDeporte, mAviso);
         }
 
     }

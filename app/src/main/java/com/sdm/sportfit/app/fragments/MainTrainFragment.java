@@ -24,7 +24,7 @@ import com.sdm.sportfit.app.MainActivity;
 import com.sdm.sportfit.app.R;
 import com.sdm.sportfit.app.logic.MapManager;
 import com.sdm.sportfit.app.logic.Trainings;
-import com.sdm.sportfit.app.persistence.misSharedPreferences;
+import com.sdm.sportfit.app.persistence.PreferencesManager;
 import com.sdm.sportfit.app.services.GpsIntentService;
 import com.sdm.sportfit.app.services.GpsIntentService.State;
 
@@ -145,6 +145,8 @@ public class MainTrainFragment extends Fragment {
                 }
             }
         });
+
+        // Boton de settings
         mSetting.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -159,7 +161,9 @@ public class MainTrainFragment extends Fragment {
     public void onResume() {
         super.onResume();
         mMapView.onResume();
+
         establecerDatosTraining();
+
         if (GpsIntentService.sState == State.RUNNING) {
             mPlayPause.setImageResource(R.drawable.ic_pause);
             subscribirService();
@@ -227,9 +231,9 @@ public class MainTrainFragment extends Fragment {
 
     //Muestra en los view necesarios el tipo de deporte y aviso
     private void establecerDatosTraining(){
-        Bundle datos = misSharedPreferences.restaurarConfiguracionDeporte(getActivity());
-        mDeporte = datos.getString(misSharedPreferences.TIPODEPORTE);
-        mAviso =datos.getString(misSharedPreferences.TIPOAVISO);
+        Bundle datos = PreferencesManager.restaurarConfiguracionDeporte(getActivity());
+        mDeporte = datos.getString(PreferencesManager.TIPODEPORTE);
+        mAviso =datos.getString(PreferencesManager.TIPOAVISO);
 
         if(mDeporte.equals(TrainTrainingFragment.ANDAR)){
             mImageSport.setImageResource(R.drawable.ic_walking);

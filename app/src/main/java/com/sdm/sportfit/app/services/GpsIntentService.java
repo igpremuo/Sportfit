@@ -110,7 +110,9 @@ public class GpsIntentService extends IntentService {
     }
 
     //Play mCronometro
-    private void run(){
+    private synchronized void run(){
+        notify();
+
         mCronometro.start();
         mCronometro.setBase(SystemClock.elapsedRealtime() - mSavedChronoTime);
 
@@ -130,7 +132,9 @@ public class GpsIntentService extends IntentService {
     }
 
     //Stop mCronometro
-    private void stop() {
+    private synchronized void stop() {
+        // Despertar el servicio si está durmiendo
+        notify();
         //mCronometro.stop();
         //mCronometro.setBase(SystemClock.elapsedRealtime());
         unregisterReceiver(mReceiver);
@@ -177,9 +181,9 @@ public class GpsIntentService extends IntentService {
         sendBroadcast(intent);
     }
 
-    private void sleep(int time){
+    private synchronized void sleep(int time){
         try {
-            Thread.sleep(time);
+            wait(time);
         } catch(InterruptedException e) {
             Log.e(getClass().getName(), "Error while sleeping service");
         }
