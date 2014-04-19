@@ -127,7 +127,7 @@ public class RegisterActivity extends Activity implements OnClickListener{
                     _prefsEditor.commit();
                     Users user = new Users(idUser, username,textMail, password,"", String.valueOf(System.currentTimeMillis()),0.0, 0.0, "");
                      dh.addUser(user);
-                    Intent i = new Intent(RegisterActivity.this, userStats.class);
+                    Intent i = new Intent(RegisterActivity.this, UserStats.class);
                    // finish();
                     startActivity(i);
                     return json.getString(TAG_MESSAGE);

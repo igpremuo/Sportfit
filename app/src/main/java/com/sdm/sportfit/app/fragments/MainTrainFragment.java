@@ -211,7 +211,7 @@ public class MainTrainFragment extends Fragment {
                 mMapManager.clear();
                 mCronometro.setBase(bundle.getLong(GpsIntentService.TIME, 0));
 
-                NumberFormat decimalFormat = new DecimalFormat("##0.0");
+                NumberFormat decimalFormat = new DecimalFormat("##0.00");
                 mDistance.setText(decimalFormat.format(bundle.getDouble(GpsIntentService.DISTANCE, 0.0)/1000f) + " km");
                 mSpeed.setText(decimalFormat.format(bundle.getDouble(GpsIntentService.SPEED, 0.0)) + " km/h");
 

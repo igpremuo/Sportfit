@@ -19,7 +19,7 @@ import com.sdm.sportfit.app.persistence.JSONParser;
  * Created by max on 12/04/2014.
  */
 
-public class userStats extends Activity implements View.OnClickListener {
+public class UserStats extends Activity implements View.OnClickListener {
 
         private EditText height,weight, imc, water, mg;
         private RadioButton genreMan, genreWoman;
@@ -69,7 +69,7 @@ public class userStats extends Activity implements View.OnClickListener {
 
            // Statistics statistic = new Statistics( 1, 1, String.valueOf(System.currentTimeMillis()), weight.getText(), age.getText(), genre.getText(), height.getText(), imc.getText(), water.getText(), mg.getText());
            // dh.addStatistics(statistic);
-            Toast.makeText(userStats.this, R.string.internetRequired, Toast.LENGTH_LONG).show();
+            Toast.makeText(UserStats.this, R.string.internetRequired, Toast.LENGTH_LONG).show();
 
         }
 
@@ -83,7 +83,7 @@ public class userStats extends Activity implements View.OnClickListener {
             @Override
             protected void onPreExecute() {
                 super.onPreExecute();
-                pDialog = new ProgressDialog(userStats.this);
+                pDialog = new ProgressDialog(UserStats.this);
                 pDialog.setMessage("Creating User...");
                 pDialog.setIndeterminate(false);
                 pDialog.setCancelable(true);
@@ -105,7 +105,7 @@ public class userStats extends Activity implements View.OnClickListener {
                 // dismiss the dialog once product deleted
                 pDialog.dismiss();
                 if (file_url != null){
-                    Toast.makeText(userStats.this, file_url, Toast.LENGTH_LONG).show();
+                    Toast.makeText(UserStats.this, file_url, Toast.LENGTH_LONG).show();
                 }
 
             }

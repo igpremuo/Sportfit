@@ -29,18 +29,12 @@
 
 
     <!--fragment_train_review -->
-    <string name="train_review_tv1_DEPORTE">DEPORTE</string>
-    <string name="train_review_tv1_deporte">Correr</string>
-    <string name="train_review_tv2_DURACION">DURACIÓN</string>
-    <string name="train_review_tv2_duracion">00:27:16</string>
-    <string name="train_review_tv3_DISTANCIA">DISTANCIA</string>
-    <string name="train_review_tv3_distancia">4.06Km</string>
-    <string name="train_review_tv4_CALORIAS">CALORÍAS</string>
-    <string name="train_review_tv4_calorias">400Kcal</string>
-    <string name="train_review_tv5_VEL_MEDIA">VEL.MEDIA</string>
-    <string name="train_review_tv5_vel_media">8.93Km/h</string>
-    <string name="train_review_tv6_RITMO_PROMEDIO">RITMO PROM.</string>
-    <string name="train_review_tv6_ritmo_promedio">6:43min/Km</string>
+    <string name="train_review_type">SPORT</string>
+    <string name="train_review_duration">DURATION</string>
+    <string name="train_review_distance">DISTANCE</string>
+    <string name="train_review_calories">CALORIES</string>
+    <string name="train_review_avgspeed">AVG. SPEED</string>
+    <string name="train_review_avgpace">AVG. PACE</string>
 
     <!--fragment_main_train -->
     <string name="main_train_time">Time</string>

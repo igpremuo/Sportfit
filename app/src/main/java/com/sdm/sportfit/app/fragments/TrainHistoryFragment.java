@@ -131,7 +131,5 @@ public class TrainHistoryFragment extends Fragment {
         HistoryListAdapter historyAdapter = new HistoryListAdapter(getActivity().getApplicationContext(), history);
         mHistoryList.setAdapter(historyAdapter);
         historyAdapter.notifyDataSetChanged();
-
-
     }
 }

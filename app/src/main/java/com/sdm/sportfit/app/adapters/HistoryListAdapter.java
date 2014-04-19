@@ -13,6 +13,8 @@ import android.widget.TextView;
 import com.sdm.sportfit.app.R;
 import com.sdm.sportfit.app.logic.Trainings;
 
+import java.text.DecimalFormat;
+import java.text.NumberFormat;
 import java.util.List;
 
 /**
@@ -57,15 +59,17 @@ public class HistoryListAdapter extends BaseAdapter {
         Trainings session =  getItem(position);
 
         if (session != null) {
+            NumberFormat decimalFormat = new DecimalFormat("###0.00");
+
             ImageView image = (ImageView) rowView.findViewById(R.id.listitem_history_icon);
             TextView sessionType = (TextView) rowView.findViewById(R.id.listitem_history_type);
             Chronometer time = (Chronometer) rowView.findViewById(R.id.listitem_history_time);
-            TextView speed = (TextView) rowView.findViewById(R.id.listitem_history_speed);
+            TextView distance = (TextView) rowView.findViewById(R.id.listitem_history_distance);
             TextView date = (TextView) rowView.findViewById(R.id.listitem_history_date);
 
             image.setImageDrawable(mContext.getResources().getDrawable(session.getImageId()));
             sessionType.setText(session.getSringId());
-            speed.setText(session.getAverageSpeed()+" km/h");
+            distance.setText(decimalFormat.format(session.getDistance()/1000f) + " km");
             time.setBase(SystemClock.elapsedRealtime() - session.getDuration());
             date.setText(session.getDate());
         }

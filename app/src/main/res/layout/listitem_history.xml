@@ -81,9 +81,9 @@
                     android:layout_width="14dp"
                     android:layout_height="14dp"
                     android:layout_marginRight="2dp"
-                    android:src="@drawable/ic_promedio"/>
+                    android:src="@drawable/ic_distancia"/>
                 <TextView
-                    android:id="@+id/listitem_history_speed"
+                    android:id="@+id/listitem_history_distance"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:text="6 km/h"

@@ -131,8 +131,8 @@ public class GpsIntentService extends IntentService {
 
     //Stop mCronometro
     private void stop() {
-        mCronometro.stop();
-        mCronometro.setBase(SystemClock.elapsedRealtime());
+        //mCronometro.stop();
+        //mCronometro.setBase(SystemClock.elapsedRealtime());
         unregisterReceiver(mReceiver);
         mFinishService = true;
 
