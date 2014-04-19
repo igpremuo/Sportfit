@@ -1,5 +1,6 @@
 package com.sdm.sportfit.app.fragments;
 
+import android.app.Activity;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
@@ -13,14 +14,17 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Chronometer;
 import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.google.android.gms.maps.MapView;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
+import com.sdm.sportfit.app.MainActivity;
 import com.sdm.sportfit.app.R;
 import com.sdm.sportfit.app.logic.MapManager;
 import com.sdm.sportfit.app.logic.Trainings;
+import com.sdm.sportfit.app.persistence.misSharedPreferences;
 import com.sdm.sportfit.app.services.GpsIntentService;
 import com.sdm.sportfit.app.services.GpsIntentService.State;
 
@@ -49,13 +53,25 @@ public class MainTrainFragment extends Fragment {
     private Chronometer mCronometro;
     private TextView mDistance;
     private TextView mSpeed;
+    private TextView mSport;
+    private TextView mAlert;
     private ImageButton mPlayPause;
     private ImageButton mStop;
+    private ImageButton mSetting;
+    private ImageView mImageSport;
 
     //Variables
     private MainTrainReceiver mReceiver;
-
+    String mDeporte;
+    String mAviso;
     private SupportMapFragment mMapFragment;
+    MainActivity mMainActivity;
+
+    @Override
+    public void onAttach(Activity activity) {
+        super.onAttach(activity);
+        mMainActivity = (MainActivity) activity;
+    }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -129,6 +145,12 @@ public class MainTrainFragment extends Fragment {
                 }
             }
         });
+        mSetting.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                mMainActivity.openFragmentAtPos(2,1);
+            }
+        });
 
         return rootView;
     }
@@ -137,7 +159,7 @@ public class MainTrainFragment extends Fragment {
     public void onResume() {
         super.onResume();
         mMapView.onResume();
-
+        establecerDatosTraining();
         if (GpsIntentService.sState == State.RUNNING) {
             mPlayPause.setImageResource(R.drawable.ic_pause);
             subscribirService();
@@ -196,7 +218,37 @@ public class MainTrainFragment extends Fragment {
         mSpeed = (TextView) rootView.findViewById(R.id.main_train_speed);
         mPlayPause = (ImageButton) rootView.findViewById(R.id.main_train_button_play);
         mStop = (ImageButton) rootView.findViewById(R.id.main_train_button_stop);
+        mImageSport =(ImageView)rootView.findViewById(R.id.main_train_imageView);
+        mSport=(TextView)rootView.findViewById(R.id.main_train_type);
+        mAlert=(TextView)rootView.findViewById(R.id.main_train_alert);
+        mSetting=(ImageButton)rootView.findViewById(R.id.main_train_button_config);
 
+    }
+
+    //Muestra en los view necesarios el tipo de deporte y aviso
+    private void establecerDatosTraining(){
+        Bundle datos = misSharedPreferences.restaurarConfiguracionDeporte(getActivity());
+        mDeporte = datos.getString(misSharedPreferences.TIPODEPORTE);
+        mAviso =datos.getString(misSharedPreferences.TIPOAVISO);
+
+        if(mDeporte.equals(TrainTrainingFragment.ANDAR)){
+            mImageSport.setImageResource(R.drawable.ic_walking);
+            mSport.setText(getResources().getString(R.string.train_walking));
+
+        }
+        else if(mDeporte.equals(TrainTrainingFragment.CORRER)){
+            mImageSport.setImageResource(R.drawable.ic_correr);
+            mSport.setText(getResources().getString(R.string.train_running));
+        }
+        else{
+            mImageSport.setImageResource(R.drawable.ic_cycling);
+            mSport.setText(getResources().getString(R.string.train_cycling));
+        }
+
+        if(mAviso.equals(TrainTrainingFragment.DISTANCIA)){
+            mAlert.setText(getResources().getString(R.string.alert_distance));
+        }
+        else mAlert.setText(getResources().getString(R.string.alert_time));
     }
 
     /**

@@ -89,6 +89,10 @@
     <string name="train_walking">Walk</string>
     <string name="att"> </string>
 
+    <!-- type de alert -->
+    <string name="alert_distance">Distance</string>
+    <string name="alert_time">Time</string>
+
     <!--fragment_main_diet-->
     <string name="tip">Tips</string>
     <string name="breakfast">Breakfast</string>
