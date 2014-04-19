@@ -10,7 +10,6 @@ import android.widget.ListView;
 import android.widget.TextView;
 
 import com.sdm.sportfit.app.R;
-import com.sdm.sportfit.app.adapters.FoodListDietMainAdapter;
 import com.sdm.sportfit.app.logic.Diets;
 import com.sdm.sportfit.app.logic.Foods;
 import com.sdm.sportfit.app.persistence.DatabaseHandler;
@@ -49,19 +48,19 @@ public class MainDietFragment extends Fragment{
         Diets meal = new Diets();
         List<Foods> listFoods = new ArrayList<Foods>();
         nameDiet.setText("Dieta genérica 1");
-        String typeMealdb = dh.getDietByDate(obtainDateCurrency(),"Dieta genérica 1");
+        String typeMealdb = dh.getDietByDate(obtainDateCurrency(),1);
         Log.v("VERBOSE", "typeMealdb : "+typeMealdb);
         List itemse	= new ArrayList();
-        meal = dh.getDietByMeal(obtainDateCurrency(), "Dieta genérica 1",typeMealdb );
+        meal = dh.getDietByMeal(obtainDateCurrency(), 1,typeMealdb );
         Log.v("VERBOSE","valor de meal.getTimeMeal()"+meal.getTimeMeal());
         if(meal.getTimeMeal() != null) timeMeal.setText(meal.getTimeMeal());
         typeMeal.setText(typeMealdb);
-        listFoods = meal.getListFoods();
+ /*       listFoods = meal.getListFoods();
         for (int i = 0; i < listFoods.size(); i++){
             itemse.add(listFoods.get(i));
         }
         listViewMeal.setAdapter(new FoodListDietMainAdapter(this.getActivity(), itemse));
-   /*     if("08:00".equals(obtainTimeCurrency())) {
+ */  /*     if("08:00".equals(obtainTimeCurrency())) {
             List items	= new ArrayList();
             meal = dh.getDietByMeal(obtainDateCurrency(), "Dieta genérica 1", getResources().getString(R.string.breakfast));
             Log.v("VERBOSE", " valor horario: " + meal.getTimeMeal().toString());

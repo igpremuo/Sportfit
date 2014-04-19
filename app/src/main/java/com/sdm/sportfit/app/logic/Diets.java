@@ -1,7 +1,5 @@
 package com.sdm.sportfit.app.logic;
 
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Locale;
 
 /**
@@ -66,40 +64,58 @@ public class Diets {
         }
     };
 
-    private String nameDiet;
+    private int idDiet;
     private int idFood;
     private TypeMeal typeMeal;
     private TimeMeal timeMeal;
     private DateMeal dateMeal;
-    private List<Foods> listFoods;
+    private Double earnedCalories;
+    private int quantity;
 
 
 
     public Diets() {
-        this.nameDiet = "";
+        this.idDiet = 0;
         this.idFood = 0;
         this.typeMeal = null;
         this.timeMeal = null;
         this.dateMeal = null;
-        this.listFoods = new ArrayList<Foods>();
+        this.earnedCalories = 0.0;
+        this.quantity = 0;
     }
 
-    public Diets(String nameDiet, int idFood, String typeMeal, String timeMeal, int dateMeal, ArrayList<Foods> listFoods) {
-        this.nameDiet = nameDiet;
+    public Diets(int idDiet, int idFood, String typeMeal, String timeMeal, int dateMeal,Double earnedCalories, int quantity) {
+        this.idDiet = idDiet;
         this.idFood = idFood;
         this.typeMeal = getTypeMeal(typeMeal);
         this.timeMeal = getTimeMeal(timeMeal);
         this.dateMeal = getDateMeal(dateMeal);
-        this.listFoods = listFoods;
+        this.earnedCalories = earnedCalories;
+        this.quantity = quantity;
     }
 
-
-    public String getNameDiet() {
-        return nameDiet;
+    public Double getEarnedCalories() {
+        return earnedCalories;
     }
 
-    public void setNameDiet(String nameDiet) {
-        this.nameDiet = nameDiet;
+    public void setEarnedCalories(Double earnedCalories) {
+        this.earnedCalories = earnedCalories;
+    }
+
+    public int getQuantity() {
+        return quantity;
+    }
+
+    public void setQuantity(int quantity) {
+        this.quantity = quantity;
+    }
+
+    public int getIdDiet() {
+        return idDiet;
+    }
+
+    public void setIdDiet(int idDiet) {
+        this.idDiet = idDiet;
     }
 
     public int getIdFood() {
@@ -132,15 +148,6 @@ public class Diets {
 
     public void setDateMeal(int dateMeal)  {
         this.dateMeal= getDateMeal(dateMeal);
-    }
-
-
-    public List<Foods> getListFoods() {
-        return listFoods;
-    }
-
-    public void setListFoods(List<Foods> listFoods) {
-        this.listFoods = listFoods;
     }
 
     public TimeMeal getTimeMeal(String timeMeal) {

@@ -17,6 +17,8 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import com.sdm.sportfit.app.logic.Diet;
+import com.sdm.sportfit.app.logic.Diets;
 import com.sdm.sportfit.app.logic.Foods;
 import com.sdm.sportfit.app.persistence.DatabaseHandler;
 import com.sdm.sportfit.app.persistence.JSONParser;
@@ -48,6 +50,9 @@ public class LoginActivity extends Activity implements OnClickListener{
 
     private static final String LOGIN_URL = "http://breakwebs.com/sportfit/restapi/index.php/login";
     private static final String FOODS_URL = "http://breakwebs.com/sportfit/restapi/index.php/foods";
+    private static final String DIET_URL = "http://breakwebs.com/sportfit/restapi/index.php/diet";
+    private static final String DIETS_URL = "http://breakwebs.com/sportfit/restapi/index.php/diets";
+
 
 
     //JSON element ids from repsonse of php script:
@@ -70,11 +75,14 @@ public class LoginActivity extends Activity implements OnClickListener{
         mSubmit.setOnClickListener(this);
         mRegister.setOnClickListener(this);
 
-        Log.v("VERBOSE", "Creando la lista de comidas");
+        Log.v("VERBOSE", "Creando los contenidos de la db");
         cd = new ConnectionDetector(getApplicationContext());
-        if (!dh.existsDataInTable("Foods")){
+        if (!dh.existsDataInTable("Foods") || !dh.existsDataInTable("Diet") || !dh.existsDataInTable("Diets")){
             if (cd.isConnectingToInternet()){
-                Log.v("VERBOSE", "ejecutando attempt foods"); new AttemptFoods().execute();
+                Log.v("VERBOSE", "ejecutando attempts");
+                if(!dh.existsDataInTable("Foods")) new AttemptFoods().execute();
+                if(!dh.existsDataInTable("Diet")) new AttemptDiet().execute();
+                if(!dh.existsDataInTable("Diets")) new AttemptDiets().execute();
                 foodChecked = true;
             } else {
                 Toast.makeText(this, "You need internet connection", Toast.LENGTH_LONG).show();
@@ -129,8 +137,10 @@ public class LoginActivity extends Activity implements OnClickListener{
             }
         } else {
             if (cd.isConnectingToInternet()){
-                Log.v("VERBOSE", "ejecutando cuando han conectado internet attempt foods");
-                new AttemptFoods().execute();
+                Log.v("VERBOSE", "ejecutando cuando han conectado internet attempts");
+               if(!dh.existsDataInTable("Foods")) new AttemptFoods().execute();
+               if(!dh.existsDataInTable("Diet")) new AttemptDiet().execute();
+               if(!dh.existsDataInTable("Diets")) new AttemptDiets().execute();
                 foodChecked = true;
             } else {
                 Toast.makeText(this, "Failed to connect server. Please try again", Toast.LENGTH_LONG).show();
@@ -225,7 +235,7 @@ public class LoginActivity extends Activity implements OnClickListener{
         protected void onPreExecute() {
             super.onPreExecute();
             pDialog = new ProgressDialog(LoginActivity.this);
-            pDialog.setMessage("Attempting Foods...");
+            pDialog.setMessage("Downloading data...");
             pDialog.setIndeterminate(false);
             pDialog.setCancelable(false);
             pDialog.show();
@@ -291,5 +301,139 @@ public class LoginActivity extends Activity implements OnClickListener{
 
     }
 
+    class AttemptDiet extends AsyncTask<String, String, String> {
+        ProgressDialog pDialog;
 
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+            pDialog = new ProgressDialog(LoginActivity.this);
+            pDialog.setMessage("Downloading data...");
+            pDialog.setIndeterminate(false);
+            pDialog.setCancelable(false);
+            pDialog.show();
+        }
+
+        @Override
+        protected String doInBackground(String... args) {
+            // TODO Auto-generated method stub
+            String success;
+            JSONObject jsonDiet = null;
+            //Foods food = null;
+            try {
+                Log.d("request!", "starting");
+                // getting product details by making HTTP request
+                JSONObject json = jsonParser.makeHttpRequest(
+                        DIET_URL, "GET", null);
+
+                // check your log for json response
+                Log.d("Foods attempt", json.toString());
+
+                // json success tag
+                success = json.getString("error");
+                if (success == "false") {
+                    for (int i = 0; i < json.getJSONArray("message").length(); i++) {
+                        jsonDiet = (JSONObject) json.getJSONArray("message").get(i);
+                        Diet diet = new Diet();
+                        diet.setIdDiet(jsonDiet.getInt("idDiet"));
+                        diet.setNameDiet(jsonDiet.getString("nameDiet"));
+                        diet.setDescription(jsonDiet.getString("description"));
+                        diet.setTotalCalories(jsonDiet.getDouble("totalCalories"));
+
+                        dh.addDiet(diet);
+                    }
+                    return json.getString(TAG_MESSAGE);
+                } else {
+                    Log.d("Login Failure!", json.getString(TAG_MESSAGE));
+                    return json.getString(TAG_MESSAGE);
+                }
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+
+            return null;
+        }
+
+        /**
+         * After completing background task Dismiss the progress dialog
+         * *
+         */
+        protected void onPostExecute(String file_url) {
+            // dismiss the dialog once product deleted
+            pDialog.dismiss();
+            // if (file_url != null){
+            // Toast.makeText(MainActivity.this, file_url, Toast.LENGTH_LONG).show();
+            //}
+
+        }
+    }
+
+    class AttemptDiets extends AsyncTask<String, String, String> {
+        ProgressDialog pDialog;
+
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+            pDialog = new ProgressDialog(LoginActivity.this);
+            pDialog.setMessage("Downloading data...");
+            pDialog.setIndeterminate(false);
+            pDialog.setCancelable(false);
+            pDialog.show();
+        }
+
+        @Override
+        protected String doInBackground(String... args) {
+            // TODO Auto-generated method stub
+            String success;
+            JSONObject jsonDiets = null;
+            //Foods food = null;
+            try {
+                Log.d("request!", "starting");
+                // getting product details by making HTTP request
+                JSONObject json = jsonParser.makeHttpRequest(
+                        DIETS_URL, "GET", null);
+
+                // check your log for json response
+                Log.d("Foods attempt", json.toString());
+
+                // json success tag
+                success = json.getString("error");
+                if (success == "false") {
+                    for (int i = 0; i < json.getJSONArray("message").length(); i++) {
+                        jsonDiets = (JSONObject) json.getJSONArray("message").get(i);
+                        Diets diets = new Diets();
+                        diets.setIdDiet(jsonDiets.getInt("idDiet"));
+                        diets.setIdFood(jsonDiets.getInt("idFood"));
+                        diets.setTypeMeal(jsonDiets.getString("typeMeal"));
+                        diets.setTimeMeal(jsonDiets.getString("timeMeal"));
+                        diets.setDateMeal(jsonDiets.getInt("dateMeal"));
+                        diets.setEarnedCalories(jsonDiets.getDouble("earnedCalories"));
+                        diets.setQuantity(jsonDiets.getInt("quantity"));
+                        dh.addDiets(diets);
+                    }
+                    return json.getString(TAG_MESSAGE);
+                } else {
+                    Log.d("Login Failure!", json.getString(TAG_MESSAGE));
+                    return json.getString(TAG_MESSAGE);
+                }
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+
+            return null;
+        }
+
+        /**
+         * After completing background task Dismiss the progress dialog
+         * *
+         */
+        protected void onPostExecute(String file_url) {
+            // dismiss the dialog once product deleted
+            pDialog.dismiss();
+            // if (file_url != null){
+            // Toast.makeText(MainActivity.this, file_url, Toast.LENGTH_LONG).show();
+            //}
+
+        }
+    }
 }

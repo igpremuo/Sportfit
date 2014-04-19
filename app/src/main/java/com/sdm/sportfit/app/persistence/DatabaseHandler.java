@@ -11,6 +11,7 @@ import android.util.Log;
 import android.widget.Toast;
 
 import com.sdm.sportfit.app.R;
+import com.sdm.sportfit.app.logic.Diet;
 import com.sdm.sportfit.app.logic.Diets;
 import com.sdm.sportfit.app.logic.Foods;
 import com.sdm.sportfit.app.logic.Points;
@@ -42,6 +43,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
     // Contacts table name
     private static final String TABLE_FOODS = "Foods";
     private static final String TABLE_DIETS = "Diets";
+    private static final String TABLE_DIET = "Diet";
     private static final String TABLE_POINTS = "Points";
     private static final String TABLE_TRAINING = "Training";
     private static final String TABLE_STATISTICS = "Statistics";
@@ -68,26 +70,28 @@ public class DatabaseHandler extends SQLiteOpenHelper {
     public void onCreate(SQLiteDatabase db) {
         try {
             Log.v("VERBOSE", "Borro las tablas");
-            db.execSQL("DROP TABLE IF EXISTS " + TABLE_FOODS);
+            db.execSQL("DROP TABLE IF EXISTS "+ TABLE_DIET);
             db.execSQL("DROP TABLE IF EXISTS " + TABLE_DIETS);
+            db.execSQL("DROP TABLE IF EXISTS " + TABLE_FOODS);
             db.execSQL("DROP TABLE IF EXISTS " + TABLE_STATISTICS);
             db.execSQL("DROP TABLE IF EXISTS " + TABLE_POINTS);
             db.execSQL("DROP TABLE IF EXISTS " + TABLE_TRAINING);
             db.execSQL("DROP TABLE IF EXISTS " + TABLE_USERS);
             Log.v("VERBOSE", " Creo las tablas");
-        db.execSQL("CREATE TABLE IF NOT EXISTS " + TABLE_DIETS + " (nameDiet VARCHAR( 200 ) NOT NULL , idFood INT( 11 ) NOT NULL , typeMeal VARCHAR( 50 ) NOT NULL , timeMeal VARCHAR(30) NOT NULL , dateMeal INTEGER(2) NOT NULL, earnedCalories DOUBLE( 4,2 ) NOT NULL, quantity DOUBLE( 6,2 ), PRIMARY KEY (nameDiet , idFood, typeMeal, dateMeal))");
-        db.execSQL("CREATE TABLE IF NOT EXISTS " + TABLE_FOODS + " (id int(4)  PRIMARY KEY, nameES varchar(200) NOT NULL, nameEN varchar(200) NOT NULL, categoryES varchar(200) NOT NULL, categoryEN varchar(200) NOT NULL,calories double NOT NULL, proteins double NOT NULL, carbohydrates double NOT NULL, fats double NOT NULL, water double NOT NULL)");
+        db.execSQL("CREATE TABLE IF NOT EXISTS " + TABLE_DIET + " (idDiet INTEGER PRIMARY KEY AUTOINCREMENT, nameDiet VARCHAR(20) NOT NULL , description VARCHAR(200) NOT NULL, totalCalories DOUBLE(8,2) NOT NULL);");
+        db.execSQL("CREATE TABLE IF NOT EXISTS " + TABLE_DIETS + " (idDiet INT(9) NOT NULL , idFood INT(11) NOT NULL , typeMeal VARCHAR( 50 ) NOT NULL , timeMeal VARCHAR(30) NOT NULL , dateMeal INTEGER(2) NOT NULL, earnedCalories DOUBLE( 4,2 ) NOT NULL, quantity DOUBLE( 6,2 ), PRIMARY KEY (idDiet , idFood, typeMeal, dateMeal), FOREIGN KEY (idDiet) REFERENCES Diet (idDiet) ON DELETE CASCADE ON UPDATE CASCADE);");
+        db.execSQL("CREATE TABLE IF NOT EXISTS " + TABLE_FOODS + " (id INT(4) PRIMARY KEY, nameES VARCHAR(200) NOT NULL, nameEN VARCHAR(200) NOT NULL, categoryES VARCHAR(200) NOT NULL, categoryEN VARCHAR(200) NOT NULL,calories DOUBLE NOT NULL, proteins DOUBLE NOT NULL, carbohydrates double NOT NULL, fats double NOT NULL, water double NOT NULL);");
         db.execSQL("CREATE TABLE IF NOT EXISTS " + TABLE_STATISTICS + " (idStatistic int(5), idUser INT( 11 ) NOT NULL ,dateStatistics timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ,weight DOUBLE( 3, 2 ) NOT NULL ,age INT( 3 ) NOT NULL ,sex VARCHAR(50) NOT NULL ,height DOUBLE( 4, 2 ) NOT NULL ,imc DOUBLE( 2, 2 ) NOT NULL ,water DOUBLE( 2, 2 ) NOT NULL , PRIMARY KEY (  idStatistic ,  idUser ,  dateStatistics ), FOREIGN KEY (idUser) REFERENCES users (id) ON DELETE CASCADE ON UPDATE CASCADE);");
         db.execSQL("CREATE TABLE IF NOT EXISTS " + TABLE_POINTS + " (id INTEGER  PRIMARY KEY AUTOINCREMENT, longitude decimal(18,14) NOT NULL, latitude decimal(18,14) NOT NULL, speed double NOT NULL, idTraining INTEGER NOT NULL, FOREIGN KEY (idTraining) REFERENCES Training (idTraining) ON DELETE CASCADE ON UPDATE CASCADE);");
         db.execSQL("CREATE TABLE IF NOT EXISTS " + TABLE_TRAINING + "  (idTraining INTEGER PRIMARY KEY AUTOINCREMENT, idUser INTEGER, typeTraining VARCHAR (50) NOT NULL, caloriesBurned double NOT NULL, duration long NOT NULL, averageSpeed double NOT NULL, averageRate double NOT NULL, distance double NOT NULL, dateTraining DATETIME DEFAULT CURRENT_TIMESTAMP, FOREIGN KEY (idUser) REFERENCES users (id) ON DELETE CASCADE ON UPDATE CASCADE);");
         db.execSQL("CREATE TABLE IF NOT EXISTS " + TABLE_USERS + " (id INTEGER  PRIMARY KEY, name varchar(250) DEFAULT NULL, email varchar(255) UNIQUE NOT NULL, password text NOT NULL, api_key varchar(32) NOT NULL, created_at timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP, locationx decimal(18,14) DEFAULT NULL,  locationy decimal(18,14) DEFAULT NULL, picture varchar(200) DEFAULT NULL);");
-            db.execSQL("INSERT INTO Diets (nameDiet, idFood, typeMeal, timeMeal, dateMeal, earnedCalories, quantity) VALUES ('Dieta genérica 1', 681,  'Desayuno',  '09:00',  '2014-04-14',  75.46, 200.00);");
-            db.execSQL("INSERT INTO Diets (nameDiet, idFood, typeMeal, timeMeal, dateMeal, earnedCalories,  quantity) VALUES ('Dieta genérica 1', 774, 'Desayuno', '09:00', '2014-04-14', 240.19, 100.00);");
-            db.execSQL("INSERT INTO Diets (nameDiet, idFood, typeMeal, timeMeal, dateMeal, earnedCalories,  quantity) VALUES ('Dieta genérica 1', 917,  'Almuerzo',  '11:00',  '2014-04-14',  134.51,  100.00);");
-            db.execSQL("INSERT INTO Diets (nameDiet, idFood, typeMeal, timeMeal, dateMeal, earnedCalories,  quantity) VALUES ('Dieta genérica 1', 994,  'Comida',  '14:00',  '2014-04-14',  104.32,  100.00);");
-            db.execSQL("INSERT INTO Diets (nameDiet, idFood, typeMeal, timeMeal, dateMeal, earnedCalories,  quantity) VALUES ('Dieta genérica 1', 2662,  'Merienda',  '19:00',  '2014-04-13',  394.51,  100.00);");
-            db.execSQL("INSERT INTO Diets (nameDiet, idFood, typeMeal, timeMeal, dateMeal, earnedCalories,  quantity) VALUES ('Dieta genérica 1', 2387,  'Merienda',  '19:00',  '2014-04-14',  27.16,  100.00);");
-            db.execSQL("INSERT INTO Diets (nameDiet, idFood, typeMeal, timeMeal, dateMeal, earnedCalories,  quantity) VALUES ('Dieta genérica 1', 2387,  'Cena',  '23:30',  '2014-04-14',  27.16,  100.00);");
+            //db.execSQL("INSERT INTO Diets (idDiet, idFood, typeMeal, timeMeal, dateMeal, earnedCalories, quantity) VALUES (1, 681,  'Desayuno',  '09:00',  '2014-04-14',  75.46, 200.00);");
+            //db.execSQL("INSERT INTO Diets (idDiet, idFood, typeMeal, timeMeal, dateMeal, earnedCalories,  quantity) VALUES (1, 774, 'Desayuno', '09:00', '2014-04-14', 240.19, 100.00);");
+            //db.execSQL("INSERT INTO Diets (idDiet, idFood, typeMeal, timeMeal, dateMeal, earnedCalories,  quantity) VALUES (1, 917,  'Almuerzo',  '11:00',  '2014-04-14',  134.51,  100.00);");
+            //db.execSQL("INSERT INTO Diets (idDiet, idFood, typeMeal, timeMeal, dateMeal, earnedCalories,  quantity) VALUES (1, 994,  'Comida',  '14:00',  '2014-04-14',  104.32,  100.00);");
+            //db.execSQL("INSERT INTO Diets (idDiet, idFood, typeMeal, timeMeal, dateMeal, earnedCalories,  quantity) VALUES (1, 2662,  'Merienda',  '19:00',  '2014-04-13',  394.51,  100.00);");
+            //db.execSQL("INSERT INTO Diets (idDiet, idFood, typeMeal, timeMeal, dateMeal, earnedCalories,  quantity) VALUES (1, 2387,  'Merienda',  '19:00',  '2014-04-14',  27.16,  100.00);");
+            //db.execSQL("INSERT INTO Diets (idDiet, idFood, typeMeal, timeMeal, dateMeal, earnedCalories,  quantity) VALUES (1, 2387,  'Cena',  '23:30',  '2014-04-14',  27.16,  100.00);");
           //  db.execSQL("INSERT INTO users (name, email, password, api_key) VALUES ('paco','paco@gmail.com',  'paco', '2244a06077f75b20c04defe1e6be34e1');");
             Log.v("VERBOSE", "Tablas creadas");
         } catch (SQLiteException sqlError){
@@ -124,8 +128,8 @@ public class DatabaseHandler extends SQLiteOpenHelper {
     public boolean existsDataInTable(String nameTable){
         SQLiteDatabase db = this.getReadableDatabase();
         boolean exists = false;
+        Log.v("VERBOSE", "Yabla comprobacion " + nameTable );
         Cursor c = db.rawQuery("SELECT * FROM " + nameTable + ";", null);
-        Log.v("VERBOSE", "HAy datos en foods" + c.getCount());
         if (c.getCount() > 0){
             exists = true;
         }
@@ -163,12 +167,12 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         SQLiteDatabase db = this.getWritableDatabase();
         try{
             Log.v("VERBOSE", "Creando dietas");
-        db.execSQL("INSERT INTO Diets (nameDiet, idFood, typeMeal, timeMeal, dateMeal, earnedCalories, quantity) VALUES ('Dieta genérica 1', 681,  'Desayuno',  '09:00',  '2014-04-14',  75.46, 200.00);");
-        db.execSQL("INSERT INTO Diets (nameDiet, idFood, typeMeal, timeMeal, dateMeal, earnedCalories,  quantity) VALUES ('Dieta genérica 1', 774, 'Desayuno', '09:00', '2014-04-14', 240.19, 100.00);");
-        db.execSQL("INSERT INTO Diets (nameDiet, idFood, typeMeal, timeMeal, dateMeal, earnedCalories,  quantity) VALUES ('Dieta genérica 1', 917,  'Almuerzo',  '11:00',  '2014-04-14',  134.51,  100.00);");
-        db.execSQL("INSERT INTO Diets (nameDiet, idFood, typeMeal, timeMeal, dateMeal, earnedCalories,  quantity) VALUES ('Dieta genérica 1', 994,  'Comida',  '14:00',  '2014-04-14',  104.32,  100.00);");
-        db.execSQL("INSERT INTO Diets (nameDiet, idFood, typeMeal, timeMeal, dateMeal, earnedCalories,  quantity) VALUES ('Dieta genérica 1', 2662,  'Merienda',  '14:00',  '2014-04-14',  394.51,  100.00);");
-        db.execSQL("INSERT INTO Diets (nameDiet, idFood, typeMeal, timeMeal, dateMeal, earnedCalories,  quantity) VALUES ('Dieta genérica 1', 2387,  'Cena',  '23:30',  '2014-04-14',  27.16,  100.00);");
+        db.execSQL("INSERT INTO Diets (idDiet, idFood, typeMeal, timeMeal, dateMeal, earnedCalories, quantity) VALUES (1, 681,  'Desayuno',  '09:00',  '2014-04-14',  75.46, 200.00);");
+        db.execSQL("INSERT INTO Diets (idDiet, idFood, typeMeal, timeMeal, dateMeal, earnedCalories,  quantity) VALUES (1, 774, 'Desayuno', '09:00', '2014-04-14', 240.19, 100.00);");
+        db.execSQL("INSERT INTO Diets (idDiet, idFood, typeMeal, timeMeal, dateMeal, earnedCalories,  quantity) VALUES (1, 917,  'Almuerzo',  '11:00',  '2014-04-14',  134.51,  100.00);");
+        db.execSQL("INSERT INTO Diets (idDiet, idFood, typeMeal, timeMeal, dateMeal, earnedCalories,  quantity) VALUES (1, 994,  'Comida',  '14:00',  '2014-04-14',  104.32,  100.00);");
+        db.execSQL("INSERT INTO Diets (idDiet, idFood, typeMeal, timeMeal, dateMeal, earnedCalories,  quantity) VALUES (1, 2662,  'Merienda',  '14:00',  '2014-04-14',  394.51,  100.00);");
+        db.execSQL("INSERT INTO Diets (idDiet, idFood, typeMeal, timeMeal, dateMeal, earnedCalories,  quantity) VALUES (1', 2387,  'Cena',  '23:30',  '2014-04-14',  27.16,  100.00);");
         } catch (SQLiteException sqlError){
             Toast toast = Toast.makeText(this.myContext, R.string.insertError, Toast.LENGTH_SHORT);
             toast.show();
@@ -257,15 +261,17 @@ public class DatabaseHandler extends SQLiteOpenHelper {
     }
 
     // Add new Diets comprobar que guarde la fecha como toca
-    public void addDiet(Diets diet) {
+    public void addDiets(Diets diet) {
         SQLiteDatabase db = this.getWritableDatabase();
         try{
             ContentValues values = new ContentValues();
-            values.put("nameDiet", diet.getNameDiet());
+            values.put("idDiet", diet.getIdDiet());
             values.put("idFood", diet.getIdFood());
             values.put("typeMeal", diet.getTypeMeal());
             values.put("timeMeal", diet.getTimeMeal());
             values.put("dateMeal", diet.getDateMeal());
+            values.put("earnedCalories", diet.getEarnedCalories());
+            values.put("quantity", diet.getQuantity());
             //aqui insertar lo otros dos datos
 
 
@@ -278,6 +284,29 @@ public class DatabaseHandler extends SQLiteOpenHelper {
             db.close(); // Closing database connection
         }
     }
+
+    // Add new Diet
+    public int addDiet(Diet diet) {
+        SQLiteDatabase db = this.getWritableDatabase();
+        int rowIdDiet = -1;
+        try{
+            ContentValues values = new ContentValues();
+            values.put("idDiet", diet.getIdDiet());
+            values.put("nameDiet", diet.getNameDiet());
+            values.put("description", diet.getDescription());
+            values.put("totalCalories", diet.getTotalCalories());
+
+            // Inserting Row
+            rowIdDiet = Integer.parseInt(String.valueOf(db.insert(TABLE_DIET, null, values)));
+        } catch (SQLiteException sqlError){
+            Toast toast = Toast.makeText(this.myContext, R.string.dropError, Toast.LENGTH_SHORT);
+            toast.show();
+        } finally{
+            db.close(); // Closing database connection
+        }
+        return rowIdDiet;
+    }
+
 
     // Add new Statistics
     public void addStatistics(Statistics statistic) {
@@ -328,10 +357,10 @@ public class DatabaseHandler extends SQLiteOpenHelper {
     /**
      * Recoge cada comida arreglarlo
      * @param dateDiet
-     * @param nameDiet
+     * @param idDiet
      * @return
      */
-    public String getDietByDate(String dateDiet, String nameDiet){
+    public String getDietByDate(String dateDiet, int idDiet){
         Cursor c = null;
         Diets diet = null;
         String typeMeal = "";
@@ -342,7 +371,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         }
         SQLiteDatabase db = this.getReadableDatabase();
         try{
-            c = db.rawQuery("SELECT timeMeal, typeMeal FROM "+ TABLE_DIETS +" WHERE dateMeal = '" + dateDiet + "' AND nameDiet = '" + nameDiet + "' ORDER BY timeMeal DESC;", null);
+            c = db.rawQuery("SELECT timeMeal, typeMeal FROM "+ TABLE_DIETS +" WHERE dateMeal = '" + dateDiet + "' AND idDiet = '" + idDiet + "' ORDER BY timeMeal DESC;", null);
             Log.v("VERBOSE", "Resultados de la consulta timeMeal: "+c.getCount());
             if (c.moveToFirst()) {
                 do {
@@ -367,28 +396,28 @@ public class DatabaseHandler extends SQLiteOpenHelper {
     /**
      * Recoge cada comida
      * @param dateDiet
-     * @param nameDiet
+     * @param idDiet
      * @param typeMeal
      * @return
      */
-    public Diets getDietByMeal(String dateDiet, String nameDiet, String typeMeal){
+    public Diets getDietByMeal(String dateDiet, int idDiet, String typeMeal){
         Log.v("VERBOSE", " Dentro del handlerDb");
         Cursor c = null;
         Diets diet = null;
         Log.v("VERBOSE", "typeMeal recibido : "+typeMeal);
         SQLiteDatabase db = this.getReadableDatabase();
         try{
-            Log.v("VERBOSE", "Realizando la consulta " + "SELECT a.nameDiet, a.idFood, a.typeMeal, a.timeMeal, a.dateMeal, a.earnedCalories, a.quantity, b.nameES, b.calories, b.categoryES, b.proteins, b.carbohydrates, b.fats, b.water  FROM " + TABLE_FOODS + " b, "+ TABLE_DIETS +" a WHERE a.idFood = b.id AND dateMeal = '" + dateDiet + "' AND a.nameDiet = '" + nameDiet + "' AND a.typeMeal = '" + typeMeal + "';" );
+            Log.v("VERBOSE", "Realizando la consulta " + "SELECT a.idDiet, a.idFood, a.typeMeal, a.timeMeal, a.dateMeal, a.earnedCalories, a.quantity, b.nameES, b.calories, b.categoryES, b.proteins, b.carbohydrates, b.fats, b.water  FROM " + TABLE_FOODS + " b, "+ TABLE_DIETS +" a WHERE a.idFood = b.id AND dateMeal = '" + dateDiet + "' AND a.idDiet = '" + idDiet + "' AND a.typeMeal = '" + typeMeal + "';" );
             //R.string.language Locale.getDefault().getLanguage();
             if ("es".equals(Locale.getDefault().getLanguage())){
-                c = db.rawQuery("SELECT a.nameDiet, a.idFood, a.typeMeal, a.timeMeal, a.dateMeal, a.earnedCalories, a.quantity, b.nameES, b.calories, b.categoryES, b.proteins, b.carbohydrates, b.fats, b.water  FROM " + TABLE_FOODS + " b, "+ TABLE_DIETS +" a WHERE a.idFood = b.id AND dateMeal = '" + dateDiet + "' AND a.nameDiet = '" + nameDiet + "' AND a.typeMeal = '" + typeMeal + "';", null);
+                c = db.rawQuery("SELECT a.idDiet, a.idFood, a.typeMeal, a.timeMeal, a.dateMeal, a.earnedCalories, a.quantity, b.nameES, b.calories, b.categoryES, b.proteins, b.carbohydrates, b.fats, b.water  FROM " + TABLE_FOODS + " b, "+ TABLE_DIETS +" a WHERE a.idFood = b.id AND dateMeal = '" + dateDiet + "' AND a.idDiet = '" + idDiet + "' AND a.typeMeal = '" + typeMeal + "';", null);
             } else {
-                c = db.rawQuery("SELECT a.nameDiet, a.idFood, a.typeMeal, a.timeMeal, a.dateMeal, a.earnedCalories, a.quantity, b.nameEN, b.calories, b.categoryEN, b.proteins, b.carbohydrates, b.fats, b.water FROM " + TABLE_FOODS + " b, "+ TABLE_DIETS +" a WHERE a.idFood = b.id AND dateMeal = '" + dateDiet + "' AND a.nameDiet = '" + nameDiet + "'AND a.typeMeal = '" + typeMeal + "';", null);
+                c = db.rawQuery("SELECT a.idDiet, a.idFood, a.typeMeal, a.timeMeal, a.dateMeal, a.earnedCalories, a.quantity, b.nameEN, b.calories, b.categoryEN, b.proteins, b.carbohydrates, b.fats, b.water FROM " + TABLE_FOODS + " b, "+ TABLE_DIETS +" a WHERE a.idFood = b.id AND dateMeal = '" + dateDiet + "' AND a.idDiet = '" + idDiet + "'AND a.typeMeal = '" + typeMeal + "';", null);
             }
             Log.v("VERBOSE", "Consulta realizada hay datos " + c.getCount());
             if (c.moveToFirst()) {
                 diet = new Diets();
-                diet.setNameDiet(c.getString(0));
+                diet.setIdDiet(c.getInt(0));
                 diet.setIdFood(Integer.parseInt(c.getString(1)));
                 diet.setTypeMeal(c.getString(2));
                 Log.v("VERBOSE", "timeMeal de getDietByMeal" +c.getString(3));
@@ -413,7 +442,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
                     food.setFats(c.getDouble(12));
                     food.setWater(c.getDouble(13));
                     // Adding contact to list
-                    diet.getListFoods().add(food);
+                   //arreglar to'hHh esto  diet.getListFoods().add(food);
                 } while (c.moveToNext());
             }
         } catch (SQLiteException sqlError){
@@ -623,13 +652,13 @@ public class DatabaseHandler extends SQLiteOpenHelper {
     }
 
     // Delete Meal
-    public void deleteMeal(String nameDiet, String typeMeal, int idFood, String dateMeal) {
+    public void deleteMeal(int idDiet, String typeMeal, int idFood, String dateMeal) {
         SQLiteDatabase db = this.getWritableDatabase();
         SimpleDateFormat formatedText = new SimpleDateFormat("yyyy-MM-dd");
         Date date = null;
         try {
             date = (Date) formatedText.parse(dateMeal);
-            db.execSQL("DELETE FROM " + TABLE_DIETS  + " WHERE nameDiet = '" + nameDiet + "' AND typeMeal = '" + typeMeal + "' AND idFood = " + idFood + " AND dateMeal = " + date + ";");
+            db.execSQL("DELETE FROM " + TABLE_DIETS  + " WHERE idDiet = '" + idDiet + "' AND typeMeal = '" + typeMeal + "' AND idFood = " + idFood + " AND dateMeal = " + date + ";");
         } catch (ParseException ex) {
             Toast toast = Toast.makeText(this.myContext, R.string.dateError, Toast.LENGTH_SHORT);
             toast.show();
