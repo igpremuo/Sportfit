@@ -70,6 +70,8 @@
     <string name="save">Guardar</string>
     <string name="man">Hombre</string>
     <string name="woman">Mujer</string>
+    <string name="notSaved">No guardado</string>
+    <string name="fieldRequired">Campo obligatorio</string>
 
     <!-- Messages error-->
     <!-- Errors DatabaseHandler-->

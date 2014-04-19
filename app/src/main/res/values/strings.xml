@@ -65,6 +65,8 @@
     <string name="save">Guardar</string>
     <string name="man">Men</string>
     <string name="woman">Woman</string>
+    <string name="notSaved">Not saved</string>
+    <string name="fieldRequired">Field required</string>
 
 
     <!-- Messages error-->

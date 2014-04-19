@@ -87,7 +87,7 @@ public class RegisterActivity extends Activity implements OnClickListener{
             pDialog = new ProgressDialog(RegisterActivity.this);
             pDialog.setMessage("Creating User...");
             pDialog.setIndeterminate(false);
-            pDialog.setCancelable(true);
+            pDialog.setCancelable(false);
             pDialog.show();
         }
 

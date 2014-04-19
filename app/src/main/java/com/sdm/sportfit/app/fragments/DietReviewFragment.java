@@ -22,4 +22,6 @@ public class DietReviewFragment extends Fragment {
         textView.setText("Calories Fragment");
         return rootView;
     }
+
+
 }

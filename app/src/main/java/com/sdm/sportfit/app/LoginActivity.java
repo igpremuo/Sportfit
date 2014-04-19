@@ -84,9 +84,9 @@ public class LoginActivity extends Activity implements OnClickListener{
         }
 
          /**** Quitar esto para realizar el login ****/
-        Intent i = new Intent(LoginActivity.this, MainActivity.class);
-        finish();
-        startActivity(i);
+      //  Intent i = new Intent(LoginActivity.this, MainActivity.class);
+        //finish();
+        //startActivity(i);
     }
 
     @Override
@@ -153,7 +153,7 @@ public class LoginActivity extends Activity implements OnClickListener{
             pDialog = new ProgressDialog(LoginActivity.this);
             pDialog.setMessage("Attempting login...");
             pDialog.setIndeterminate(false);
-            pDialog.setCancelable(true);
+            pDialog.setCancelable(false);
             pDialog.show();
         }
 
@@ -227,7 +227,7 @@ public class LoginActivity extends Activity implements OnClickListener{
             pDialog = new ProgressDialog(LoginActivity.this);
             pDialog.setMessage("Attempting Foods...");
             pDialog.setIndeterminate(false);
-            pDialog.setCancelable(true);
+            pDialog.setCancelable(false);
             pDialog.show();
         }
 
