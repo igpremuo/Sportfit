@@ -15,7 +15,7 @@
     <!-- MainTrainFragment -->
     <string name="main_train_button_start">Empezar</string>
 
-    <!-- fragment_train_training -->
+    <!--fragment_train_training -->
     <string name="train_training_tv1_tipo_entrenamiento">Tipo de entrenamiento:</string>
     <string name="train_training_tv2_avisos">Método de avisos:</string>
     <string name="train_training_tv3_avisos_distancia">Dará un aviso cada kilometro realizado</string>
@@ -27,7 +27,8 @@
     <string name="train_training_rb_bicicleta">Cycling</string>
     <string name="train_training_button_entrenar">Training</string>
 
-    <!-- fragment_train_review -->
+
+    <!--fragment_train_review -->
     <string name="train_review_type">SPORT</string>
     <string name="train_review_duration">DURATION</string>
     <string name="train_review_distance">DISTANCE</string>
@@ -35,11 +36,12 @@
     <string name="train_review_avgspeed">AVG. SPEED</string>
     <string name="train_review_avgpace">AVG. PACE</string>
 
-    <!-- fragment_main_train -->
+    <!--fragment_main_train -->
     <string name="main_train_time">Time</string>
     <string name="main_train_distance">Distance</string>
     <string name="main_train_speed">Speed</string>
-    <string name="main_train_alert">Alert</string>
+    <string name="main_train_alert">Alert:</string>
+
 
     <!-- login register texts -->
     <string name="password">Password</string>
@@ -49,6 +51,7 @@
     <string name="mail">Mail</string>
     <string name="attemptingLogin">Attempting login...</string>
     <string name="internetRequired">Requiere conexión a internet</string>
+
 
     <!-- user stats texts -->
     <string name="userStatsDescription">Complete all, if you know it. Stats with * are needed.</string>
@@ -91,7 +94,7 @@
     <string name="alert_distance">Distance</string>
     <string name="alert_time">Time</string>
 
-    <!-- fragment_main_diet -->
+    <!--fragment_main_diet-->
     <string name="tip">Tips</string>
     <string name="breakfast">Breakfast</string>
     <string name="brunch">Brunch</string>
@@ -104,7 +107,7 @@
     <string name="mapmangaer_start">Start</string>
     <string name="mapmangaer_end">End</string>
 
-    <!-- Mensajes de alerta Train training -->
+    <!-- Mensajes de alerta Train training-->
     <string name="alert_train_training_ok">OK</string>
     <string name="alert_train_training_titulo">Session ON</string>
     <string name="alert_train_training_mensaje">Ends the session to change the settings.</string>
@@ -116,5 +119,9 @@
     <string name="title_activity_diet">DietActivity</string>
     <string name="day">Day </string>
     <string name="quantity">Quantity (g)</string>
+
+    <!-- Gps IntentService -->
+    <string name="service_start_train">¡Training started!</string>
+    <string name="service_advice" formatted="false">Distance: %.1f kilometers. Time: %d hours, %d minutes, %d seconds. Speed: %.1f kilometers per hour.</string>
 
 </resources>

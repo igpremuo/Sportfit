@@ -23,6 +23,7 @@ import com.google.android.gms.maps.model.LatLng;
 import com.sdm.sportfit.app.MainActivity;
 import com.sdm.sportfit.app.R;
 import com.sdm.sportfit.app.logic.MapManager;
+import com.sdm.sportfit.app.logic.Points;
 import com.sdm.sportfit.app.logic.Trainings;
 import com.sdm.sportfit.app.persistence.PreferencesManager;
 import com.sdm.sportfit.app.services.GpsIntentService;
@@ -30,6 +31,8 @@ import com.sdm.sportfit.app.services.GpsIntentService.State;
 
 import java.text.DecimalFormat;
 import java.text.NumberFormat;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Created by nacho on 1/04/14.
@@ -166,8 +169,9 @@ public class MainTrainFragment extends Fragment {
 
         if (GpsIntentService.sState == State.RUNNING) {
             mPlayPause.setImageResource(R.drawable.ic_pause);
-            subscribirService();
         }
+
+        subscribirService();
     }
 
     @Override
@@ -273,6 +277,7 @@ public class MainTrainFragment extends Fragment {
 
                 //Trainings session = (Trainings) bundle.get(GpsIntentService.POINTS);
                 Trainings session = GpsIntentService.mSession;
+                //ArrayList<Points> points = (ArrayList<Points>) bundle.get(GpsIntentService.POINTS);
                 if (session != null && session.size() > 0) {
                     mMapManager.printRoute(session);
                 }

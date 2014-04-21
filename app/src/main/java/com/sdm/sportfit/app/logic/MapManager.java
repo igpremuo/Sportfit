@@ -17,6 +17,8 @@ import com.google.android.gms.maps.model.Polyline;
 import com.google.android.gms.maps.model.PolylineOptions;
 import com.sdm.sportfit.app.R;
 
+import java.util.List;
+
 /**
  * Created by juan on 14/04/14.
  */
@@ -42,7 +44,7 @@ public class MapManager{
         settings.setZoomControlsEnabled(false);
     }
 
-    public void printRoute(Trainings training) {
+    public void printRoute(List<Points> training) {
         if (mMap != null) {
             mMap.clear();
 

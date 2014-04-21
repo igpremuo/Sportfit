@@ -91,10 +91,10 @@ public class LoginActivity extends Activity implements OnClickListener{
             foodChecked = true;
         }
 
-         /**** Quitar esto para realizar el login ****/
-        //Intent i = new Intent(LoginActivity.this, MainActivity.class);
-        //finish();
-        //startActivity(i);
+        /**** Quitar esto para realizar el login ****/
+        Intent i = new Intent(LoginActivity.this, MainActivity.class);
+        finish();
+        startActivity(i);
     }
 
     @Override
