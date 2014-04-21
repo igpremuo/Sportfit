@@ -79,7 +79,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
             db.execSQL("DROP TABLE IF EXISTS " + TABLE_USERS);
             Log.v("VERBOSE", " Creo las tablas");
         db.execSQL("CREATE TABLE IF NOT EXISTS " + TABLE_DIET + " (idDiet INTEGER PRIMARY KEY AUTOINCREMENT, nameDiet VARCHAR(20) NOT NULL , description VARCHAR(200) NOT NULL, totalCalories DOUBLE(8,2) NOT NULL);");
-        db.execSQL("CREATE TABLE IF NOT EXISTS " + TABLE_DIETS + " (idDiet INT(9) NOT NULL , idFood INT(11) NOT NULL , typeMeal VARCHAR( 50 ) NOT NULL , timeMeal VARCHAR(30) NOT NULL , dateMeal INTEGER(2) NOT NULL, earnedCalories DOUBLE( 4,2 ) NOT NULL, quantity DOUBLE( 6,2 ), PRIMARY KEY (idDiet , idFood, typeMeal, dateMeal), FOREIGN KEY (idDiet) REFERENCES Diet (idDiet) ON DELETE CASCADE ON UPDATE CASCADE);");
+        db.execSQL("CREATE TABLE IF NOT EXISTS " + TABLE_DIETS + " (idDiet INT(9) NOT NULL , idFood INT(11) NOT NULL , typeMeal VARCHAR( 50 ) NOT NULL , timeMeal VARCHAR(30) NOT NULL , dateMeal INTEGER(2) NOT NULL, earnedCalories DOUBLE( 4,2 ) NOT NULL, quantity int( 4 ), PRIMARY KEY (idDiet , idFood, typeMeal, dateMeal), FOREIGN KEY (idDiet) REFERENCES Diet (idDiet) ON DELETE CASCADE ON UPDATE CASCADE);");
         db.execSQL("CREATE TABLE IF NOT EXISTS " + TABLE_FOODS + " (id INT(4) PRIMARY KEY, nameES VARCHAR(200) NOT NULL, nameEN VARCHAR(200) NOT NULL, categoryES VARCHAR(200) NOT NULL, categoryEN VARCHAR(200) NOT NULL,calories DOUBLE NOT NULL, proteins DOUBLE NOT NULL, carbohydrates double NOT NULL, fats double NOT NULL, water double NOT NULL);");
         db.execSQL("CREATE TABLE IF NOT EXISTS " + TABLE_STATISTICS + " (idStatistic int(5), idUser INT( 11 ) NOT NULL ,dateStatistics timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ,weight DOUBLE( 3, 2 ) NOT NULL ,age INT( 3 ) NOT NULL ,sex VARCHAR(50) NOT NULL ,height DOUBLE( 4, 2 ) NOT NULL ,imc DOUBLE( 2, 2 ) NOT NULL ,water DOUBLE( 2, 2 ) NOT NULL , PRIMARY KEY (  idStatistic ,  idUser ,  dateStatistics ), FOREIGN KEY (idUser) REFERENCES users (id) ON DELETE CASCADE ON UPDATE CASCADE);");
         db.execSQL("CREATE TABLE IF NOT EXISTS " + TABLE_POINTS + " (id INTEGER  PRIMARY KEY AUTOINCREMENT, longitude decimal(18,14) NOT NULL, latitude decimal(18,14) NOT NULL, speed double NOT NULL, idTraining INTEGER NOT NULL, FOREIGN KEY (idTraining) REFERENCES Training (idTraining) ON DELETE CASCADE ON UPDATE CASCADE);");
@@ -389,52 +389,28 @@ public class DatabaseHandler extends SQLiteOpenHelper {
      * Recoge cada comida
      * @param dateDiet
      * @param idDiet
-     * @param typeMeal
      * @return
      */
-    public Diets getDietByMeal(String dateDiet, int idDiet, String typeMeal){
-        Log.v("VERBOSE", " Dentro del handlerDb");
+    public List<Diets> getDietByDateAndId(int dateDiet, int idDiet){
+        Log.v("VERBOSE", "Entrando ... ");
         Cursor c = null;
-        Diets diet = null;
-        Log.v("VERBOSE", "typeMeal recibido : "+typeMeal);
+        List<Diets> listDiet = new ArrayList<Diets>();
+        Log.v("VERBOSE", "Entrando en getDietByDateAndId ");
         SQLiteDatabase db = this.getReadableDatabase();
         try{
-            Log.v("VERBOSE", "Realizando la consulta " + "SELECT a.idDiet, a.idFood, a.typeMeal, a.timeMeal, a.dateMeal, a.earnedCalories, a.quantity, b.nameES, b.calories, b.categoryES, b.proteins, b.carbohydrates, b.fats, b.water  FROM " + TABLE_FOODS + " b, "+ TABLE_DIETS +" a WHERE a.idFood = b.id AND dateMeal = '" + dateDiet + "' AND a.idDiet = '" + idDiet + "' AND a.typeMeal = '" + typeMeal + "';" );
-            //R.string.language Locale.getDefault().getLanguage();
-            if ("es".equals(Locale.getDefault().getLanguage())){
-                c = db.rawQuery("SELECT a.idDiet, a.idFood, a.typeMeal, a.timeMeal, a.dateMeal, a.earnedCalories, a.quantity, b.nameES, b.calories, b.categoryES, b.proteins, b.carbohydrates, b.fats, b.water  FROM " + TABLE_FOODS + " b, "+ TABLE_DIETS +" a WHERE a.idFood = b.id AND dateMeal = '" + dateDiet + "' AND a.idDiet = '" + idDiet + "' AND a.typeMeal = '" + typeMeal + "';", null);
-            } else {
-                c = db.rawQuery("SELECT a.idDiet, a.idFood, a.typeMeal, a.timeMeal, a.dateMeal, a.earnedCalories, a.quantity, b.nameEN, b.calories, b.categoryEN, b.proteins, b.carbohydrates, b.fats, b.water FROM " + TABLE_FOODS + " b, "+ TABLE_DIETS +" a WHERE a.idFood = b.id AND dateMeal = '" + dateDiet + "' AND a.idDiet = '" + idDiet + "'AND a.typeMeal = '" + typeMeal + "';", null);
-            }
-            Log.v("VERBOSE", "Consulta realizada hay datos " + c.getCount());
+            c = db.rawQuery("SELECT idDiet, idFood, typeMeal, timeMeal, dateMeal, earnedCalories, quantity FROM "+ TABLE_DIETS +" WHERE dateMeal = '" + dateDiet + "' AND idDiet = '" + idDiet + "' ORDER BY timeMeal;", null);
+            Log.v("VERBOSE", "Numero de filas de getDietByDateAndId " + c.getCount());
             if (c.moveToFirst()) {
-                diet = new Diets();
-                diet.setIdDiet(c.getInt(0));
-                diet.setIdFood(Integer.parseInt(c.getString(1)));
-                diet.setTypeMeal(c.getString(2));
-                Log.v("VERBOSE", "timeMeal de getDietByMeal" +c.getString(3));
-                diet.setTimeMeal(c.getString(3));
-                diet.setDateMeal(Integer.parseInt(c.getString(4)));
-                // looping through all rows and adding to list
                 do {
-                    Foods food = new Foods();
-                    food.setId(Integer.parseInt(c.getString(1)));
-                    food.setEarnedCalories(c.getDouble(5));
-                    food.setQuantity(c.getDouble(6));
-                    if ("es".equals(Locale.getDefault().getLanguage())){
-                        food.setNameES(c.getString(7));
-                        food.setCategoryES(c.getString(9));
-                    } else {
-                        food.setNameEN(c.getString(7));
-                        food.setCategoryEN(c.getString(9));
-                    }
-                    food.setCalories(c.getDouble(8));
-                    food.setProteins(c.getDouble(10));
-                    food.setCarbohydrates(c.getDouble(11));
-                    food.setFats(c.getDouble(12));
-                    food.setWater(c.getDouble(13));
-                    // Adding contact to list
-                   //arreglar to'hHh esto  diet.getListFoods().add(food);
+                Diets diet = new Diets();
+                diet.setIdDiet(c.getInt(0));
+                diet.setIdFood(c.getInt(1));
+                diet.setTypeMeal(c.getString(2));
+                diet.setTimeMeal(c.getString(3));
+                diet.setDateMeal(c.getInt(4));
+                diet.setEarnedCalories(c.getDouble(5));
+                diet.setQuantity(c.getInt(6));
+                listDiet.add(diet);
                 } while (c.moveToNext());
             }
         } catch (SQLiteException sqlError){
@@ -446,20 +422,19 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         }
 
         // return contact list
-        return diet;
+        return listDiet;
     }
 
     // Getting All Training
     public List<Diet> getAllDiets() {
         List<Diet> dietsList = new ArrayList<Diet>();
         Cursor cursor = null;
-        Log.v("VERBOSE", "getAllDiets");
+        Log.v("VERBOSE", "Entrando en getAllDiets");
         SQLiteDatabase db = this.getWritableDatabase();
 
         try{
-            Log.v("VERBOSE", "valor de la consulta: " + "SELECT * FROM " + TABLE_DIET + "; " );
             cursor = db.rawQuery("SELECT * FROM " + TABLE_DIET + ";", null);
-            Log.v("VERBOSE", "valor de la consulta: " +   cursor.getCount());
+            Log.v("VERBOSE", "Numero de filas de getAllDiets " + cursor.getCount());
             // looping through all rows and adding to list
             if (cursor.moveToFirst()) {
                 do {
@@ -486,7 +461,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
     public List<Foods> getAllFoodsByCategory(String category) {
         List<Foods> foodsList = new ArrayList<Foods>();
         Cursor cursor = null;
-        Log.v("VERBOSE", "getAllFoods");
+        Log.v("VERBOSE", "getAllFoodsByCategory");
         SQLiteDatabase db = this.getWritableDatabase();
 
         try{
@@ -496,7 +471,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
             } else {
                 cursor = db.rawQuery("SELECT * FROM " + TABLE_FOODS + " WHERE categoryEN = '" + category + "' ORDER BY nameEN;", null);
             }
-
+            Log.v("VERBOSE", "Numero de filas " + cursor.getCount());
             // looping through all rows and adding to list
             if (cursor.moveToFirst()) {
                 do {
@@ -511,7 +486,6 @@ public class DatabaseHandler extends SQLiteOpenHelper {
                     food.setCarbohydrates(cursor.getDouble(7));
                     food.setFats(cursor.getDouble(8));
                     food.setWater(cursor.getDouble(9));
-
 
                     // Adding contact to list
                     foodsList.add(food);
@@ -530,14 +504,14 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 
     public Foods getFood(int idFood) {
         Cursor cursor = null;
-        Log.v("VERBOSE", "getAllFoods");
+        Log.v("VERBOSE", "getFood");
         SQLiteDatabase db = this.getWritableDatabase();
         Foods food = null;
 
         try{
              cursor = db.rawQuery("SELECT * FROM " + TABLE_FOODS + " WHERE id = " + idFood + ";", null);
 
-
+            Log.v("VERBOSE", "Tiene que ser una" + cursor.getCount());
             // looping through all rows and adding to list
             if (cursor.moveToFirst()) {
                     food = new Foods();

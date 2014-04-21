@@ -11,13 +11,13 @@
     <string-array name="main_titles">
         <item>Entrenar</item>
         <item>Principal</item>
-        <item>Dieta</item>
+        <item>Mi dieta</item>
     </string-array>
 
     <string-array name="diet_titles">
         <item>Alimentos</item>
         <item>Mi dieta</item>
-        <item>Resumen</item>
+        <item>Dietas</item>
     </string-array>
 
     <string-array name="train_titles">

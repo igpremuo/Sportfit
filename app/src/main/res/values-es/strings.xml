@@ -2,7 +2,6 @@
 <resources>
 
     <string name="app_name">Sport fit</string>
-    <string name="language">ES</string>
 
     <!-- Navigation Drawer -->
     <string name="navigation_drawer_open">Open navigation drawer</string>
@@ -95,5 +94,12 @@
     <!-- Map Manager -->
     <string name="mapmangaer_start">Inicio</string>
     <string name="mapmangaer_end">Fin</string>
+
+    <!--Fragment Review Diets -->
+    <string name="buttonSelectionDiet">Seleccionar</string>
+    <string name="buttonSeeDiet">Ver</string>
+    <string name="createDietButton">Crear dieta</string>
+    <string name="day">Día </string>
+    <string name="quantity">Cantidad (g)</string>
 </resources>
 

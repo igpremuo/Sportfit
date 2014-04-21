@@ -14,8 +14,6 @@ public class Foods {
     private Double water;
     private String categoryES;
     private String categoryEN;
-    private Double earnedCalories;
-    private Double quantity;
 
     public Foods() {
         this.id = 0;
@@ -28,12 +26,10 @@ public class Foods {
         this.water = 0.0;
         this.categoryES = "";
         this.categoryEN = "";
-        this.earnedCalories = 0.0;
-        this.quantity = 0.0;
     }
 
 
-    public Foods(int id, String nameES, String nameEN, Double calories, Double proteins, Double carbohydrates, Double fats, Double water, String categoryES, String categoryEN, Double earnedCalories, Double quantity) {
+    public Foods(int id, String nameES, String nameEN, Double calories, Double proteins, Double carbohydrates, Double fats, Double water, String categoryES, String categoryEN) {
         this.id = id;
         this.nameES = nameES;
         this.nameEN = nameEN;
@@ -44,26 +40,7 @@ public class Foods {
         this.water = water;
         this.categoryES = categoryES;
         this.categoryEN = categoryEN;
-        this.earnedCalories = earnedCalories;
-        this.quantity = quantity;
     }
-
-    public Double getQuantity() {
-        return quantity;
-    }
-
-    public void setQuantity(Double quantity) {
-        this.quantity = quantity;
-    }
-
-    public Double getEarnedCalories() {
-        return earnedCalories;
-    }
-
-    public void setEarnedCalories(Double earnedCalories) {
-        this.earnedCalories = earnedCalories;
-    }
-
 
     public String getCategoryES() {
         return categoryES;

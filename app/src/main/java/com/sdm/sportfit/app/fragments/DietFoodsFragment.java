@@ -57,7 +57,6 @@ public class DietFoodsFragment extends Fragment implements AdapterView.OnItemSel
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int position, long arg) {
                 Foods foodsSelect = (Foods) mFoodsList.getAdapter().getItem(position);
-                //mostrar(rootView, foodsSelect);
                 Bundle extras = new Bundle();
                 extras.putInt("Food", foodsSelect.getId());
                 FoodDialog dialog = new FoodDialog();
