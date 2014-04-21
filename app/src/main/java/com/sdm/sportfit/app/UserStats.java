@@ -13,6 +13,7 @@ import android.widget.EditText;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.Spinner;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.sdm.sportfit.app.logic.Statistics;
@@ -25,10 +26,10 @@ import com.sdm.sportfit.app.persistence.JSONParser;
 
 public class UserStats extends Activity implements View.OnClickListener {
 
-    private EditText height,weight, imc, water, mg;
+    private EditText height,weight, imc, water, pgc, sizeNeck, sizeWaist;
     private RadioGroup radioGroup;
     private RadioButton genreMan, genreWoman;
-    private Spinner spinnerAge;
+    private Spinner spinnerAge, spinnerPhysicalType;
     private Button save;
     private DatabaseHandler dh;
     // Progress Dialog
@@ -52,6 +53,7 @@ public class UserStats extends Activity implements View.OnClickListener {
         dh = dh.getInstance(this);
 
         spinnerAge = (Spinner)findViewById(R.id.spinnerAge);
+        spinnerPhysicalType = (Spinner)findViewById(R.id.spinnerPhysicalType);
         height = (EditText)findViewById(R.id.height);
         weight = (EditText)findViewById(R.id.weight);
         radioGroup = (RadioGroup)findViewById(R.id.radiogroup);
@@ -59,34 +61,62 @@ public class UserStats extends Activity implements View.OnClickListener {
         genreWoman = (RadioButton)findViewById(R.id.radioButton2);
         imc = (EditText)findViewById(R.id.imc);
         water = (EditText)findViewById(R.id.water);
-        mg = (EditText)findViewById(R.id.mg);
+        pgc = (EditText)findViewById(R.id.pgc);
+        sizeNeck = (EditText)findViewById(R.id.sizeNeck);
+        sizeWaist = (EditText)findViewById(R.id.sizeWaist);
         statistic = new Statistics();
         save = (Button)findViewById(R.id.save);
         save.setOnClickListener(this);
 
-        ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this, R.array.ageArray,
+        ArrayAdapter<CharSequence> adapterAge = ArrayAdapter.createFromResource(this, R.array.ageArray,
                 R.layout.spinner_item);
+        adapterAge.setDropDownViewResource(R.layout.spinner_dropdown_item);
+        spinnerAge.setAdapter(adapterAge);
 
-        adapter.setDropDownViewResource(R.layout.spinner_dropdown_item);
-        spinnerAge.setAdapter(adapter);
+
+        ArrayAdapter<CharSequence> adapterPhysicalType = ArrayAdapter.createFromResource(this, R.array.physicalType,
+                R.layout.spinner_item);
+        adapterPhysicalType.setDropDownViewResource(R.layout.spinner_dropdown_item);
+        spinnerPhysicalType.setAdapter(adapterPhysicalType);
+
+        genreMan.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                TextView sizeWaistMan = (TextView) findViewById(R.id.TextViewSizeWaist);
+                sizeWaistMan.setText(R.string.sizeWaistMan);
+            }
+        });
+
+        genreWoman.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                TextView sizeWaistWoman = (TextView) findViewById(R.id.TextViewSizeWaist);
+                sizeWaistWoman.setText(R.string.sizeWaistWoman);
+            }
+        });
+
     }
 
     @Override
     public void onClick(View v) {
         // TODO Auto-generated method stub
-        boolean requiredHeight = false, requiredWeight = false;
+        boolean requiredHeight, requiredWeight;
         try{
             int selectedId = radioGroup.getCheckedRadioButtonId();
             String genre = "";
-            if (selectedId == 1) genre = "Man";
-            else genre = "Woman";
+            if (selectedId == 1) {
+                genre = "Man";
+            } else {
+                genre = "Woman";
+            }
+
             statistic.setGender(genre);
             //Select age
             statistic.setAge(Integer.parseInt((String) spinnerAge.getSelectedItem()));
             //Select height obligatorio
             Log.v("VERBOSE", "height " + height.getText().toString());
             if (!"".equals(height.getText().toString())) {
-                statistic.setHeight(Double.parseDouble(height.getText().toString()));
+                statistic.setHeight(Integer.parseInt(height.getText().toString()));
                 requiredHeight = true;
             } else {
                 Toast.makeText(UserStats.this, R.string.fieldRequired, Toast.LENGTH_LONG).show();
@@ -112,10 +142,18 @@ public class UserStats extends Activity implements View.OnClickListener {
             if (!"".equals(water.getText().toString()))
                 statistic.setWater(Double.parseDouble(water.getText().toString()));
             Log.v("VERBOSE", "water " + statistic.getWater());
-            Log.v("VERBOSE", "mg " + mg.getText().toString());
-            if (!"".equals(mg.getText().toString()))
-                statistic.setMg(Double.parseDouble(mg.getText().toString()));
-            Log.v("VERBOSE", "mg " + statistic.getMg());
+            Log.v("VERBOSE", "pgc " + pgc.getText().toString());
+            if (!"".equals(pgc.getText().toString()))
+                statistic.setPgc(Double.parseDouble(pgc.getText().toString()));
+            Log.v("VERBOSE", "pgc " + statistic.getPgc());
+            Log.v("VERBOSE", "sizeNeck " + sizeNeck.getText().toString());
+            if (!"".equals(sizeNeck.getText().toString()))
+                statistic.setSizeNeck(Integer.parseInt(sizeNeck.getText().toString()));
+            Log.v("VERBOSE", "sizeNeck " + statistic.getSizeNeck());
+            Log.v("VERBOSE", "sizeWaist " + sizeWaist.getText().toString());
+            if (!"".equals(sizeWaist.getText().toString()))
+                statistic.setSizeWaist(Integer.parseInt(sizeWaist.getText().toString()));
+            Log.v("VERBOSE", "sizeWaist " + statistic.getSizeWaist());
             dh.addStatistics(statistic);
             if (requiredWeight && requiredHeight) {
                 Intent i = new Intent(UserStats.this, MainActivity.class);
@@ -126,6 +164,8 @@ public class UserStats extends Activity implements View.OnClickListener {
             Toast.makeText(UserStats.this, R.string.notSaved, Toast.LENGTH_LONG).show();
         }
     }
+
+
 
     class CreateStatsUser extends AsyncTask<String, String, String> {
 

@@ -99,6 +99,24 @@
         </TableRow>
 
         <TableRow>
+        <CheckBox
+
+            android:id="@+id/remember"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginLeft="40dp"
+            android:layout_marginRight="40dp"
+            android:layout_marginTop="10dp"
+            android:ems="10"
+            android:text="@string/remember"
+            android:checked="true"
+                />
+
+
+
+        </TableRow>
+
+        <TableRow>
 
             <Button
 

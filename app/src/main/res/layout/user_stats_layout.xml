@@ -89,6 +89,61 @@
         </TableRow>
 
         <TableRow
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent">
+
+            <TextView
+
+                android:id="@+id/textViewImc"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_marginLeft="40dp"
+                android:layout_marginRight="40dp"
+                android:layout_marginTop="30dp"
+                android:text="@string/imc"
+                android:layout_weight="1" />
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:text="@string/physicalType"
+                android:id="@+id/textViewPhysicalType"
+                android:layout_marginLeft="40dp"
+                android:layout_marginRight="40dp"
+                android:layout_weight="1"
+                android:layout_marginTop="20dp" />
+        </TableRow>
+
+        <TableRow
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent">
+
+            <EditText
+
+                android:id="@+id/imc"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_marginLeft="40dp"
+                android:layout_marginRight="40dp"
+                android:layout_marginTop="0dp"
+                android:inputType="text|numberDecimal"
+                android:ems="10"
+                android:layout_weight="1"
+                android:numeric="decimal"
+                android:maxLength="2"/>
+
+            <Spinner
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:id="@+id/spinnerPhysicalType"
+                android:layout_weight="1"
+                android:spinnerMode="dialog"
+                android:layout_marginLeft="40dp"
+                android:layout_marginRight="40dp" />
+
+        </TableRow>
+
+        <TableRow
             android:layout_width="match_parent"
             android:layout_height="fill_parent">
 
@@ -142,40 +197,40 @@
         </TableRow>
 
         <TableRow>
-            <TextView
 
-                android:id="@+id/textView1"
+            <TextView
                 android:layout_width="0dp"
-                android:layout_height="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/pgc"
+                android:id="@+id/textViewPgc"
+                android:layout_marginTop="20dp"
                 android:layout_marginLeft="40dp"
                 android:layout_marginRight="40dp"
-                android:layout_marginTop="30dp"
-                android:text="@string/imc"
                 android:layout_weight="1" />
+
             <TextView
 
-                android:id="@+id/TextView01"
+                android:id="@+id/TextViewWater"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_marginLeft="40dp"
                 android:layout_marginRight="40dp"
-                android:layout_marginTop="30dp"
+                android:layout_marginTop="20dp"
                 android:text="@string/water"
                 android:layout_weight="1"
                 />
         </TableRow>
 
         <TableRow>
-            <EditText
 
-                android:id="@+id/imc"
+            <EditText
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
-                android:layout_marginLeft="40dp"
+                android:id="@+id/pgc"
                 android:layout_marginRight="40dp"
                 android:layout_marginTop="0dp"
+                android:layout_marginLeft="40dp"
                 android:inputType="text|numberDecimal"
-                android:ems="10"
                 android:layout_weight="1"
                 android:numeric="decimal"
                 android:maxLength="2"/>
@@ -200,26 +255,55 @@
             android:layout_width="match_parent"
             android:layout_height="fill_parent">
 
+
             <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="@string/mg"
-                android:id="@+id/textViewMg"
-                android:layout_marginTop="20dp"
+
+                android:id="@+id/TextViewSizeNeck"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
                 android:layout_marginLeft="40dp"
                 android:layout_marginRight="40dp"
+                android:layout_marginTop="20dp"
+                android:text="@string/sizeNeck"
+                android:layout_weight="1" />
+
+            <TextView
+
+                android:id="@+id/TextViewSizeWaist"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_marginLeft="40dp"
+                android:layout_marginRight="40dp"
+                android:layout_marginTop="20dp"
+                android:text="@string/sizeWaistMan"
                 android:layout_weight="1" />
         </TableRow>
 
         <TableRow>
 
             <EditText
-                android:layout_width="match_parent"
+
+                android:id="@+id/sizeNeck"
+                android:layout_width="0dp"
                 android:layout_height="match_parent"
-                android:id="@+id/mg"
+                android:layout_marginLeft="40dp"
                 android:layout_marginRight="40dp"
                 android:layout_marginTop="0dp"
+                android:ems="10"
+                android:inputType="text|numberDecimal"
+                android:layout_weight="1"
+                android:numeric="decimal"
+                android:maxLength="2"/>
+
+            <EditText
+
+                android:id="@+id/sizeWaist"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
                 android:layout_marginLeft="40dp"
+                android:layout_marginRight="40dp"
+                android:layout_marginTop="0dp"
+                android:ems="10"
                 android:inputType="text|numberDecimal"
                 android:layout_weight="1"
                 android:numeric="decimal"

@@ -51,6 +51,7 @@
     <string name="mail">Mail</string>
     <string name="attemptingLogin">Attempting login...</string>
     <string name="internetRequired">Requiere conexión a internet</string>
+    <string name="remember">Remember login</string>
 
 
     <!-- user stats texts -->
@@ -61,12 +62,17 @@
     <string name="genre">*Genre</string>
     <string name="imc">Body mass ratio</string>
     <string name="water">Body water</string>
-    <string name="mg">Body fats</string>
+    <string name="pgc">Body fats</string>
     <string name="save">Guardar</string>
     <string name="man">Men</string>
     <string name="woman">Woman</string>
     <string name="notSaved">Not saved</string>
     <string name="fieldRequired">Field required</string>
+    <string name="physicalType">Activity level</string>
+    <string name="sizeNeck">Neck size</string>
+    <string name="sizeWaistMan">Waist size</string>
+    <string name="sizeWaistWoman">Hips size</string>
+
 
     <!-- Messages error -->
     <!-- Errors DatabaseHandler -->

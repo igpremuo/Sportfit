@@ -14,6 +14,7 @@ import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
+import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.Toast;
 
@@ -37,13 +38,13 @@ public class LoginActivity extends Activity implements OnClickListener{
 
     private EditText mail, pass;
     private Button mSubmit, mRegister;
+    private CheckBox remember;
     private DatabaseHandler dh;
     private SharedPreferences _prefs;
     private SharedPreferences.Editor _prefsEditor;
     private boolean foodChecked;
     private ConnectionDetector cd;
-    // Progress Dialog
-   // private ProgressDialog pDialog;
+
 
     // JSON parser class
     JSONParser jsonParser = new JSONParser();
@@ -68,12 +69,18 @@ public class LoginActivity extends Activity implements OnClickListener{
 
         mail = (EditText)findViewById(R.id.mail);
         pass = (EditText)findViewById(R.id.password);
+        remember = (CheckBox)findViewById(R.id.remember);
 
         mSubmit = (Button)findViewById(R.id.login);
         mRegister = (Button)findViewById(R.id.register);
 
         mSubmit.setOnClickListener(this);
         mRegister.setOnClickListener(this);
+
+        _prefs = getSharedPreferences("myPreferences", MODE_PRIVATE);
+        _prefsEditor = _prefs.edit();
+        mail.setText(_prefs.getString("email",""));
+        pass.setText(_prefs.getString("password",""));
 
         Log.v("VERBOSE", "Creando los contenidos de la db");
         cd = new ConnectionDetector(getApplicationContext());
@@ -83,7 +90,9 @@ public class LoginActivity extends Activity implements OnClickListener{
                 if(!dh.existsDataInTable("Foods")) new AttemptFoods().execute();
                 if(!dh.existsDataInTable("Diet")) new AttemptDiet().execute();
                 if(!dh.existsDataInTable("Diets")) new AttemptDiets().execute();
+                Log.v("VERBOSE", "Finalizao los hilos deberia ser false " +foodChecked);
                 foodChecked = true;
+                Log.v("VERBOSE", "Finalizao los hilos deberia ser true " +foodChecked);
             } else {
                 Toast.makeText(this, "You need internet connection", Toast.LENGTH_LONG).show();
             }
@@ -92,9 +101,9 @@ public class LoginActivity extends Activity implements OnClickListener{
         }
 
         /**** Quitar esto para realizar el login ****/
-        Intent i = new Intent(LoginActivity.this, MainActivity.class);
-        finish();
-        startActivity(i);
+        //Intent i = new Intent(LoginActivity.this, MainActivity.class);
+       //finish();
+        //startActivity(i);
     }
 
     @Override
@@ -110,12 +119,16 @@ public class LoginActivity extends Activity implements OnClickListener{
                     else {
                         try {
                             int logued = dh.checkLogin(mail.getText().toString().trim(), pass.getText().toString().trim());
-                            Log.d("User logeado!", "" + logued);
-                            _prefs = getSharedPreferences("myPreferences", MODE_PRIVATE);
-                            _prefsEditor = _prefs.edit();
-                            _prefsEditor.putInt("idUser", logued);
-                            _prefsEditor.commit();
                             if (logued > 0) {
+                                _prefsEditor.putInt("idUser", logued);
+                               if(remember.isChecked()) {
+                                   _prefsEditor.putString("email",mail.getText().toString().trim());
+                                   _prefsEditor.putString("password",pass.getText().toString().trim());
+                               }else{
+                                   _prefsEditor.putString("email","");
+                                   _prefsEditor.putString("password","");
+                               }
+                                _prefsEditor.commit();
                                 Intent i = new Intent(LoginActivity.this, MainActivity.class);
                                 finish();
                                 startActivity(i);
@@ -151,7 +164,8 @@ public class LoginActivity extends Activity implements OnClickListener{
 
     class AttemptLogin extends AsyncTask<String, String, String> {
         List<NameValuePair> params =  new ArrayList<NameValuePair>();
-        ProgressDialog pDialog;
+        // Progress Dialog
+        private ProgressDialog pDialog;
         /**
          * Before starting background thread Show Progress Dialog
          * */
@@ -199,6 +213,15 @@ public class LoginActivity extends Activity implements OnClickListener{
                     _prefs = getSharedPreferences("myPreferences", MODE_PRIVATE);
                     _prefsEditor = _prefs.edit();
                     _prefsEditor.putInt("idUser", idUser);
+                    if(remember.isChecked()) {
+                        _prefsEditor.putString("email",mail.getText().toString().trim());
+                        _prefsEditor.putString("password",pass.getText().toString().trim());
+                    }else{
+                        _prefsEditor.putString("email","");
+                        _prefsEditor.putString("password","");
+                    }
+                    _prefsEditor.commit();
+                    _prefsEditor.putInt("idUser", idUser);
                     _prefsEditor.commit();
                     Intent i = new Intent(LoginActivity.this, MainActivity.class);
                     finish();
@@ -230,7 +253,8 @@ public class LoginActivity extends Activity implements OnClickListener{
     }
 
     class AttemptFoods extends AsyncTask<String, String, String> {
-        ProgressDialog pDialog;
+        // Progress Dialog
+        private ProgressDialog pDialog;
         @Override
         protected void onPreExecute() {
             super.onPreExecute();
@@ -248,13 +272,13 @@ public class LoginActivity extends Activity implements OnClickListener{
             JSONObject jsonFood = null;
             //Foods food = null;
             try {
-                Log.d("request!", "starting");
+                Log.v("request!", "starting food");
                 // getting product details by making HTTP request
                 JSONObject json = jsonParser.makeHttpRequest(
                         FOODS_URL, "GET", null);
 
                 // check your log for json response
-                Log.d("Foods attempt", json.toString());
+                Log.v("Foods attempt", json.toString());
 
                 // json success tag
                 success = json.getString("error");
@@ -302,8 +326,8 @@ public class LoginActivity extends Activity implements OnClickListener{
     }
 
     class AttemptDiet extends AsyncTask<String, String, String> {
-        ProgressDialog pDialog;
-
+        // Progress Dialog
+        private ProgressDialog pDialog;
         @Override
         protected void onPreExecute() {
             super.onPreExecute();
@@ -321,13 +345,13 @@ public class LoginActivity extends Activity implements OnClickListener{
             JSONObject jsonDiet = null;
             //Foods food = null;
             try {
-                Log.d("request!", "starting");
+                Log.v("request!", "starting diet");
                 // getting product details by making HTTP request
                 JSONObject json = jsonParser.makeHttpRequest(
                         DIET_URL, "GET", null);
 
                 // check your log for json response
-                Log.d("Foods attempt", json.toString());
+                Log.v("Diet attempt", json.toString());
 
                 // json success tag
                 success = json.getString("error");
@@ -339,12 +363,11 @@ public class LoginActivity extends Activity implements OnClickListener{
                         diet.setNameDiet(jsonDiet.getString("nameDiet"));
                         diet.setDescription(jsonDiet.getString("description"));
                         diet.setTotalCalories(jsonDiet.getDouble("totalCalories"));
-
-                        dh.addDiet(diet);
+                        int idDiet = dh.addDiet(diet);
                     }
                     return json.getString(TAG_MESSAGE);
                 } else {
-                    Log.d("Login Failure!", json.getString(TAG_MESSAGE));
+                    Log.v("Diet Failure!", json.getString(TAG_MESSAGE));
                     return json.getString(TAG_MESSAGE);
                 }
             } catch (JSONException e) {
@@ -369,8 +392,8 @@ public class LoginActivity extends Activity implements OnClickListener{
     }
 
     class AttemptDiets extends AsyncTask<String, String, String> {
-        ProgressDialog pDialog;
-
+        // Progress Dialog
+        private ProgressDialog pDialog;
         @Override
         protected void onPreExecute() {
             super.onPreExecute();
@@ -384,21 +407,21 @@ public class LoginActivity extends Activity implements OnClickListener{
         @Override
         protected String doInBackground(String... args) {
             // TODO Auto-generated method stub
-            String success;
+            String error;
             JSONObject jsonDiets = null;
             //Foods food = null;
             try {
-                Log.d("request!", "starting");
+                Log.v("request!", "starting diets");
                 // getting product details by making HTTP request
                 JSONObject json = jsonParser.makeHttpRequest(
                         DIETS_URL, "GET", null);
 
                 // check your log for json response
-                Log.d("Foods attempt", json.toString());
+                Log.v("Diets attempt", json.toString());
 
                 // json success tag
-                success = json.getString("error");
-                if (success == "false") {
+                error = json.getString("error");
+                if ("false".equals(error)) {
                     for (int i = 0; i < json.getJSONArray("message").length(); i++) {
                         jsonDiets = (JSONObject) json.getJSONArray("message").get(i);
                         Diets diets = new Diets();
@@ -410,10 +433,12 @@ public class LoginActivity extends Activity implements OnClickListener{
                         diets.setEarnedCalories(jsonDiets.getDouble("earnedCalories"));
                         diets.setQuantity(jsonDiets.getInt("quantity"));
                         dh.addDiets(diets);
+                        Log.v("VERBOSE", "Termino la insercion  a la base de datos");
                     }
+                    Log.v("VERBOSE", "Termino el for");
                     return json.getString(TAG_MESSAGE);
                 } else {
-                    Log.d("Login Failure!", json.getString(TAG_MESSAGE));
+                    Log.d("Diets Failure!", json.getString(TAG_MESSAGE));
                     return json.getString(TAG_MESSAGE);
                 }
             } catch (JSONException e) {

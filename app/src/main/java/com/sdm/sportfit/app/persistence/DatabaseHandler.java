@@ -81,11 +81,13 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         db.execSQL("CREATE TABLE IF NOT EXISTS " + TABLE_DIET + " (idDiet INTEGER PRIMARY KEY AUTOINCREMENT, nameDiet VARCHAR(20) NOT NULL , description VARCHAR(200) NOT NULL, totalCalories DOUBLE(8,2) NOT NULL);");
         db.execSQL("CREATE TABLE IF NOT EXISTS " + TABLE_DIETS + " (idDiet INT(9) NOT NULL , idFood INT(11) NOT NULL , typeMeal VARCHAR( 50 ) NOT NULL , timeMeal VARCHAR(30) NOT NULL , dateMeal INTEGER(2) NOT NULL, earnedCalories DOUBLE( 4,2 ) NOT NULL, quantity int( 4 ), PRIMARY KEY (idDiet , idFood, typeMeal, dateMeal), FOREIGN KEY (idDiet) REFERENCES Diet (idDiet) ON DELETE CASCADE ON UPDATE CASCADE);");
         db.execSQL("CREATE TABLE IF NOT EXISTS " + TABLE_FOODS + " (id INT(4) PRIMARY KEY, nameES VARCHAR(200) NOT NULL, nameEN VARCHAR(200) NOT NULL, categoryES VARCHAR(200) NOT NULL, categoryEN VARCHAR(200) NOT NULL,calories DOUBLE NOT NULL, proteins DOUBLE NOT NULL, carbohydrates double NOT NULL, fats double NOT NULL, water double NOT NULL);");
-        db.execSQL("CREATE TABLE IF NOT EXISTS " + TABLE_STATISTICS + " (idStatistic int(5), idUser INT( 11 ) NOT NULL ,dateStatistics timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ,weight DOUBLE( 3, 2 ) NOT NULL ,age INT( 3 ) NOT NULL ,sex VARCHAR(50) NOT NULL ,height DOUBLE( 4, 2 ) NOT NULL ,imc DOUBLE( 2, 2 ) NOT NULL ,water DOUBLE( 2, 2 ) NOT NULL , PRIMARY KEY (  idStatistic ,  idUser ,  dateStatistics ), FOREIGN KEY (idUser) REFERENCES users (id) ON DELETE CASCADE ON UPDATE CASCADE);");
+        db.execSQL("CREATE TABLE IF NOT EXISTS " + TABLE_STATISTICS + " (idStatistic int(5), idUser INT( 11 ) NOT NULL ,dateStatistics timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ,weight DOUBLE( 3, 2 ) NOT NULL ,age INT( 3 ) NOT NULL, sex VARCHAR(50) NOT NULL, height INT( 3 ) NOT NULL, imc DOUBLE( 2, 2 ), water DOUBLE( 2, 2 ), pgc DOUBLE( 2, 2 ), sizeNeck INT ( 3 ), sizeWaist INT ( 3 ), physicalType VARCHAR(20) NOT NULL,  PRIMARY KEY (  idStatistic ,  idUser ,  dateStatistics ), FOREIGN KEY (idUser) REFERENCES users (id) ON DELETE CASCADE ON UPDATE CASCADE);");
         db.execSQL("CREATE TABLE IF NOT EXISTS " + TABLE_POINTS + " (id INTEGER  PRIMARY KEY AUTOINCREMENT, longitude decimal(18,14) NOT NULL, latitude decimal(18,14) NOT NULL, speed double NOT NULL, idTraining INTEGER NOT NULL, FOREIGN KEY (idTraining) REFERENCES Training (idTraining) ON DELETE CASCADE ON UPDATE CASCADE);");
         db.execSQL("CREATE TABLE IF NOT EXISTS " + TABLE_TRAINING + "  (idTraining INTEGER PRIMARY KEY AUTOINCREMENT, idUser INTEGER, typeTraining VARCHAR (50) NOT NULL, caloriesBurned double NOT NULL, duration long NOT NULL, averageSpeed double NOT NULL, averageRate double NOT NULL, distance double NOT NULL, dateTraining DATETIME DEFAULT CURRENT_TIMESTAMP, FOREIGN KEY (idUser) REFERENCES users (id) ON DELETE CASCADE ON UPDATE CASCADE);");
         db.execSQL("CREATE TABLE IF NOT EXISTS " + TABLE_USERS + " (id INTEGER  PRIMARY KEY, name varchar(250) DEFAULT NULL, email varchar(255) UNIQUE NOT NULL, password text NOT NULL, api_key varchar(32) NOT NULL, created_at timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP, locationx decimal(18,14) DEFAULT NULL,  locationy decimal(18,14) DEFAULT NULL, picture varchar(200) DEFAULT NULL);");
-                Log.v("VERBOSE", "Tablas creadas");
+      //      db.execSQL("INSERT INTO `Statistics` VALUES (1, 2, '2014-04-21 19:45:00', 70.00, 25, 'Man', 175.00, 12.00, 19.00, 48.00, 30, 85, 'Sedentary');");
+       //             db.execSQL("INSERT INTO Statistics VALUES (2, 2, '2014-04-21 19:47:13', 68.00, 25, 'Man', 175.00, 11.00, 17.00, 45.00, 30, 85, 'Sedentary');");
+            Log.v("VERBOSE", "Tablas creadas");
         } catch (SQLiteException sqlError){
             Toast toast = Toast.makeText(this.myContext, R.string.createError, Toast.LENGTH_SHORT);
             toast.show();
@@ -120,8 +122,9 @@ public class DatabaseHandler extends SQLiteOpenHelper {
     public boolean existsDataInTable(String nameTable){
         SQLiteDatabase db = this.getReadableDatabase();
         boolean exists = false;
-        Log.v("VERBOSE", "Yabla comprobacion " + nameTable );
+        Log.v("VERBOSE", "Tabla comprobacion " + nameTable );
         Cursor c = db.rawQuery("SELECT * FROM " + nameTable + ";", null);
+        Log.v("VERBOSE", "Tabla comprobacion " + nameTable + "numero de filas "  + c.getCount() );
         if (c.getCount() > 0){
             exists = true;
         }
@@ -255,8 +258,10 @@ public class DatabaseHandler extends SQLiteOpenHelper {
     // Add new Diets comprobar que guarde la fecha como toca
     public void addDiets(Diets diet) {
         SQLiteDatabase db = this.getWritableDatabase();
+        Log.v("Verbose", "Añadiendo dieta a la base de datos");
         try{
             ContentValues values = new ContentValues();
+            Log.v("Verbose", "Valor de getiddiet" + diet.getIdDiet() + " " + diet.getIdFood());
             values.put("idDiet", diet.getIdDiet());
             values.put("idFood", diet.getIdFood());
             values.put("typeMeal", diet.getTypeMeal());
@@ -283,7 +288,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         int rowIdDiet = -1;
         try{
             ContentValues values = new ContentValues();
-            values.put("idDiet", diet.getIdDiet());
+            //values.put("idDiet", diet.getIdDiet());
             values.put("nameDiet", diet.getNameDiet());
             values.put("description", diet.getDescription());
             values.put("totalCalories", diet.getTotalCalories());
@@ -314,6 +319,10 @@ public class DatabaseHandler extends SQLiteOpenHelper {
             values.put("height", statistic.getHeight());
             values.put("imc", statistic.getImc());
             values.put("water", statistic.getWater());
+            values.put("pgc", statistic.getPgc());
+            values.put("sizeNeck", statistic.getSizeNeck());
+            values.put("sizeWaist", statistic.getSizeWaist());
+            values.put("physicalType", statistic.getPhysicalType());
 
             // Inserting Row
             db.insert(TABLE_STATISTICS, null, values);
@@ -342,6 +351,8 @@ public class DatabaseHandler extends SQLiteOpenHelper {
             sqlError.getStackTrace();
             Toast toast = Toast.makeText(this.myContext, R.string.selectError, Toast.LENGTH_SHORT);
             toast.show();
+        } finally {
+            db.close();
         }
         return 0;
     }
@@ -536,6 +547,86 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         // return contact list
         return food;
     }
+
+    public Statistics getLastStatistic(int idUser) {
+        Cursor cursor = null;
+        Log.v("VERBOSE", "getFood");
+        SQLiteDatabase db = this.getWritableDatabase();
+        Statistics statistics = null;
+
+        try{
+            cursor = db.rawQuery("SELECT MAX(dateStatistics), idStatistics, idUser, weight, age, sex, height, imc, pgc, water, sizeNeck, sizeWaist, physicalType FROM " + TABLE_STATISTICS + " WHERE idUser = " + idUser + ";", null);
+
+            Log.v("VERBOSE", "Tiene que ser una" + cursor.getCount());
+            // looping through all rows and adding to list
+            if (cursor.moveToFirst()) {
+
+                // (idStatistic int(5), idUser INT( 11 ) NOT NULL ,dateStatistics timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ,weight DOUBLE( 3, 2 ) NOT NULL ,
+                // age INT( 3 ) NOT NULL, sex VARCHAR(50) NOT NULL, height INT( 3 ) NOT NULL,
+                // imc DOUBLE( 2, 2 ), water DOUBLE( 2, 2 ), pgc DOUBLE( 2, 2 ), sizeNeck INT ( 3 ), sizeWaist INT ( 3 ), physicalType VARCHAR(20) NOT NULL
+
+
+                statistics = new Statistics();
+                statistics.setDateStatistics(cursor.getString(0));
+                statistics.setIdStatistics(Integer.parseInt(cursor.getString(1)));
+                statistics.setIdUser(Integer.parseInt(cursor.getString(2)));
+                statistics.setWeight((Double.parseDouble(cursor.getString(3))));
+                statistics.setAge((cursor.getInt(4)));
+                statistics.setGender(cursor.getString(5));
+                statistics.setHeight(cursor.getInt(6));
+                statistics.setImc(cursor.getDouble(7));
+                statistics.setPgc(cursor.getDouble(8));
+                statistics.setWater(cursor.getDouble(9));
+                statistics.setSizeNeck(cursor.getInt(10));
+                statistics.setSizeWaist(cursor.getInt(11));
+                statistics.setPhysicalType(cursor.getString(12));
+            }
+        } catch (SQLiteException sqlError){
+            Toast toast = Toast.makeText(this.myContext, R.string.selectError, Toast.LENGTH_SHORT);
+            toast.show();
+        } finally{
+            db.close(); // Closing database connection
+        }
+
+        // return contact list
+        return statistics;
+    }
+
+    // Add new User
+    public Users getUser(int idUser) {
+        SQLiteDatabase db = this.getReadableDatabase();
+        Users user = null;
+        Cursor cursor = null;
+        try{  //        db.execSQL("CREATE TABLE IF NOT EXISTS " + TABLE_USERS + " (id INTEGER  PRIMARY KEY, name varchar(250) DEFAULT NULL, email varchar(255) UNIQUE NOT NULL, password text NOT NULL, api_key varchar(32) NOT NULL, created_at timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP, locationx decimal(18,14) DEFAULT NULL,  locationy decimal(18,14) DEFAULT NULL, picture varchar(200) DEFAULT NULL);");
+            Log.v("VERBOSE", "Consulta de devolver usuario " + "SELECT id, name, email, password_hash, api_key, created_at, locationx, locationy, picture FROM " + TABLE_USERS + " WHERE id = " + idUser + ";");
+            cursor = db.rawQuery("SELECT id, name, email, password_hash, api_key, created_at, locationx, locationy, picture FROM " + TABLE_USERS + " WHERE id = " + idUser + ";", null);
+            Log.v("VERBOSE", "Filas " + cursor.getCount());
+
+            if (cursor.moveToFirst()) {
+                user = new Users();
+                user.setId(cursor.getInt(0));
+                user.setName(cursor.getString(1));
+                user.setEmail(cursor.getString(2));
+                user.setPassword(cursor.getString(3));
+                user.setApi_key(cursor.getString(4));
+                user.setCreated_at(cursor.getString(5));
+                user.setLocationx(cursor.getDouble(6));
+                user.setLocationy(cursor.getDouble(7));
+                user.setPicture(cursor.getString(8));
+            }
+
+
+        } catch (SQLiteException sqlError){
+            Toast toast = Toast.makeText(this.myContext, R.string.dropError, Toast.LENGTH_SHORT);
+            toast.show();
+        } finally{
+            db.close(); // Closing database connection
+        }
+
+        return user;
+
+    }
+
 
     // Getting Training
     public Trainings getTraining(long idTraining) {

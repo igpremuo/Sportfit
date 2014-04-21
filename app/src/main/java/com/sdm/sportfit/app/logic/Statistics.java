@@ -1,5 +1,7 @@
 package com.sdm.sportfit.app.logic;
 
+import java.util.Locale;
+
 /**
  * Created by sdm on 9/04/14.
  */
@@ -11,10 +13,28 @@ public class Statistics {
     private Double weight;
     private int age;
     private String gender;
-    private Double height;
+    private int height;
     private Double imc;
     private Double water;
-    private Double mg;
+    private Double pgc;
+    private int sizeNeck;
+    private int sizeWaist;
+    private PhysicalType physicalType;
+
+    public enum PhysicalType {
+        SEDENTARY("Sedentary"), MODERATE("Moderate"), ACTIVE("Active"), SEDENTARIO("Sedentario"), MODERADO("Moderado"), ACTIVO("Activo");
+
+        String mPhysicalType;
+
+        PhysicalType(String physicalType) {
+            mPhysicalType = physicalType;
+        }
+
+        @Override
+        public String toString() {
+            return String.valueOf(mPhysicalType);
+        }
+    };
 
     public Statistics() {
         this.idStatistics = 0;
@@ -23,14 +43,17 @@ public class Statistics {
         this.weight = 0.0;
         this.age = 0;
         this.gender = "";
-        this.height = 0.0;
+        this.height = 00;
         this.imc = 0.0;
         this.water = 0.0;
-        this.mg = 0.0;
+        this.pgc = 0.0;
+        this.sizeNeck = 0;
+        this.sizeWaist = 0;
+        this.physicalType = null;
     }
 
 
-    public Statistics(int idStatistics, int idUser, String dateStatistics, Double weight, int age, String gender, Double height, Double imc, Double water, Double mg) {
+    public Statistics(int idStatistics, int idUser, String dateStatistics, Double weight, int age, String gender, int height, Double imc, Double water, Double pgc, int sizeNeck, int sizeWaist, String physicalType) {
         this.idStatistics = idStatistics;
         this.idUser = idUser;
         this.dateStatistics = dateStatistics;
@@ -40,8 +63,27 @@ public class Statistics {
         this.height = height;
         this.imc = imc;
         this.water = water;
-        this.mg = mg;
+        this.pgc = pgc;
+        this.sizeNeck = sizeNeck;
+        this.sizeWaist = sizeWaist;
+        this.physicalType = getPhysicalType(physicalType);
 
+    }
+
+    public int getSizeNeck() {
+        return sizeNeck;
+    }
+
+    public void setSizeNeck(int sizeNeck) {
+        this.sizeNeck = sizeNeck;
+    }
+
+    public int getSizeWaist() {
+        return sizeWaist;
+    }
+
+    public void setSizeWaist(int sizeWaist) {
+        this.sizeWaist = sizeWaist;
     }
 
     public int getIdStatistics() {
@@ -92,11 +134,11 @@ public class Statistics {
         this.gender = gender;
     }
 
-    public Double getHeight() {
+    public int getHeight() {
         return height;
     }
 
-    public void setHeight(Double height) {
+    public void setHeight(int height) {
         this.height = height;
     }
 
@@ -112,8 +154,38 @@ public class Statistics {
 
     public void setWater(Double water) { this.water = water; }
 
-    public Double getMg() { return mg;  }
+    public Double getPgc() { return pgc;  }
 
-    public void setMg(Double mg) { this.mg = mg; }
+    public void setPgc(Double pgc) { this.pgc = pgc; }
+
+    public String getPhysicalType() {
+        return physicalType.toString();
+    }
+
+    public void setPhysicalType(String physicalType) {
+        this.physicalType = getPhysicalType(physicalType);
+    }
+
+
+    public PhysicalType getPhysicalType(String physicalType) {
+        if (physicalType.equals(PhysicalType.SEDENTARY.toString()))
+            return PhysicalType.SEDENTARY;
+        if (physicalType.equals(PhysicalType.MODERATE.toString()))
+            return PhysicalType.MODERATE;
+        if (physicalType.equals(PhysicalType.ACTIVE.toString()))
+            return PhysicalType.ACTIVE;
+        if (physicalType.equals(PhysicalType.SEDENTARIO.toString()))
+            return PhysicalType.SEDENTARIO;
+        if (physicalType.equals(PhysicalType.MODERADO.toString()))
+            return PhysicalType.MODERADO;
+        if (physicalType.equals(PhysicalType.ACTIVO.toString()))
+            return PhysicalType.ACTIVO;
+
+        if ("es".equals(Locale.getDefault().getLanguage())){
+            return PhysicalType.SEDENTARIO;
+        } else {
+            return PhysicalType.SEDENTARY;
+        }
+    }
 
 }

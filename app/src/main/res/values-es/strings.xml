@@ -57,6 +57,8 @@
     <string name="mail">Mail</string>
     <string name="attemptingLogin">Iniciando sesión...</string>
     <string name="internetRequired">Requiere conexión a internet</string>
+    <string name="remember">Recordar login</string>
+
 
     <!-- user stats texts -->
     <string name="userStatsDescription">Complete todos los datos que conozca. Los campos con * son necesarios.</string>
@@ -66,12 +68,16 @@
     <string name="genre">*Género</string>
     <string name="imc">Índice de masa corporal</string>
     <string name="water">Cantidad de agua corporal</string>
-    <string name="mg">Materia grasa corporal</string>
+    <string name="pgc">Materia grasa corporal</string>
     <string name="save">Guardar</string>
     <string name="man">Hombre</string>
     <string name="woman">Mujer</string>
     <string name="notSaved">No guardado</string>
     <string name="fieldRequired">Campo obligatorio</string>
+    <string name="physicalType">Nivel de actividad</string>
+    <string name="sizeNeck">Tamaño cuello</string>
+    <string name="sizeWaistMan">Tamaño cintura</string>
+    <string name="sizeWaistWoman">Tamaño caderas</string>
 
     <!-- Messages error-->
     <!-- Errors DatabaseHandler-->
