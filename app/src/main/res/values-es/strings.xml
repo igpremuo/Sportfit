@@ -78,6 +78,8 @@
     <string name="sizeNeck">Tamaño cuello</string>
     <string name="sizeWaistMan">Tamaño cintura</string>
     <string name="sizeWaistWoman">Tamaño caderas</string>
+    <string name="chechkedHeight">El campo de la altura tiene que estar comprendido entre 50 y 250 cm</string>
+    <string name="chechkedWeight">El campo peso tiene que estar comprendido entre 30 y 300 kg</string>
 
     <!-- Messages error-->
     <!-- Errors DatabaseHandler-->

@@ -81,7 +81,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         db.execSQL("CREATE TABLE IF NOT EXISTS " + TABLE_DIET + " (idDiet INTEGER PRIMARY KEY AUTOINCREMENT, nameDiet VARCHAR(20) NOT NULL , description VARCHAR(200) NOT NULL, totalCalories DOUBLE(8,2) NOT NULL);");
         db.execSQL("CREATE TABLE IF NOT EXISTS " + TABLE_DIETS + " (idDiet INT(9) NOT NULL , idFood INT(11) NOT NULL , typeMeal VARCHAR( 50 ) NOT NULL , timeMeal VARCHAR(30) NOT NULL , dateMeal INTEGER(2) NOT NULL, earnedCalories DOUBLE( 4,2 ) NOT NULL, quantity int( 4 ), PRIMARY KEY (idDiet , idFood, typeMeal, dateMeal), FOREIGN KEY (idDiet) REFERENCES Diet (idDiet) ON DELETE CASCADE ON UPDATE CASCADE);");
         db.execSQL("CREATE TABLE IF NOT EXISTS " + TABLE_FOODS + " (id INT(4) PRIMARY KEY, nameES VARCHAR(200) NOT NULL, nameEN VARCHAR(200) NOT NULL, categoryES VARCHAR(200) NOT NULL, categoryEN VARCHAR(200) NOT NULL,calories DOUBLE NOT NULL, proteins DOUBLE NOT NULL, carbohydrates double NOT NULL, fats double NOT NULL, water double NOT NULL);");
-        db.execSQL("CREATE TABLE IF NOT EXISTS " + TABLE_STATISTICS + " (idStatistic int(5), idUser INT( 11 ) NOT NULL ,dateStatistics timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ,weight DOUBLE( 3, 2 ) NOT NULL ,age INT( 3 ) NOT NULL, sex VARCHAR(50) NOT NULL, height INT( 3 ) NOT NULL, imc DOUBLE( 2, 2 ), water DOUBLE( 2, 2 ), pgc DOUBLE( 2, 2 ), sizeNeck INT ( 3 ), sizeWaist INT ( 3 ), physicalType VARCHAR(20) NOT NULL,  PRIMARY KEY (  idStatistic ,  idUser ,  dateStatistics ), FOREIGN KEY (idUser) REFERENCES users (id) ON DELETE CASCADE ON UPDATE CASCADE);");
+        db.execSQL("CREATE TABLE IF NOT EXISTS " + TABLE_STATISTICS + " (idStatistic int(5), idUser INT( 11 ) NOT NULL ,dateStatistics timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ,weight DOUBLE( 3, 2 ) NOT NULL ,age INT( 3 ) NOT NULL, sex VARCHAR(50) NOT NULL, height INT( 3 ) NOT NULL, imc DOUBLE( 2, 2 ), water DOUBLE( 2, 2 ), pgc DOUBLE( 2, 2 ), sizeNeck INT ( 3 ), sizeWaist INT ( 3 ), sizeHip INT ( 3 ), physicalType VARCHAR(20) NOT NULL,  PRIMARY KEY (  idStatistic ,  idUser ,  dateStatistics ), FOREIGN KEY (idUser) REFERENCES users (id) ON DELETE CASCADE ON UPDATE CASCADE);");
         db.execSQL("CREATE TABLE IF NOT EXISTS " + TABLE_POINTS + " (id INTEGER  PRIMARY KEY AUTOINCREMENT, longitude decimal(18,14) NOT NULL, latitude decimal(18,14) NOT NULL, speed double NOT NULL, idTraining INTEGER NOT NULL, FOREIGN KEY (idTraining) REFERENCES Training (idTraining) ON DELETE CASCADE ON UPDATE CASCADE);");
         db.execSQL("CREATE TABLE IF NOT EXISTS " + TABLE_TRAINING + "  (idTraining INTEGER PRIMARY KEY AUTOINCREMENT, idUser INTEGER, typeTraining VARCHAR (50) NOT NULL, caloriesBurned double NOT NULL, duration long NOT NULL, averageSpeed double NOT NULL, averageRate double NOT NULL, distance double NOT NULL, dateTraining DATETIME DEFAULT CURRENT_TIMESTAMP, FOREIGN KEY (idUser) REFERENCES users (id) ON DELETE CASCADE ON UPDATE CASCADE);");
         db.execSQL("CREATE TABLE IF NOT EXISTS " + TABLE_USERS + " (id INTEGER  PRIMARY KEY, name varchar(250) DEFAULT NULL, email varchar(255) UNIQUE NOT NULL, password text NOT NULL, api_key varchar(32) NOT NULL, created_at timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP, locationx decimal(18,14) DEFAULT NULL,  locationy decimal(18,14) DEFAULT NULL, picture varchar(200) DEFAULT NULL);");
@@ -320,13 +320,16 @@ public class DatabaseHandler extends SQLiteOpenHelper {
             values.put("imc", statistic.getImc());
             values.put("water", statistic.getWater());
             values.put("pgc", statistic.getPgc());
+            Log.v("VERBOSE", "Valor del cuello" + statistic.getSizeNeck());
             values.put("sizeNeck", statistic.getSizeNeck());
             values.put("sizeWaist", statistic.getSizeWaist());
+            values.put("sizeHip",statistic.getSizeHip());
             values.put("physicalType", statistic.getPhysicalType());
-
+            Log.v("VERBOSE", "Añadiendo estadistica estadistica");
             // Inserting Row
             db.insert(TABLE_STATISTICS, null, values);
         } catch (SQLiteException sqlError){
+            sqlError.getStackTrace();
             Toast toast = Toast.makeText(this.myContext, R.string.dropError, Toast.LENGTH_SHORT);
             toast.show();
         } finally{

@@ -72,6 +72,8 @@
     <string name="sizeNeck">Neck size</string>
     <string name="sizeWaistMan">Waist size</string>
     <string name="sizeWaistWoman">Hips size</string>
+    <string name="chechkedHeight">The height field has to be between 50 and 250 cm</string>
+    <string name="chechkedWeight">The weight field must be between 30 and 300 kg</string>
 
 
     <!-- Messages error -->

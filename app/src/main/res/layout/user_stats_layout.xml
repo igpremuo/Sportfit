@@ -92,16 +92,7 @@
             android:layout_width="fill_parent"
             android:layout_height="fill_parent">
 
-            <TextView
 
-                android:id="@+id/textViewImc"
-                android:layout_width="0dp"
-                android:layout_height="match_parent"
-                android:layout_marginLeft="40dp"
-                android:layout_marginRight="40dp"
-                android:layout_marginTop="30dp"
-                android:text="@string/imc"
-                android:layout_weight="1" />
 
             <TextView
                 android:layout_width="0dp"
@@ -117,20 +108,6 @@
         <TableRow
             android:layout_width="fill_parent"
             android:layout_height="fill_parent">
-
-            <EditText
-
-                android:id="@+id/imc"
-                android:layout_width="0dp"
-                android:layout_height="match_parent"
-                android:layout_marginLeft="40dp"
-                android:layout_marginRight="40dp"
-                android:layout_marginTop="0dp"
-                android:inputType="text|numberDecimal"
-                android:ems="10"
-                android:layout_weight="1"
-                android:numeric="decimal"
-                android:maxLength="2"/>
 
             <Spinner
                 android:layout_width="0dp"
@@ -180,7 +157,8 @@
                 android:inputType="text|numberDecimal"
                 android:layout_weight="1"
                 android:numeric="decimal"
-                android:maxLength="3" />
+                android:maxLength="3"
+                android:hint="171 cm" />
 
 
             <EditText
@@ -193,10 +171,24 @@
                 android:inputType="text|numberDecimal"
                 android:layout_weight="1"
                 android:numeric="decimal"
-                android:maxLength="5"/>
+                android:maxLength="5"
+                android:hint="60.5 kg" />
         </TableRow>
 
-        <TableRow>
+        <TableRow
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent">
+
+            <TextView
+
+                android:id="@+id/textViewImc"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_marginLeft="40dp"
+                android:layout_marginRight="40dp"
+                android:layout_marginTop="20dp"
+                android:text="@string/imc"
+                android:layout_weight="1" />
 
             <TextView
                 android:layout_width="0dp"
@@ -207,6 +199,46 @@
                 android:layout_marginLeft="40dp"
                 android:layout_marginRight="40dp"
                 android:layout_weight="1" />
+
+        </TableRow>
+
+        <TableRow>
+
+            <EditText
+
+                android:id="@+id/imc"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_marginLeft="40dp"
+                android:layout_marginRight="40dp"
+                android:layout_marginTop="0dp"
+                android:inputType="text|numberDecimal"
+                android:ems="10"
+                android:layout_weight="1"
+                android:numeric="decimal"
+                android:maxLength="2"
+                android:hint="21 %" />
+
+            <EditText
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:id="@+id/pgc"
+                android:layout_marginRight="40dp"
+                android:layout_marginTop="0dp"
+                android:layout_marginLeft="40dp"
+                android:inputType="text|numberDecimal"
+                android:layout_weight="1"
+                android:numeric="decimal"
+                android:maxLength="2"
+                android:hint="15 %" />
+
+
+        </TableRow>
+
+        <TableRow
+            android:layout_width="match_parent"
+            android:layout_height="fill_parent">
+
 
             <TextView
 
@@ -219,53 +251,6 @@
                 android:text="@string/water"
                 android:layout_weight="1"
                 />
-        </TableRow>
-
-        <TableRow>
-
-            <EditText
-                android:layout_width="0dp"
-                android:layout_height="match_parent"
-                android:id="@+id/pgc"
-                android:layout_marginRight="40dp"
-                android:layout_marginTop="0dp"
-                android:layout_marginLeft="40dp"
-                android:inputType="text|numberDecimal"
-                android:layout_weight="1"
-                android:numeric="decimal"
-                android:maxLength="2"/>
-
-            <EditText
-
-                android:id="@+id/water"
-                android:layout_width="0dp"
-                android:layout_height="match_parent"
-                android:layout_marginLeft="40dp"
-                android:layout_marginRight="40dp"
-                android:layout_marginTop="0dp"
-                android:ems="10"
-                android:inputType="text|numberDecimal"
-                android:layout_weight="1"
-                android:numeric="decimal"
-                android:maxLength="2"/>
-
-        </TableRow>
-
-        <TableRow
-            android:layout_width="match_parent"
-            android:layout_height="fill_parent">
-
-
-            <TextView
-
-                android:id="@+id/TextViewSizeNeck"
-                android:layout_width="0dp"
-                android:layout_height="match_parent"
-                android:layout_marginLeft="40dp"
-                android:layout_marginRight="40dp"
-                android:layout_marginTop="20dp"
-                android:text="@string/sizeNeck"
-                android:layout_weight="1" />
 
             <TextView
 
@@ -283,7 +268,7 @@
 
             <EditText
 
-                android:id="@+id/sizeNeck"
+                android:id="@+id/water"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_marginLeft="40dp"
@@ -293,7 +278,8 @@
                 android:inputType="text|numberDecimal"
                 android:layout_weight="1"
                 android:numeric="decimal"
-                android:maxLength="2"/>
+                android:maxLength="2"
+                android:hint="60 %"/>
 
             <EditText
 
@@ -307,9 +293,78 @@
                 android:inputType="text|numberDecimal"
                 android:layout_weight="1"
                 android:numeric="decimal"
-                android:maxLength="2"/>
+                android:maxLength="2"
+                android:hint="80 cm" />
         </TableRow>
 
+        <TableRow>
+
+            <TextView
+
+                android:id="@+id/TextViewHip"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_marginLeft="40dp"
+                android:layout_marginRight="40dp"
+                android:layout_marginTop="20dp"
+                android:text="@string/sizeWaistWoman"
+                android:layout_weight="1"
+                android:visibility="invisible"
+                android:hint="60 cm"
+                />
+
+            <TextView
+
+                android:id="@+id/TextViewNeck"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_marginLeft="40dp"
+                android:layout_marginRight="40dp"
+                android:layout_marginTop="20dp"
+                android:text="@string/sizeNeck"
+                android:layout_weight="1"
+                android:visibility="invisible"
+                android:hint="38 cm"
+                />
+
+        </TableRow>
+
+        <TableRow>
+
+            <EditText
+
+                android:id="@+id/sizeHip"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_marginLeft="40dp"
+                android:layout_marginRight="40dp"
+                android:layout_marginTop="0dp"
+                android:ems="10"
+                android:inputType="text|numberDecimal"
+                android:layout_weight="1"
+                android:numeric="decimal"
+                android:maxLength="2"
+                android:visibility="invisible"
+                />
+
+            <EditText
+
+                android:id="@+id/sizeNeck"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_marginLeft="40dp"
+                android:layout_marginRight="40dp"
+                android:layout_marginTop="0dp"
+                android:ems="10"
+                android:inputType="text|numberDecimal"
+                android:layout_weight="1"
+                android:numeric="decimal"
+                android:maxLength="2"
+                android:visibility="invisible"
+                />
+
+
+        </TableRow>
 
         <TableRow>
             <Button

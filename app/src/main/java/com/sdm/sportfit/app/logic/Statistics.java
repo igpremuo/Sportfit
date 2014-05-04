@@ -19,6 +19,7 @@ public class Statistics {
     private Double pgc;
     private int sizeNeck;
     private int sizeWaist;
+    private int sizeHip;
     private PhysicalType physicalType;
 
     public enum PhysicalType {
@@ -50,10 +51,11 @@ public class Statistics {
         this.sizeNeck = 0;
         this.sizeWaist = 0;
         this.physicalType = null;
+        this.sizeHip = 0;
     }
 
 
-    public Statistics(int idStatistics, int idUser, String dateStatistics, Double weight, int age, String gender, int height, Double imc, Double water, Double pgc, int sizeNeck, int sizeWaist, String physicalType) {
+    public Statistics(int idStatistics, int idUser, String dateStatistics, Double weight, int age, String gender, int height, Double imc, Double water, Double pgc, int sizeNeck, int sizeWaist, int sizeHip, String physicalType) {
         this.idStatistics = idStatistics;
         this.idUser = idUser;
         this.dateStatistics = dateStatistics;
@@ -66,8 +68,17 @@ public class Statistics {
         this.pgc = pgc;
         this.sizeNeck = sizeNeck;
         this.sizeWaist = sizeWaist;
+        this.sizeHip = sizeHip;
         this.physicalType = getPhysicalType(physicalType);
 
+    }
+
+    public int getSizeHip() {
+        return sizeHip;
+    }
+
+    public void setSizeHip(int sizeHip) {
+        this.sizeHip = sizeHip;
     }
 
     public int getSizeNeck() {
