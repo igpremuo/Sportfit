@@ -22,12 +22,9 @@ import com.sdm.sportfit.app.logic.Trainings;
 import com.sdm.sportfit.app.persistence.DatabaseHandler;
 import com.sdm.sportfit.app.persistence.PreferencesManager;
 
-import java.io.Serializable;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.List;
 import java.util.Locale;
 
 /**

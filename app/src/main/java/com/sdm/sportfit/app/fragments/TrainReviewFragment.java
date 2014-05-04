@@ -1,9 +1,9 @@
 package com.sdm.sportfit.app.fragments;
 
-import android.location.Location;
 import android.os.Bundle;
 import android.os.SystemClock;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -14,7 +14,6 @@ import android.widget.TextView;
 import com.google.android.gms.maps.MapView;
 import com.sdm.sportfit.app.R;
 import com.sdm.sportfit.app.logic.MapManager;
-import com.sdm.sportfit.app.logic.Points;
 import com.sdm.sportfit.app.logic.Trainings;
 import com.sdm.sportfit.app.persistence.DatabaseHandler;
 
@@ -119,7 +118,10 @@ public class TrainReviewFragment extends Fragment {
         mVelMedia.setText(decimalFormat.format(session.getAverageSpeed()));
         mRitmoPromedio.setText(decimalFormat.format(session.getAverageRate()));
         mImageDeporte.setImageResource(session.getImageId());
-
-        mMapManager.printFinishedRoute(mSession);
+        //printea los puntos en el mapa
+        if(!mSession.isEmpty()){
+            Log.v("Perfecto", "hola");
+        }
+        /*mMapManager.printFinishedRoute(mSession);*/
     }
 }

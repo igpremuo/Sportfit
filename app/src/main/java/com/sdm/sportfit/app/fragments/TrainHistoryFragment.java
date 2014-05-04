@@ -47,7 +47,7 @@ public class TrainHistoryFragment extends Fragment {
             }
         });
 
-       /* List<Trainings> history = new ArrayList<Trainings>();
+       /*List<Trainings> history = new ArrayList<Trainings>();
 
         Trainings session;
 
@@ -106,8 +106,20 @@ public class TrainHistoryFragment extends Fragment {
         history.add(session);
 
         loadHistoryList(history);*/
-        Trainings session;
+
         dh = dh.getInstance(getActivity());
+        //pruebas añadir sesion
+        /*Trainings session;
+        session = new Trainings();
+        session.setRouteType(Trainings.Type.RUNNING);
+        session.setDate("01/04/2014");
+        session.setDistance(20.5);
+        session.setAverageSpeed(5.5);
+        session.setDuration(300000);
+        session.setCaloriesBurned(700.0);
+        dh.addTraining(session);*/
+        // fin prueba añadir sesion
+
         List<Trainings> history = dh.getAllTrainings();
         if (!history.isEmpty()){
             loadHistoryList(history);
