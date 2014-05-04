@@ -102,7 +102,7 @@ public class LoginActivity extends Activity implements OnClickListener{
 
         /**** Quitar esto para realizar el login ****/
         Intent i = new Intent(LoginActivity.this, MainActivity.class);
-       finish();
+        finish();
         startActivity(i);
     }
 

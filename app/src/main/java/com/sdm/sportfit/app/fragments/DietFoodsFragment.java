@@ -19,6 +19,7 @@ import com.sdm.sportfit.app.adapters.FoodsListAdapter;
 import com.sdm.sportfit.app.logic.Foods;
 import com.sdm.sportfit.app.persistence.DatabaseHandler;
 
+import java.util.Arrays;
 import java.util.List;
 
 /**
@@ -40,10 +41,14 @@ public class DietFoodsFragment extends Fragment implements AdapterView.OnItemSel
         final View rootView = inflater.inflate(R.layout.fragment_diet_foods, container, false);
         spinnerCategory = (Spinner) rootView.findViewById(R.id.spinnerCategory);
         mFoodsList = (ListView) rootView.findViewById(R.id.foods_list);
-        ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(getActivity().getApplicationContext(), R.array.food_category_array,
-                R.layout.spinner_item);
 
-        adapter.setDropDownViewResource(R.layout.spinner_dropdown_item);
+        List<String> categories = Arrays.asList(getResources().getStringArray(R.array.food_category_array));
+
+        //ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(getActivity().getApplicationContext(), R.array.food_category_array, android.R.layout.simple_spinner_item);
+
+        ArrayAdapter<String> adapter = new ArrayAdapter<String>(getActivity(),android.R.layout.simple_spinner_item, categories);
+        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+
         spinnerCategory.setAdapter(adapter);
         Log.v("VERBOSE", "Paso: " + spinnerCategory.getCount());
 
@@ -82,7 +87,6 @@ public class DietFoodsFragment extends Fragment implements AdapterView.OnItemSel
 
 
     }
-
 
     @Override
     public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {

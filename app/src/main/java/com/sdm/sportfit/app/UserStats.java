@@ -76,14 +76,14 @@ public class UserStats extends Activity implements View.OnClickListener {
         textViewHip = (TextView) findViewById(R.id.TextViewHip);
 
         ArrayAdapter<CharSequence> adapterAge = ArrayAdapter.createFromResource(this, R.array.ageArray,
-                R.layout.spinner_item);
-        adapterAge.setDropDownViewResource(R.layout.spinner_dropdown_item);
+                android.R.layout.simple_spinner_item);
+        adapterAge.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spinnerAge.setAdapter(adapterAge);
 
 
         ArrayAdapter<CharSequence> adapterPhysicalType = ArrayAdapter.createFromResource(this, R.array.physicalType,
-                R.layout.spinner_item);
-        adapterPhysicalType.setDropDownViewResource(R.layout.spinner_dropdown_item);
+                android.R.layout.simple_spinner_item);
+        adapterPhysicalType.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spinnerPhysicalType.setAdapter(adapterPhysicalType);
 
         genreMan.setOnClickListener(new View.OnClickListener() {

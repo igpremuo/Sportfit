@@ -5,23 +5,17 @@ android:layout_height="match_parent"
 android:orientation="vertical"
 tools:context="com.sdm.sportfit.app.MainActivity$PlaceholderFragment">
 
-    <LinearLayout
-        android:orientation="horizontal"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content">
-
     <Spinner
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:id="@+id/spinnerCategory" />
 
-</LinearLayout>
-
     <ListView
-    android:id="@+id/foods_list"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:saveEnabled="true">
-</ListView>
+        android:id="@+id/foods_list"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:saveEnabled="true">
+
+    </ListView>
 
 </LinearLayout>

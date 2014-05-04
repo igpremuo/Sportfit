@@ -1,5 +1,6 @@
 package com.sdm.sportfit.app.fragments;
 
+import android.app.Activity;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
@@ -10,6 +11,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.sdm.sportfit.app.R;
+import com.sdm.sportfit.app.interfaces.CallBacks;
 
 /**
  * Created by nacho on 31/03/14.
@@ -33,6 +35,14 @@ public class  DietParentFragment extends Fragment {
      */
     ViewPager mViewPager;
 
+    private CallBacks mCallBacks;
+
+    @Override
+    public void onAttach(Activity activity) {
+        super.onAttach(activity);
+        mCallBacks = (CallBacks) activity;
+    }
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.fragment_viewpager, container, false);
@@ -44,6 +54,23 @@ public class  DietParentFragment extends Fragment {
         // Set up the ViewPager with the sections adapter.
         mViewPager = (ViewPager) rootView.findViewById(R.id.viewpager);
         mViewPager.setAdapter(mSectionsPagerAdapter);
+
+        mViewPager.setOnPageChangeListener(new ViewPager.OnPageChangeListener() {
+            @Override
+            public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
+
+            }
+
+            @Override
+            public void onPageSelected(int position) {
+                mCallBacks.setFragmentChild(position);
+            }
+
+            @Override
+            public void onPageScrollStateChanged(int state) {
+
+            }
+        });
 
         if (savedInstanceState != null) {
             mViewPager.setCurrentItem(savedInstanceState.getInt(CURRENT_POSITION,2));

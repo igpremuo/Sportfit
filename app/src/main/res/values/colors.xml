@@ -1,4 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <color name="white">#ffffff</color>
     <color name="white_transparent">#85FFFFFF</color>
+
+    <color name="app_color">#0099CC</color>
+    <color name="navigation_drawer">#ccffffff</color>
 </resources>

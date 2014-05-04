@@ -1,11 +1,26 @@
-<resources>
+<resources
+    xmlns:tools="http://schemas.android.com/tools">
 
     <!-- Base application theme. -->
     <style name="AppTheme" parent="Theme.AppCompat.Light.DarkActionBar">
-        <!-- Customize your theme here. -->
+        <item name="actionBarStyle">@style/BarStyle</item>
+        <item name="android:actionBarStyle" tools:targetApi="11">@style/BarStyle</item>
+        <item name="android:windowBackground">@color/white</item>
     </style>
 
     <style name="Theme_Dialog_Translucent" parent="android:Theme.Dialog">
          <item name="android:windowBackground">@null</item>
     </style>
+
+    <!-- Estilo para la ActionBar -->
+    <style name="BarStyle" parent="@style/Widget.AppCompat.Light.ActionBar.Solid.Inverse">
+        <item name="background">@color/app_color</item>
+        <item name="android:background">@color/app_color</item>
+        <item name="titleTextStyle">@style/ActionBar.TitleTextStyle</item>
+        <item name="android:titleTextStyle" tools:targetApi="11">@style/ActionBar.TitleTextStyle</item>
+    </style>
+    <style name="ActionBar.TitleTextStyle" parent="@style/TextAppearance.AppCompat.Widget.ActionBar.Title">
+        <item name="android:textColor">@android:color/white</item>
+    </style>
+
 </resources>

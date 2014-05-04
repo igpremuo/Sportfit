@@ -18,19 +18,21 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.sdm.sportfit.app.fragments.DietParentFragment;
 import com.sdm.sportfit.app.fragments.HiitParentFragment;
 import com.sdm.sportfit.app.fragments.MainParentFragment;
 import com.sdm.sportfit.app.fragments.PreferencesActivity;
+import com.sdm.sportfit.app.fragments.StaticsParentFragment;
 import com.sdm.sportfit.app.fragments.TrainParentFragment;
+import com.sdm.sportfit.app.interfaces.CallBacks;
 import com.sdm.sportfit.app.persistence.DatabaseHandler;
 import com.sdm.sportfit.app.persistence.JSONParser;
 import com.sdm.sportfit.app.services.ConnectionDetector;
+import com.sdm.sportfit.app.services.GpsIntentService;
 
-public class MainActivity extends ActionBarActivity
-
-        implements NavigationDrawerFragment.NavigationDrawerCallbacks {
+public class MainActivity extends ActionBarActivity implements NavigationDrawerFragment.NavigationDrawerCallbacks, CallBacks {
 
     private DatabaseHandler dh;
 
@@ -39,8 +41,6 @@ public class MainActivity extends ActionBarActivity
 
     // JSON parser class
     JSONParser jsonParser = new JSONParser();
-
-
 
     /**
      * Fragment managing the behaviors, interactions and presentation of the navigation drawer.
@@ -56,9 +56,15 @@ public class MainActivity extends ActionBarActivity
     private DietParentFragment mDietFragment = null;
     private TrainParentFragment mTrainFragment = null;
     private HiitParentFragment mHiitFragment = null;
+    private StaticsParentFragment mStaticsFragment = null;
 
     private SharedPreferences _prefs;
     private int idUser;
+
+    private Menu mMenu;
+
+    private int mCurrentFragment;
+    private int mCurrentChild;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -102,32 +108,51 @@ public class MainActivity extends ActionBarActivity
 
     @Override
     public void onNavigationDrawerItemSelected(int position) {
+        mCurrentFragment = position;
         // update the main content by replacing fragments
-        /*FragmentManager fragmentManager = getSupportFragmentManager();
-        Fragment fragment = null;
-        switch (position) {
-            case 0:
-                //if (mMapFragment == null) mMapFragment = new MainParentFragment();
-                fragment = new MainParentFragment();
+        openFragmentAtPos(position, -1);
+    }
+
+    @Override
+    public void onMenuItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.action_listen_train:
+                Intent bcIntent = new Intent();
+                bcIntent.setAction(GpsIntentService.REPRODUCE_INFO);
+                sendBroadcast(bcIntent);
                 break;
-            case 1:
-                //if (mDietFragment == null) mDietFragment = new DietParentFragment();
-                fragment = new DietParentFragment();
-                break;
-            case 2:
-                //if (mTrainFragment == null) mTrainFragment = new TrainParentFragment();
-                fragment = new TrainParentFragment();
-                break;
-            case 3:
-                if (mHiitFragment == null) mHiitFragment = new HiitParentFragment();
-                fragment = mHiitFragment;
+            case R.id.action_example:
+                Toast.makeText(getApplicationContext(), "Example action", Toast.LENGTH_SHORT).show();
                 break;
         }
+    }
 
-        if (fragment != null) {
-            replaceFragment(fragment, getSectionTitle(position));
-        }*/
-        openFragmentAtPos(position, -1);
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.main, menu);
+        mMenu = menu;
+        updateMenu();
+        return true;
+    }
+
+    @Override
+    public void setFragmentChild(int position) {
+        mCurrentChild = position;
+        updateMenu();
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        // Handle action bar item clicks here. The action bar will
+        // automatically handle clicks on the Home/Up button, so long
+        // as you specify a parent activity in AndroidManifest.xml.
+        int id = item.getItemId();
+        if (id == R.id.action_settings) {
+            Intent intent = new Intent(MainActivity.this, PreferencesActivity.class);
+            startService(intent);
+            return true;
+        }
+        return super.onOptionsItemSelected(item);
     }
 
     private void replaceFragment(Fragment newFragment, CharSequence title) {
@@ -160,6 +185,10 @@ public class MainActivity extends ActionBarActivity
                 if (mHiitFragment == null) mHiitFragment = new HiitParentFragment();
                 fragment = mHiitFragment;
                 break;
+            case 4:
+                if (mStaticsFragment == null) mStaticsFragment = new StaticsParentFragment();
+                fragment = mStaticsFragment;
+                break;
         }
 
         if (fragment != null) {
@@ -185,32 +214,55 @@ public class MainActivity extends ActionBarActivity
         actionBar.setTitle(mTitle);
     }
 
+    public void updateMenu() {
+        //getMenuInflater().inflate(R.menu.main, mMenu);
 
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        if (!mNavigationDrawerFragment.isDrawerOpen()) {
+        if (mMenu != null) {
+
+            MenuItem listenTrain = mMenu.findItem(R.id.action_listen_train);
+            MenuItem example = mMenu.findItem(R.id.action_example);
+
+            listenTrain.setVisible(false);
+            example.setVisible(false);
+
             // Only show items in the action bar relevant to this screen
             // if the drawer is not showing. Otherwise, let the drawer
             // decide what to show in the action bar.
-            getMenuInflater().inflate(R.menu.main, menu);
-            restoreActionBar();
-            return true;
-        }
-        return super.onCreateOptionsMenu(menu);
-    }
+            if (!mNavigationDrawerFragment.isDrawerOpen()) {
 
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
-        int id = item.getItemId();
-        if (id == R.id.action_settings) {
-            Intent intent = new Intent(MainActivity.this, PreferencesActivity.class);
-            startService(intent);
-            return true;
+                switch (mCurrentFragment) {
+                    case 0:
+                        switch (mCurrentChild) {
+                            case 0:
+                                listenTrain.setVisible(true);
+                                break;
+                            case 1:
+                                break;
+                            case 2:
+                                break;
+                        }
+                        break;
+                    case 1:
+                        switch (mCurrentChild) {
+                            case 0:
+                                example.setVisible(true);
+                                break;
+                            case 1:
+                                break;
+                            case 2:
+                                break;
+                        }
+                        break;
+                    case 2:
+                        break;
+                    case 3:
+                        break;
+                    case 4:
+                        break;
+                }
+            }
         }
-        return super.onOptionsItemSelected(item);
+        restoreActionBar();
     }
 
     /**

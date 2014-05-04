@@ -36,6 +36,8 @@ public class GpsIntentService extends IntentService implements LocationListener{
 
     public static final String NOTIFICATION = "com.sdm.sportfit.app.services.receiver";
 
+    public static final String REPRODUCE_INFO = "com.sdm.sportfit.app.intent.action.REPRODUCE_INFO";
+
     // Variables de mensajes
     public static final String TIME = "cronometer";
     public static final String DISTANCE = "distance";
@@ -314,6 +316,10 @@ public class GpsIntentService extends IntentService implements LocationListener{
                     pause();
                 } else if (intent.getAction().equals(MainTrainFragment.STOP_SERVICE_GPS)) {
                     stop();
+                } else if (intent.getAction().equals(REPRODUCE_INFO)) {
+                    if (mTextToSpeech != null) {
+                        mTextToSpeech.speak(getAdviceText(), TextToSpeech.QUEUE_ADD, null);
+                    }
                 }
             }
         }

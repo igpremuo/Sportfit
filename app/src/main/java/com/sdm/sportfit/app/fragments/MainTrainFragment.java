@@ -10,12 +10,16 @@ import android.os.Bundle;
 import android.os.SystemClock;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Chronometer;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.google.android.gms.maps.MapView;
 import com.google.android.gms.maps.SupportMapFragment;
@@ -50,7 +54,6 @@ public class MainTrainFragment extends Fragment {
 
     private MapView mMapView;
     private MapManager mMapManager;
-
 
     //Views
     private Chronometer mCronometro;
@@ -192,6 +195,15 @@ public class MainTrainFragment extends Fragment {
     public void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
         mMapView.onSaveInstanceState(outState);
+    }
+
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        if (item.getItemId() == R.id.action_listen_train) {
+            Toast.makeText(getActivity().getApplicationContext(), "Listen.", Toast.LENGTH_SHORT).show();
+        }
+        return super.onOptionsItemSelected(item);
     }
 
     //Se suscribe al Service para actualizar cronometro
