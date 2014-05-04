@@ -3,7 +3,6 @@ package com.sdm.sportfit.app.fragments;
 import android.os.Bundle;
 import android.os.SystemClock;
 import android.support.v4.app.Fragment;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -120,8 +119,8 @@ public class TrainReviewFragment extends Fragment {
         mImageDeporte.setImageResource(session.getImageId());
         //printea los puntos en el mapa
         if(!mSession.isEmpty()){
-            Log.v("Perfecto", "hola");
+            mMapManager.printFinishedRoute(mSession);
         }
-        /*mMapManager.printFinishedRoute(mSession);*/
+
     }
 }
