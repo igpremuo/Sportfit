@@ -1,7 +1,10 @@
 package com.sdm.sportfit.app.fragments;
 
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.app.Dialog;
+import android.app.DialogFragment;
+import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.util.Log;
@@ -21,6 +24,7 @@ import com.sdm.sportfit.app.persistence.DatabaseHandler;
 
 import java.util.Arrays;
 import java.util.List;
+import java.util.Locale;
 
 /**
  * Created by nacho on 1/04/14.
@@ -64,11 +68,31 @@ public class DietFoodsFragment extends Fragment implements AdapterView.OnItemSel
                 Foods foodsSelect = (Foods) mFoodsList.getAdapter().getItem(position);
                 Bundle extras = new Bundle();
                 extras.putInt("Food", foodsSelect.getId());
-                FoodDialog dialog = new FoodDialog();
-                dialog.setArguments(extras);
-                dialog.show(getFragmentManager(), "tagAlerta");
-             }
-        });
+                //FoodDialog dialog = new FoodDialog();
+                String mensaje = "";
+
+                mensaje += ("Calorias: " + String.format("%.2f",foodsSelect.getCalories()) +" kcal") + "\n";
+                mensaje += ("Proteinas: " + String.format("%.2f",foodsSelect.getProteins()) + "g / 100g")+ "\n";
+                mensaje += ("Carbohidratos: " + String.format("%.2f",  foodsSelect.getCarbohydrates()) + " g / 100g")+ "\n";
+                mensaje += ("Grasas: " + String.format("%.2f", foodsSelect.getFats()) + " g / 100g")+ "\n";
+                mensaje += ("Agua: " + String.format("%.2f", foodsSelect.getWater()) +" g / 100g");
+
+                extras.putInt("Food", foodsSelect.getId());
+                //FoodDialog dialog = new FoodDialog();
+                //DialogFragment dialogFragment = new DialogFragment();
+                AlertDialog alertDialog =  new AlertDialog.Builder(getActivity()).create();
+                 alertDialog.setCancelable(true);
+                if("es".equals(Locale.getDefault().getLanguage())) alertDialog.setTitle((foodsSelect.getNameES()));
+                else alertDialog.setTitle(foodsSelect.getNameEN());
+                alertDialog.setMessage(mensaje);
+                alertDialog.setButton("OK", new DialogInterface.OnClickListener() {
+
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.dismiss();
+                    }
+                });
+                alertDialog.show();
+            }});
 
         return rootView;
     }

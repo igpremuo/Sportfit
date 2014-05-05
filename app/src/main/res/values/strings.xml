@@ -132,4 +132,6 @@
     <string name="service_start_train">¡Training started!</string>
     <string name="service_advice" formatted="false">Distance: %.1f kilometers. Time: %d hours, %d minutes, %d seconds. Speed: %.1f kilometers per hour.</string>
 
+    <!-- -->
+
 </resources>
