@@ -232,6 +232,67 @@
                 android:maxLength="2"
                 android:hint="15 %" />
 
+        </TableRow>
+
+        <TableRow>
+
+            <TextView
+
+                android:id="@+id/TextViewNeck"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_marginLeft="40dp"
+                android:layout_marginRight="40dp"
+                android:layout_marginTop="20dp"
+                android:text="@string/sizeNeck"
+                android:layout_weight="1"
+                android:hint="38 cm"
+                />
+
+            <TextView
+
+                android:id="@+id/TextViewSizeWaist"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_marginLeft="40dp"
+                android:layout_marginRight="40dp"
+                android:layout_marginTop="20dp"
+                android:text="@string/sizeWaistMan"
+                android:layout_weight="1" />
+
+        </TableRow>
+
+        <TableRow>
+
+            <EditText
+
+                android:id="@+id/sizeNeck"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_marginLeft="40dp"
+                android:layout_marginRight="40dp"
+                android:layout_marginTop="0dp"
+                android:ems="10"
+                android:inputType="text|numberDecimal"
+                android:layout_weight="1"
+                android:numeric="decimal"
+                android:maxLength="2"
+                />
+
+            <EditText
+
+                android:id="@+id/sizeWaist"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_marginLeft="40dp"
+                android:layout_marginRight="40dp"
+                android:layout_marginTop="0dp"
+                android:ems="10"
+                android:inputType="text|numberDecimal"
+                android:layout_weight="1"
+                android:numeric="decimal"
+                android:maxLength="2"
+                android:hint="80 cm" />
 
         </TableRow>
 
@@ -254,14 +315,18 @@
 
             <TextView
 
-                android:id="@+id/TextViewSizeWaist"
+                android:id="@+id/TextViewHip"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_marginLeft="40dp"
                 android:layout_marginRight="40dp"
                 android:layout_marginTop="20dp"
-                android:text="@string/sizeWaistMan"
-                android:layout_weight="1" />
+                android:text="@string/sizeWaistWoman"
+                android:layout_weight="1"
+                android:visibility="invisible"
+                android:hint="60 cm"
+                />
+
         </TableRow>
 
         <TableRow>
@@ -281,55 +346,6 @@
                 android:maxLength="2"
                 android:hint="60 %"/>
 
-            <EditText
-
-                android:id="@+id/sizeWaist"
-                android:layout_width="0dp"
-                android:layout_height="match_parent"
-                android:layout_marginLeft="40dp"
-                android:layout_marginRight="40dp"
-                android:layout_marginTop="0dp"
-                android:ems="10"
-                android:inputType="text|numberDecimal"
-                android:layout_weight="1"
-                android:numeric="decimal"
-                android:maxLength="2"
-                android:hint="80 cm" />
-        </TableRow>
-
-        <TableRow>
-
-            <TextView
-
-                android:id="@+id/TextViewHip"
-                android:layout_width="0dp"
-                android:layout_height="match_parent"
-                android:layout_marginLeft="40dp"
-                android:layout_marginRight="40dp"
-                android:layout_marginTop="20dp"
-                android:text="@string/sizeWaistWoman"
-                android:layout_weight="1"
-                android:visibility="invisible"
-                android:hint="60 cm"
-                />
-
-            <TextView
-
-                android:id="@+id/TextViewNeck"
-                android:layout_width="0dp"
-                android:layout_height="match_parent"
-                android:layout_marginLeft="40dp"
-                android:layout_marginRight="40dp"
-                android:layout_marginTop="20dp"
-                android:text="@string/sizeNeck"
-                android:layout_weight="1"
-                android:visibility="invisible"
-                android:hint="38 cm"
-                />
-
-        </TableRow>
-
-        <TableRow>
 
             <EditText
 
@@ -346,25 +362,8 @@
                 android:maxLength="2"
                 android:visibility="invisible"
                 />
-
-            <EditText
-
-                android:id="@+id/sizeNeck"
-                android:layout_width="0dp"
-                android:layout_height="match_parent"
-                android:layout_marginLeft="40dp"
-                android:layout_marginRight="40dp"
-                android:layout_marginTop="0dp"
-                android:ems="10"
-                android:inputType="text|numberDecimal"
-                android:layout_weight="1"
-                android:numeric="decimal"
-                android:maxLength="2"
-                android:visibility="invisible"
-                />
-
-
         </TableRow>
+
 
         <TableRow>
             <Button

@@ -193,18 +193,21 @@ public class UserStats extends Activity implements View.OnClickListener {
             Log.v("VERBOSE", "water " + statistic.getWater());
 
             Log.v("VERBOSE", "pgc valor del texto visual " + pgc.getText().toString());
-            if (!"".equals(pgc.getText().toString()))
+            if (!"".equals(pgc.getText().toString())){
                 statistic.setPgc(Double.parseDouble(pgc.getText().toString()));
-            else if (selectedWoman && !"".equals(sizeHip.getText().toString()) && !"".equals(sizeWaist.getText().toString())) {
-                statistic.setPgc(calcPgcWoman(statistic.getSizeHip(), statistic.getSizeWaist(), statistic.getWeight()));
+                Log.v("VERBOSE", "pgc valor insertado por el usuario " +pgc.getText());
+            } else if (selectedWoman && !"".equals(sizeHip.getText().toString()) && !"".equals(sizeWaist.getText().toString())) {
+                statistic.setPgc(calcPgcWoman(statistic.getSizeHip(), statistic.getSizeWaist(), statistic.getHeight(), statistic.getSizeNeck()));
                 Log.v("VERBOSE", "pgc valor  ");
-            } else if (selectedMan && !"".equals(sizeWaist.getText().toString()))
-                statistic.setPgc(calcPgcMan(statistic.getSizeWaist(), statistic.getWeight()));
-            else {
+            } else if (selectedMan && !"".equals(sizeWaist.getText().toString())){
+                statistic.setPgc(calcPgcMan(statistic.getSizeWaist(), statistic.getHeight(), statistic.getSizeNeck()));
+            Log.v("VERBOSE", "valor pgc hombre   " + statistic.getPgc());
+            } else {
                 int gender = 0;
                 if (selectedMan)
                     gender = 1;
                 statistic.setPgc(calcPgc(statistic.getImc(), statistic.getAge(), gender));
+                Log.v("VERBOSE", "valor pgc generico   " + statistic.getPgc());
 
             }
             Log.v("VERBOSE", "pgc " + statistic.getPgc());
@@ -222,32 +225,30 @@ public class UserStats extends Activity implements View.OnClickListener {
     }
 
     private double calcPgc(Double imc, int age, int gender){
-        return (1.2 * imc) + (0.23 * age) - (10.8 * gender) - 5.4;
+        return 1.2 * imc + 0.23 * age - 10.8 * gender - 5.4;
     }
 
     private double calcWaterWoman(int height, Double weight) {
-        return (100/((0.34454 * height) + (0.183809 * weight) - 35.270121))*weight;
+        return (((0.34454 * height) + (0.183809 * weight) - 35.270121)/weight)*100;
     }
 
     private double calcWaterMan(int height, Double weight) {
-        return (100/((0.197486 * height) + (0.296785 * weight) - 14.012934))*weight;
+        return (((0.197486 * height) + (0.296785 * weight) - 14.012934)/weight)*100;
+    }
+    //%Grasa=495/(1.0324-0.19077(log(cintura-cuello))+0.15456(log(altura)))-450
+    private Double calcPgcMan(int sizeWaist, int height, int sizeNeck) {
+        return 495/((1.0324 - (0.19077 * (Math.log((sizeWaist-sizeNeck)))) + (0.15456 * (Math.log(height)))) - 450);
     }
 
-    private Double calcPgcMan(int sizeWaist, Double weight) {
-        double r =  (weight*0.85)+28;
-        double leanWeight =  r - (sizeWaist * 0.35);
-        double fatWeight = weight - leanWeight;
-        double pcgMan = (fatWeight * 100)/weight;
-        return pcgMan;
-    }
-
-    private double calcPgcWoman(int sizeHip, int sizeWaist, double weight) {
-            double r =  (weight*0.86)+24;
+    //%Grasa=495/(1.29579-0.35004(log(cintura+cadera-cuello))+0.22100(log(altura)))-450
+    private double calcPgcWoman(int sizeHip, int sizeWaist, int height, int sizeNeck) {
+            /**double r =  (weight*0.86)+24;
             double r1 =  sizeWaist * 0.14;
             double r2 = sizeHip * 0.2;
             double leanWeight = r - r1 - r2;
             double pcgWoman = ((weight - leanWeight)*100)/weight;
-            return pcgWoman;
+            return pcgWoman;*/
+        return 495/((1.29579 - (0.35004 * (Math.log((sizeWaist+sizeHip-sizeNeck)))) + (0.22100 * (Math.log(height)))) - 450);
      }
 
     private Double calImc(Double weight, int height) {

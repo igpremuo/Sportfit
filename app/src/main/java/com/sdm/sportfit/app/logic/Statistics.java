@@ -44,7 +44,7 @@ public class Statistics {
         this.weight = 0.0;
         this.age = 0;
         this.gender = "";
-        this.height = 00;
+        this.height = 0;
         this.imc = 0.0;
         this.water = 0.0;
         this.pgc = 0.0;
