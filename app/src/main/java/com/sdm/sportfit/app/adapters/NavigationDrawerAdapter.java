@@ -1,20 +1,15 @@
 package com.sdm.sportfit.app.adapters;
 
 import android.content.Context;
-import android.os.SystemClock;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
-import android.widget.Chronometer;
 import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.sdm.sportfit.app.R;
-import com.sdm.sportfit.app.logic.Trainings;
 
-import java.text.DecimalFormat;
-import java.text.NumberFormat;
 import java.util.List;
 
 /**
@@ -61,22 +56,22 @@ public class NavigationDrawerAdapter extends BaseAdapter {
 
         switch (position) {
             case 0:
-                image.setImageDrawable(mContext.getResources().getDrawable(R.drawable.ic_correr));
+                image.setImageDrawable(mContext.getResources().getDrawable(R.drawable.ic_nd_main));
                 break;
             case 1:
-                image.setImageDrawable(mContext.getResources().getDrawable(R.drawable.ic_correr));
+                image.setImageDrawable(mContext.getResources().getDrawable(R.drawable.ic_nd_diet));
                 break;
             case 2:
                 image.setImageDrawable(mContext.getResources().getDrawable(R.drawable.ic_nd_training));
                 break;
-            case 3:
-                image.setImageDrawable(mContext.getResources().getDrawable(R.drawable.ic_correr));
-                break;
-            case 4:
-                image.setImageDrawable(mContext.getResources().getDrawable(R.drawable.ic_correr));
-                break;
             case 5:
                 image.setImageDrawable(mContext.getResources().getDrawable(R.drawable.ic_correr));
+                break;
+            case 3:
+                image.setImageDrawable(mContext.getResources().getDrawable(R.drawable.ic_nd_statics));
+                break;
+            case 4:
+                image.setImageDrawable(mContext.getResources().getDrawable(R.drawable.ic_nd_settings));
                 break;
         }
 
