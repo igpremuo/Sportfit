@@ -1,25 +1,112 @@
 <?xml version="1.0" encoding="utf-8"?>
 
-<PreferenceScreen
-    xmlns:android="http://schemas.android.com/apk/res/android">
-    <PreferenceCategory android:title="Categoría 1">
-        <CheckBoxPreference
-            android:key="opcion1"
-            android:title="Preferencia 1"
-            android:summary="Descripción de la preferencia 1" />
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <PreferenceCategory
+        android:title="@string/category_general">
+
         <EditTextPreference
-            android:key="opcion2"
-            android:title="Preferencia 2"
-            android:summary="Descripción de la preferencia 2"
-            android:dialogTitle="Introduce valor" />
-    </PreferenceCategory>
-    <PreferenceCategory android:title="Categoría 2">
+            android:key="general_name"
+            android:title="@string/general_name"
+            android:negativeButtonText="@android:string/cancel" />
+
         <ListPreference
-            android:key="opcion3"
-            android:title="Preferencia 3"
-            android:summary="Descripción de la preferencia 3"
-            android:dialogTitle="Indicar Pais"
-            android:entries="@array/preferences_goal"
-            android:entryValues="@array/preferences_goal" />
+            android:key="general_units"
+            android:title="@string/general_units"
+            android:entries="@array/general_units_titles"
+            android:entryValues="@array/general_units_values"
+            android:defaultValue="0"
+            android:negativeButtonText="@android:string/cancel" />
+
     </PreferenceCategory>
+
+    <PreferenceCategory
+        android:title="@string/category_user">
+
+        <ListPreference
+            android:key="user_genre"
+            android:title="@string/user_genre"
+            android:entries="@array/user_genre_titles"
+            android:entryValues="@array/user_genre_values"
+            android:defaultValue="0"
+            android:negativeButtonText="@android:string/cancel" />
+
+        <EditTextPreference
+            android:key="user_age"
+            android:title="@string/user_age"
+            android:defaultValue="25"
+            android:negativeButtonText="@android:string/cancel" />
+
+        <ListPreference
+            android:key="user_activity"
+            android:title="@string/user_activity"
+            android:entries="@array/user_activity_titles"
+            android:entryValues="@array/user_activity_values"
+            android:defaultValue="0"
+            android:negativeButtonText="@android:string/cancel" />
+
+        <EditTextPreference
+            android:key="user_height"
+            android:title="@string/user_height"
+            android:summary="@string/user_height_summary"
+            android:negativeButtonText="@android:string/cancel" />
+
+        <EditTextPreference
+            android:key="user_weight"
+            android:title="@string/user_weight"
+            android:summary="@string/user_height_summary"
+            android:defaultValue="70"
+            android:negativeButtonText="@android:string/cancel" />
+
+        <EditTextPreference
+            android:key="user_imc"
+            android:title="@string/user_imc"
+            android:summary="@string/user_imc_summary"
+            android:defaultValue="20"
+            android:negativeButtonText="@android:string/cancel" />
+
+        <EditTextPreference
+            android:key="user_mgc"
+            android:title="@string/user_mgc"
+            android:summary="@string/user_mgc_summary"
+            android:negativeButtonText="@android:string/cancel" />
+
+        <EditTextPreference
+            android:key="user_neck"
+            android:title="@string/user_neck"
+            android:summary="@string/user_neck_summary"
+            android:negativeButtonText="@android:string/cancel" />
+
+        <EditTextPreference
+            android:key="user_waist"
+            android:title="@string/user_waist"
+            android:summary="@string/user_waist_summary"
+            android:negativeButtonText="@android:string/cancel" />
+
+        <EditTextPreference
+            android:key="user_water"
+            android:title="@string/user_water"
+            android:summary="@string/user_water_summary"
+            android:negativeButtonText="@android:string/cancel" />
+
+        <EditTextPreference
+            android:key="user_hip"
+            android:title="@string/user_hip"
+            android:summary="@string/user_hip_summary"
+            android:negativeButtonText="@android:string/cancel" />
+
+    </PreferenceCategory>
+
+    <PreferenceCategory
+        android:title="@string/category_notifications">
+
+        <CheckBoxPreference
+            android:key="notifications_enable"
+            android:title="@string/notifications_enable"
+            android:summary="@string/notifications_enable_summary"
+            android:defaultValue="true"
+            android:negativeButtonText="@android:string/cancel" />
+
+    </PreferenceCategory>
+
 </PreferenceScreen>

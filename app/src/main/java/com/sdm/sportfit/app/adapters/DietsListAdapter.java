@@ -46,7 +46,7 @@ public class DietsListAdapter extends BaseAdapter {
         View rowView = convertView;
         if (rowView == null) {
             LayoutInflater inflater = (LayoutInflater) mContext.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-            rowView = inflater.inflate(R.layout.list_item_diet, null);
+            rowView = inflater.inflate(R.layout.listitem_diet, null);
         }
 
         rowView.setEnabled(true);

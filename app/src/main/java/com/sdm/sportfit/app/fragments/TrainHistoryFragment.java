@@ -108,6 +108,7 @@ public class TrainHistoryFragment extends Fragment {
         loadHistoryList(history);*/
 
         Trainings session;
+
         dh = dh.getInstance(getActivity());
         List<Trainings> history = dh.getAllTrainings();
         if (!history.isEmpty()){

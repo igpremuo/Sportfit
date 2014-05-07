@@ -181,20 +181,20 @@ public class MainTrainFragment extends Fragment {
     public void onPause() {
         super.onPause();
         cancelSubscribirService();
-        mMapView.onPause();
+        if (mMapView != null) mMapView.onPause();
 
     }
 
     @Override
     public void onDestroy() {
-        mMapView.onDestroy();
+        if (mMapView != null) mMapView.onDestroy();
         super.onDestroy();
     }
 
     @Override
     public void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
-        mMapView.onSaveInstanceState(outState);
+        if (mMapView != null) mMapView.onSaveInstanceState(outState);
     }
 
 

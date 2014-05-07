@@ -1,0 +1,77 @@
+<resources>
+    <!-- Activity title -->
+    <string name="title_activity_settings">Preferencias</string>
+
+    <!-- Categories title -->
+    <string name="category_user">Usuario</string>
+    <string name="category_general">General</string>
+    <string name="category_notifications">Notificaciones</string>
+
+    <!-- General preferences -->
+    <string name="general_name">Nombre de usuario</string>
+
+    <string name="general_units">Unidades</string>
+    <string-array name="general_units_titles">
+        <item>Kilometros</item>
+        <item>Millas</item>
+    </string-array>
+    <string-array name="general_units_values">
+        <item>0</item>
+        <item>1</item>
+    </string-array>
+
+    <!-- User preferences -->
+    <string name="user_genre">Genero</string>
+    <string-array name="user_genre_titles">
+        <item>Hombre</item>
+        <item>Mujer</item>
+    </string-array>
+    <string-array name="user_genre_values">
+        <item>0</item>
+        <item>1</item>
+    </string-array>
+
+    <string name="user_age">Edad</string>
+    <string name="user_age_unit">años</string>
+
+    <string name="user_activity">Nivel de actividad</string>
+    <string-array name="user_activity_titles">
+        <item>Sedentario</item>
+        <item>Moderado</item>
+        <item>Activo</item>
+    </string-array>
+    <string-array name="user_activity_values">
+        <item>0</item>
+        <item>1</item>
+        <item>2</item>
+    </string-array>
+
+    <string name="user_height">Altura</string>
+    <string name="user_height_summary">Altura en centímetros</string>
+
+    <string name="user_weight">Peso</string>
+    <string name="user_weight_summary">Altura en centímetros</string>
+
+    <string name="user_imc">Índice de masa corporal</string>
+    <string name="user_imc_summary">Expresado en porcentaje</string>
+
+    <string name="user_mgc">Materia grasa corporal</string>
+    <string name="user_mgc_summary">Expresado en porcentaje</string>
+
+    <string name="user_neck">Cuello</string>
+    <string name="user_neck_summary">Perimetro del cuello en centimetros</string>
+
+    <string name="user_waist">Cintura</string>
+    <string name="user_waist_summary">Perimetro de la cintura en centimetros</string>
+
+    <string name="user_water">Cantidad de agua corporal</string>
+    <string name="user_water_summary">Expresado en porcentaje</string>
+
+    <string name="user_hip">Cadera</string>
+    <string name="user_hip_summary">Cadera</string>
+
+    <!-- Notification preferences -->
+    <string name="notifications_enable">Notificaciones</string>
+    <string name="notifications_enable_summary">Activar las notificaciones</string>
+
+</resources>

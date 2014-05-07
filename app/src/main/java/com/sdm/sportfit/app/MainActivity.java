@@ -23,7 +23,6 @@ import android.widget.Toast;
 import com.sdm.sportfit.app.fragments.DietParentFragment;
 import com.sdm.sportfit.app.fragments.HiitParentFragment;
 import com.sdm.sportfit.app.fragments.MainParentFragment;
-import com.sdm.sportfit.app.fragments.PreferencesActivity;
 import com.sdm.sportfit.app.fragments.StaticsParentFragment;
 import com.sdm.sportfit.app.fragments.TrainParentFragment;
 import com.sdm.sportfit.app.interfaces.CallBacks;
@@ -148,8 +147,8 @@ public class MainActivity extends ActionBarActivity implements NavigationDrawerF
         // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
         if (id == R.id.action_settings) {
-            Intent intent = new Intent(MainActivity.this, PreferencesActivity.class);
-            startService(intent);
+            //Intent intent = new Intent(MainActivity.this, PreferencesActivity.class);
+            //startService(intent);
             return true;
         }
         return super.onOptionsItemSelected(item);
@@ -158,12 +157,23 @@ public class MainActivity extends ActionBarActivity implements NavigationDrawerF
     private void replaceFragment(Fragment newFragment, CharSequence title) {
         this.mTitle = title;
         FragmentManager fragmentManager = getSupportFragmentManager();
+
+        // Clear fragment backstack
+        if (fragmentManager.getBackStackEntryCount() > 0) {
+            for (int i = 0; i < fragmentManager.getBackStackEntryCount(); ++i) {
+                fragmentManager.popBackStack();
+            }
+        }
+
         fragmentManager.beginTransaction().replace(R.id.container, newFragment).commit();
     }
 
     public void openFragment(Fragment newFragment) {
         FragmentManager fragmentManager = getSupportFragmentManager();
-        fragmentManager.beginTransaction().replace(R.id.container, newFragment).addToBackStack(null).commit();
+        fragmentManager.beginTransaction()
+                .replace(R.id.container, newFragment)
+                .addToBackStack(null)
+                .commit();
     }
 
     public void openFragmentAtPos(int position, int pagerItem) {
@@ -188,6 +198,10 @@ public class MainActivity extends ActionBarActivity implements NavigationDrawerF
             case 4:
                 if (mStaticsFragment == null) mStaticsFragment = new StaticsParentFragment();
                 fragment = mStaticsFragment;
+                break;
+            case 5:
+                Intent intent = new Intent(this, SettingsActivity.class);
+                startActivity(intent);
                 break;
         }
 
@@ -263,48 +277,6 @@ public class MainActivity extends ActionBarActivity implements NavigationDrawerF
             }
         }
         restoreActionBar();
-    }
-
-    /**
-     * A placeholder fragment containing a simple view.
-     */
-    public static class PlaceholderFragment extends Fragment {
-        /**
-         * The fragment argument representing the section number for this
-         * fragment.
-         */
-        private static final String ARG_SECTION_NUMBER = "section_number";
-
-        /**
-         * Returns a new instance of this fragment for the given section
-         * number.
-         */
-        public static PlaceholderFragment newInstance(int sectionNumber) {
-            PlaceholderFragment fragment = new PlaceholderFragment();
-            Bundle args = new Bundle();
-            args.putInt(ARG_SECTION_NUMBER, sectionNumber);
-            fragment.setArguments(args);
-            return fragment;
-        }
-
-        public PlaceholderFragment() {
-        }
-
-        @Override
-        public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                Bundle savedInstanceState) {
-            View rootView = inflater.inflate(R.layout.fragment_viewpager, container, false);
-            TextView textView = (TextView) rootView.findViewById(R.id.section_label);
-            textView.setText(Integer.toString(getArguments().getInt(ARG_SECTION_NUMBER)));
-            return rootView;
-        }
-
-        @Override
-        public void onAttach(Activity activity) {
-            super.onAttach(activity);
-            /*((MainActivity) activity).onSectionAttached(
-                    getArguments().getInt(ARG_SECTION_NUMBER));*/
-        }
     }
 
 }

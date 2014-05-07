@@ -91,6 +91,12 @@
     <string name="dateError">ERROR. Al formatear la fecha</string>
     <string name="insertError">ERROR. Fallo al insertar los datos en la base de datos</string>
 
+    <!-- fragment_train_history -->
+    <string name="train_history_distance">Total distance:</string>
+    <string name="train_history_speed">Average speed:</string>
+    <string name="train_history_calories">Calories burned:</string>
+    <string name="train_history_routes">Number of routes:</string>
+
     <!-- train -->
     <string name="train_running">Correr</string>
     <string name="train_cycling">Bicicleta</string>
@@ -108,11 +114,16 @@
     <string name="service_start_train">¡Entrenamiento comenzado!</string>
     <string name="service_advice" formatted="false">Distancia: %.1f kilometros. Tiempo: %d horas, %d minutos, %d segundos. Velocidad: %.1f kilometros por hora.</string>
 
+    <!-- Mensajes de alerta Train training-->
+    <string name="alert_train_training_ok">OK</string>
+    <string name="alert_train_training_titulo">Session ON</string>
+    <string name="alert_train_training_mensaje">Ends the session to change the settings.</string>
 
     <!--Fragment Review Diets -->
     <string name="buttonSelectionDiet">Seleccionar</string>
     <string name="buttonSeeDiet">Ver</string>
     <string name="createDietButton">Crear dieta</string>
+    <string name="title_activity_diet">DietActivity</string>
     <string name="day">Día </string>
     <string name="quantity">Cantidad (g)</string>
 </resources>

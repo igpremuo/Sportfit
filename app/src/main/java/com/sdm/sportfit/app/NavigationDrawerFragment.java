@@ -21,6 +21,10 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 
+import com.sdm.sportfit.app.adapters.NavigationDrawerAdapter;
+
+import java.util.Arrays;
+
 /**
  * Fragment used for managing interactions for and presentation of a navigation drawer.
  * See the <a href="https://developer.android.com/design/patterns/navigation-drawer.html#Interaction">
@@ -98,13 +102,21 @@ public class NavigationDrawerFragment extends Fragment {
                 selectItem(position);
             }
         });
+
+        NavigationDrawerAdapter adapter = new NavigationDrawerAdapter(getActivity(), Arrays.asList(drawerTitles));
+
+        /*
         mDrawerListView.setAdapter(new ArrayAdapter<String>(
                 getActionBar().getThemedContext(),
                 //android.R.layout.simple_list_item_1,
                 //android.R.id.text1,
-                R.layout.list_item_navigation_drawer,
+                R.layout.listitem_navigation_drawer,
                 R.id.list_item,
                 drawerTitles));
+        */
+
+        mDrawerListView.setAdapter(adapter);
+
         mDrawerListView.setItemChecked(mCurrentSelectedPosition, true);
         return mDrawerListView;
     }
