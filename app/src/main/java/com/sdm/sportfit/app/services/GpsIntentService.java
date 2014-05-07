@@ -127,6 +127,7 @@ public class GpsIntentService extends IntentService implements LocationListener{
         });
 
         run();
+
         while (!mFinishService) {
 
             if (mEstadoSuscrito && sState == State.RUNNING) {
