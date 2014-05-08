@@ -1,45 +1,31 @@
 package com.sdm.sportfit.app;
 
-import android.app.Activity;
-import android.app.ProgressDialog;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.location.Location;
 import android.os.Bundle;
-import android.os.SystemClock;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.ActionBarActivity;
-import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.View;
-import android.view.ViewGroup;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import com.sdm.sportfit.app.fragments.DietParentFragment;
 import com.sdm.sportfit.app.fragments.HiitParentFragment;
 import com.sdm.sportfit.app.fragments.MainParentFragment;
+import com.sdm.sportfit.app.fragments.NavigationDrawerFragment;
 import com.sdm.sportfit.app.fragments.StaticsParentFragment;
 import com.sdm.sportfit.app.fragments.TrainParentFragment;
 import com.sdm.sportfit.app.interfaces.CallBacks;
 import com.sdm.sportfit.app.persistence.DatabaseHandler;
-import com.sdm.sportfit.app.persistence.JSONParser;
-import com.sdm.sportfit.app.services.ConnectionDetector;
 import com.sdm.sportfit.app.services.GpsIntentService;
 
 public class MainActivity extends ActionBarActivity implements NavigationDrawerFragment.NavigationDrawerCallbacks, CallBacks {
 
-    private DatabaseHandler dh;
-
-    // Progress Dialog
-    private ProgressDialog pDialog;
-
-    // JSON parser class
-    JSONParser jsonParser = new JSONParser();
+    private final static String KEY_CURRENT_FRAGMENT = "current_fragment";
+    private final static String KEY_CHILD_FRAGMENT = "child_fragment";
 
     /**
      * Fragment managing the behaviors, interactions and presentation of the navigation drawer.
@@ -65,6 +51,8 @@ public class MainActivity extends ActionBarActivity implements NavigationDrawerF
     private int mCurrentFragment;
     private int mCurrentChild;
 
+    private DatabaseHandler dh;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -84,8 +72,12 @@ public class MainActivity extends ActionBarActivity implements NavigationDrawerF
                 R.id.navigation_drawer,
                 (DrawerLayout) findViewById(R.id.drawer_layout));
 
-        long elapsedRealtimeOffset = System.currentTimeMillis() - SystemClock.elapsedRealtime();
+        if (savedInstanceState != null) {
+            mCurrentFragment = savedInstanceState.getInt(KEY_CURRENT_FRAGMENT);
+            mCurrentChild = savedInstanceState.getInt(KEY_CHILD_FRAGMENT);
+        }
 
+        /*
         dh = dh.getInstance(this);
         Location location1 = new Location("Location1");
         location1.setLongitude(45.125225);
@@ -102,6 +94,7 @@ public class MainActivity extends ActionBarActivity implements NavigationDrawerF
 
         ConnectionDetector cd = new ConnectionDetector(getApplicationContext());
         //if (!dh.existsDataInTable("Foods") && cd.isConnectingToInternet()){Log.v("VERBOSE", "ejecutando attempt foods"); new AttemptFoods().execute();}
+        */
 
     }
 
@@ -154,6 +147,13 @@ public class MainActivity extends ActionBarActivity implements NavigationDrawerF
         return super.onOptionsItemSelected(item);
     }
 
+    @Override
+    protected void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+        outState.putInt(KEY_CURRENT_FRAGMENT, mCurrentFragment);
+        outState.putInt(KEY_CHILD_FRAGMENT, mCurrentChild);
+    }
+
     private void replaceFragment(Fragment newFragment, CharSequence title) {
         this.mTitle = title;
         FragmentManager fragmentManager = getSupportFragmentManager();
@@ -191,15 +191,15 @@ public class MainActivity extends ActionBarActivity implements NavigationDrawerF
                 //if (mTrainFragment == null) mTrainFragment = new TrainParentFragment();
                 fragment = new TrainParentFragment();
                 break;
-            case 3:
+            case 5:
                 if (mHiitFragment == null) mHiitFragment = new HiitParentFragment();
                 fragment = mHiitFragment;
                 break;
-            case 4:
+            case 3:
                 if (mStaticsFragment == null) mStaticsFragment = new StaticsParentFragment();
                 fragment = mStaticsFragment;
                 break;
-            case 5:
+            case 4:
                 Intent intent = new Intent(this, SettingsActivity.class);
                 startActivity(intent);
                 break;

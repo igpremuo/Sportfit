@@ -13,7 +13,8 @@
         android:layout_height="48dp"
         android:padding="8dp"
         android:scaleType="centerInside"
-        android:src="@drawable/ic_correr"/>
+        android:layout_marginLeft="8dp"
+        android:src="@drawable/ic_nd_diet"/>
 
     <TextView
         android:id="@+id/title"
