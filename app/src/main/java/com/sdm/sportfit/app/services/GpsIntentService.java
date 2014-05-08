@@ -203,6 +203,8 @@ public class GpsIntentService extends IntentService implements LocationListener{
         mCronometro.setBase(SystemClock.elapsedRealtime() - mSavedChronoTime);
 
         mLocationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, MIN_TIME_UPDATE, MIN_DISTANCE_UPDATE, this);
+        mLocationManager.removeUpdates(this);
+        mLocationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, MIN_TIME_UPDATE, MIN_DISTANCE_UPDATE, this);
 
         sState = State.RUNNING;
     }

@@ -9,6 +9,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ListView;
+import android.widget.TextView;
 
 import com.sdm.sportfit.app.MainActivity;
 import com.sdm.sportfit.app.R;
@@ -16,6 +17,9 @@ import com.sdm.sportfit.app.adapters.HistoryListAdapter;
 import com.sdm.sportfit.app.logic.Trainings;
 import com.sdm.sportfit.app.persistence.DatabaseHandler;
 
+import java.text.DecimalFormat;
+import java.text.NumberFormat;
+import java.util.Iterator;
 import java.util.List;
 
 /**
@@ -26,6 +30,13 @@ public class TrainHistoryFragment extends Fragment {
     private MainActivity mMainActivity;
     private ListView mHistoryList;
     DatabaseHandler dh;
+    //Views
+    TextView view_distancia;
+    TextView view_speed;
+    TextView view_calories;
+    TextView view_routes;
+
+
     @Override
     public void onAttach(Activity activity) {
         super.onAttach(activity);
@@ -37,6 +48,9 @@ public class TrainHistoryFragment extends Fragment {
                              Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.fragment_train_history, container, false);
 
+        //inicio views
+        iniciarViews(rootView);
+
         mHistoryList = (ListView) rootView.findViewById(R.id.train_history_list);
 
         mHistoryList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
@@ -46,71 +60,31 @@ public class TrainHistoryFragment extends Fragment {
                 openReviewFragment(trainings);
             }
         });
-
-       /* List<Trainings> history = new ArrayList<Trainings>();
-
+        //preparo variables calculos totales
         Trainings session;
-
-        session = new Trainings();
-        session.setRouteType(Trainings.Type.RUNNING);
-        session.setDate("01/04/2014");
-        session.setDistance(20.5);
-        session.setAverageSpeed(5.5);
-        session.setDuration(300000);
-        session.setCaloriesBurned(700.0);
-        history.add(session);
-
-        session = new Trainings();
-        session.setRouteType(Trainings.Type.CYCLING);
-        session.setDate("02/04/2014");
-        session.setDistance(110.5);
-        session.setAverageSpeed(40.2);
-        session.setDuration(124);
-        session.setCaloriesBurned(1200.0);
-        history.add(session);
-
-        session = new Trainings();
-        session.setRouteType(Trainings.Type.RUNNING);
-        session.setDate("03/04/2014");
-        session.setDistance(20.5);
-        session.setAverageSpeed(3.5);
-        session.setDuration(21654566);
-        session.setCaloriesBurned(70.3);
-        history.add(session);
-
-        session = new Trainings();
-        session.setRouteType(Trainings.Type.WALKING);
-        session.setDate("04/04/2014");
-        session.setDistance(10.5);
-        session.setAverageSpeed(2.5);
-        session.setDuration(216254566);
-        session.setCaloriesBurned(400.0);
-        history.add(session);
-
-        session = new Trainings();
-        session.setRouteType(Trainings.Type.CYCLING);
-        session.setDate("05/04/2014");
-        session.setDistance(200.5);
-        session.setAverageSpeed(50.5);
-        session.setDuration(2654566);
-        session.setCaloriesBurned(3300.0);
-        history.add(session);
-
-        session = new Trainings();
-        session.setRouteType(Trainings.Type.WALKING);
-        session.setDate("06/04/2014");
-        session.setDistance(201.5);
-        session.setAverageSpeed(52.5);
-        session.setDuration(224566);
-        session.setCaloriesBurned(800.0);
-        history.add(session);
-
-        loadHistoryList(history);*/
-
-        Trainings session;
-
+        Double distancia=0.0;
+        Double velocidad=0.0;
+        Double calorias=0.0;
+        int rutas=0;
+        //Obtiene el historia de actividades
         dh = dh.getInstance(getActivity());
         List<Trainings> history = dh.getAllTrainings();
+        //Calcula datos totales
+        Iterator iter = history.iterator();
+        while (iter.hasNext()){
+            session =(Trainings)iter.next();
+            distancia= distancia+session.getDistance();
+            velocidad=velocidad+session.getAverageSpeed();
+            calorias=calorias+session.getCaloriesBurned();
+            //System.out.println(iter.next());
+        }
+        rutas=history.size();
+        NumberFormat decimalFormat = new DecimalFormat("###0.00");
+        //Muestro datos por pantalla
+        view_distancia.setText(decimalFormat.format(distancia/1000)+" Km");
+        view_speed.setText(decimalFormat.format(velocidad/rutas)+" Km/h");
+        view_calories.setText(String.valueOf(calorias)+" Kcal");
+        view_routes.setText(String.valueOf(rutas));
         if (!history.isEmpty()){
             loadHistoryList(history);
         }
@@ -133,5 +107,13 @@ public class TrainHistoryFragment extends Fragment {
         HistoryListAdapter historyAdapter = new HistoryListAdapter(getActivity().getApplicationContext(), history);
         mHistoryList.setAdapter(historyAdapter);
         historyAdapter.notifyDataSetChanged();
+    }
+    //Iniciar Views
+    private void iniciarViews(View rootView){
+        view_distancia = (TextView)rootView.findViewById(R.id.train_history_distance);
+        view_speed=(TextView) rootView.findViewById(R.id.train_history_speed);
+        view_calories=(TextView) rootView.findViewById(R.id.train_history_calories);
+        view_routes=(TextView) rootView.findViewById(R.id.train_history_routes);
+
     }
 }
