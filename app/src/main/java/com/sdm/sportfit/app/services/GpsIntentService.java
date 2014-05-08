@@ -65,6 +65,7 @@ public class GpsIntentService extends IntentService implements LocationListener{
     private long mSavedChronoTime;
     private double mTotalDistance;
     private double mCurrentSpeed;
+    private double mCaloriesBurned;
     private long mAuxTime;
 
     // Gps variables
@@ -73,6 +74,8 @@ public class GpsIntentService extends IntentService implements LocationListener{
     private TextToSpeech mTextToSpeech;
     private int mCounter;
 
+    private String mTypeAdvise;
+    private String mTypeSport;
 
     public GpsIntentService() {
         super("GpsIntentService");
@@ -92,12 +95,12 @@ public class GpsIntentService extends IntentService implements LocationListener{
         filter.addAction(MainTrainFragment.STOP_SERVICE_GPS);
         filter.addAction(MainTrainFragment.SUBSCRIBIR_SERVICE);
         filter.addAction(MainTrainFragment.CANCELAR_SUSCRIBIR_SERVICE);
+        filter.addAction(REPRODUCE_INFO);
         mReceiver = new IntentServiceReceiver();
         registerReceiver(mReceiver, filter);
 
         // Gps options
         mLocationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
-        //mLocationListener = new GpsListener();
         mLocation = mLocationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
 
         // Inicializar variables
@@ -106,7 +109,13 @@ public class GpsIntentService extends IntentService implements LocationListener{
         mSavedChronoTime = 0;
         mTotalDistance = 0;
         mCurrentSpeed = 0;
+        mCaloriesBurned = 0;
         mCounter = 0;
+
+        // Tipo de deporte
+        Bundle bundle = PreferencesManager.restaurarConfiguracionDeporte(getApplicationContext());
+        mTypeAdvise = bundle.getString(PreferencesManager.TIPOAVISO);
+        mTypeSport = bundle.getString(PreferencesManager.TIPODEPORTE);
 
         mTextToSpeech = new TextToSpeech(getApplicationContext(), new TextToSpeech.OnInitListener() {
             @Override
@@ -126,12 +135,34 @@ public class GpsIntentService extends IntentService implements LocationListener{
             }
         });
 
+        /*
+        sleep(500);
+        run();
+        sleep(500);
+        pause();
+        sleep(4000);
+        */
         run();
 
         while (!mFinishService) {
 
             if (mEstadoSuscrito && sState == State.RUNNING) {
                 sendDataToFragment();
+
+                // Reproducir avisos de distancia o tiempo
+                if (mTypeAdvise != null && mTypeAdvise.equals(TrainTrainingFragment.DISTANCIA)) {
+                    if (mCounter >= 1000) {
+                        mCounter = 0;
+                        mTextToSpeech.speak(getAdviceText(), TextToSpeech.QUEUE_ADD, null);
+                    }
+                } else {
+                    if (mCounter < 300) {
+                        mCounter += 1;
+                    } else {
+                        mCounter = 0;
+                        mTextToSpeech.speak(getAdviceText(), TextToSpeech.QUEUE_ADD, null);
+                    }
+                }
             }
 
             sleep(1000);
@@ -148,33 +179,21 @@ public class GpsIntentService extends IntentService implements LocationListener{
                 mAuxTime = 0;
             } else {
                 Points lastPoint = mSession.get(mSession.size() - 1);
-                long time = ((SystemClock.elapsedRealtime()-mCronometro.getBase())-mAuxTime)/1000;
+                double time = ((SystemClock.elapsedRealtime()-mCronometro.getBase())-mAuxTime)/1000.0;
                 float distance = lastPoint.getLocation().distanceTo(location);
                 double speed = (distance/time)*3.6;
+
+                long test = ((SystemClock.elapsedRealtime()-mCronometro.getBase()));
 
                 mSession.add(new Points(location, speed, -1));
                 mTotalDistance += distance;
                 mCurrentSpeed = speed;
+                mCaloriesBurned += calculateCalories(mTypeSport, (time/60.0), speed);
                 mAuxTime = (SystemClock.elapsedRealtime() - mCronometro.getBase());
 
-                Bundle bundle = PreferencesManager.restaurarConfiguracionDeporte(getApplicationContext());
-                String sport = bundle.getString(PreferencesManager.TIPODEPORTE);
-
-                // Reproducir avisos de distancia o tiempo
-                if (sport != null && sport.equals(TrainTrainingFragment.DISTANCIA)) {
-                    if (mCounter < 1000) {
-                        mCounter += distance;
-                    } else {
-                        mCounter = 0;
-                        mTextToSpeech.speak(getAdviceText(), TextToSpeech.QUEUE_ADD, null);
-                    }
-                } else {
-                    if (mCounter < 300) {
-                        mCounter += time;
-                    } else {
-                        mCounter = 0;
-                        mTextToSpeech.speak(getAdviceText(), TextToSpeech.QUEUE_ADD, null);
-                    }
+                // Contador de distancia para los avisos
+                if (mTypeAdvise != null && mTypeAdvise.equals(TrainTrainingFragment.DISTANCIA)) {
+                    if (mCounter < 1000) mCounter += distance;
                 }
             }
         }
@@ -234,6 +253,7 @@ public class GpsIntentService extends IntentService implements LocationListener{
             Calendar calendar = Calendar.getInstance();
             mSession.setDate(dateFormat.format(calendar.getTime()));
             mSession.setDistance(mTotalDistance);
+            mSession.setCaloriesBurned(mCaloriesBurned/1000);
 
             // Calculo de la velocidad media y el ritmo promedio
             double speed = 0;
@@ -269,6 +289,47 @@ public class GpsIntentService extends IntentService implements LocationListener{
         } catch (Throwable throwable) {
             throwable.printStackTrace();
         }
+    }
+
+    /**
+     * Calcula el numero de calorias consumidas
+     * @param typeSport tipo de deporte
+     * @param time en minutos
+     * @param speed en km/h
+     * @return calorias
+     */
+    private double calculateCalories(String typeSport, double time, double speed) {
+        double weight = 80.0;
+        double aux;
+        if (speed == 0) return 0;
+        if (typeSport.equals(TrainTrainingFragment.CORRER)) {
+            // Deporte correr
+            if (speed <= 8) {
+                aux = 0.06;
+            } else if (speed <= 11) {
+                aux = 0.092;
+            } else if (speed <= 13) {
+                aux = 0.104;
+            } else {
+                aux = 0.129;
+            }
+        } else if (typeSport.equals(TrainTrainingFragment.BICI)) {
+            // Deporte bicicleta
+            if (speed <= 18) {
+                aux = 0.049;
+            } else {
+                aux = 0.071;
+            }
+        } else {
+            // Deporte andar
+            if (speed <= 5) {
+                aux = 0.029;
+            } else {
+                aux = 0.048;
+            }
+        }
+
+        return aux * weight * time;
     }
 
     private void sendDataToFragment(){
