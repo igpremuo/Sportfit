@@ -79,10 +79,6 @@ public class MainReviewFragment extends Fragment {
         textViewWater.setText(this.getString(R.string.user_water) + ": " + String.format("%.2f",statistics.getWater()));
         textViewImc.setText(this.getString(R.string.user_imc) + ": " + String.format("%.2f",Double.parseDouble(String.valueOf(statistics.getImc()))));
         textViewPgc.setText(this.getString(R.string.pgc) + ": " + String.format("%.2f",statistics.getPgc()));
-        //textViewHeight.setText(userPref.getUserHeight()+ " cm");
-        //textViewWeight.setText(userPref.getUserWeight() + " kg");
-        //textViewImc.setText(userPref.getUserImc() + " %");
-        //textViewPgc.setText(userPref.getUserMgc() + " %");
 
         NumberFormat decimalFormat = new DecimalFormat("###0.00");
         DateFormat dateFormat = new SimpleDateFormat("dd/MM/yyy");
@@ -92,10 +88,11 @@ public class MainReviewFragment extends Fragment {
 
         int idTraining = dh.getIdTrainingByDate(dateFormat.format(calendar.getTime()));
         Trainings training = dh.getTraining(idTraining);
-       // training.addAll(dh.getPoints(idTraining));
 
-//        textViewCaloriesBurned.setText(decimalFormat.format(training.getCaloriesBurned()) + " Kcal");
-//        textViewDistance.setText(decimalFormat.format(training.getDistance()) + " Km");
+        if (training != null) {
+            textViewCaloriesBurned.setText(decimalFormat.format(training.getCaloriesBurned()) + " Kcal");
+            textViewDistance.setText(decimalFormat.format(training.getDistance()) + " Km");
+        }
 
         return rootView;
     }
