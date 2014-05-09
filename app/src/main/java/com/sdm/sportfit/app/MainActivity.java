@@ -8,6 +8,7 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.ActionBarActivity;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.Toast;
@@ -21,6 +22,8 @@ import com.sdm.sportfit.app.fragments.TrainParentFragment;
 import com.sdm.sportfit.app.interfaces.CallBacks;
 import com.sdm.sportfit.app.persistence.DatabaseHandler;
 import com.sdm.sportfit.app.services.GpsIntentService;
+
+import java.util.Calendar;
 
 public class MainActivity extends ActionBarActivity implements NavigationDrawerFragment.NavigationDrawerCallbacks, CallBacks {
 
@@ -53,10 +56,16 @@ public class MainActivity extends ActionBarActivity implements NavigationDrawerF
 
     private DatabaseHandler dh;
 
+    private int hoy;
+    private Calendar calendar;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        Log.v("VERBOSE", "Entro por la main Activity");
+        calendar = Calendar.getInstance();
+        hoy = calendar.getTime().getDate();
         _prefs = getSharedPreferences("myPreferences", MODE_PRIVATE);
         idUser = _prefs.getInt("idUser", 0);
         mNavigationDrawerFragment = (NavigationDrawerFragment)
@@ -95,6 +104,7 @@ public class MainActivity extends ActionBarActivity implements NavigationDrawerF
         ConnectionDetector cd = new ConnectionDetector(getApplicationContext());
         //if (!dh.existsDataInTable("Foods") && cd.isConnectingToInternet()){Log.v("VERBOSE", "ejecutando attempt foods"); new AttemptFoods().execute();}
         */
+
 
     }
 

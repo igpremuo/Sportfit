@@ -276,6 +276,7 @@
                 android:inputType="text|numberDecimal"
                 android:layout_weight="1"
                 android:numeric="decimal"
+                android:hint="36 cm"
                 android:maxLength="2"
                 />
 
@@ -359,6 +360,7 @@
                 android:inputType="text|numberDecimal"
                 android:layout_weight="1"
                 android:numeric="decimal"
+                android:hint="90 cm"
                 android:maxLength="2"
                 android:visibility="invisible"
                 />

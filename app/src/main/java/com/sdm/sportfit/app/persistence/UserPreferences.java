@@ -27,11 +27,13 @@ public class UserPreferences {
     private final static String USER_HIP = "user_hip";
 
     private SharedPreferences mPrefs;
+    private SharedPreferences.Editor mPrefsEditor;
     private Context mContext;
 
     public UserPreferences(Context context) {
         mContext = context;
         mPrefs = context.getSharedPreferences(PREFERENCES_FILE, Context.MODE_PRIVATE);
+        mPrefsEditor = mPrefs.edit();
     }
 
     public String getUserDistanceUnits() {

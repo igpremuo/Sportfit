@@ -7,6 +7,10 @@ import android.support.v7.app.ActionBarActivity;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.Button;
+import android.widget.EditText;
+import android.widget.Spinner;
 import android.widget.TabHost;
 import android.widget.TableLayout;
 import android.widget.TableRow;
@@ -27,15 +31,48 @@ public class DietActivity extends ActionBarActivity {
     private TextView typeMeal, tnameFood, quantity, earnerdCalories;
     private SharedPreferences _prefs;
     private int idDiet;
-
+    private Button addFood;
+    private Spinner spinnerTypeMeals, spinnerDate, spinnerQuantity;
+    private String typeMealSpinner;
+    private int dateSpinner, quantitySpinner;
+    private View viewSpinners;
+    private EditText quantityEdit, dateEdit;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_diet);
         dh = dh.getInstance(this);
+        quantityEdit = new EditText(getApplicationContext());
         Intent intent = getIntent();
         idDiet = intent.getIntExtra("idDiet", 1);
+      /**  addFood  = (Button) findViewById(R.id.addFood);
+        addFood.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+
+                AlertDialog addFoodDietDialog =  new AlertDialog.Builder(DietActivity.this).create();
+                addFoodDietDialog.setCancelable(true);
+                if("es".equals(Locale.getDefault().getLanguage())) addFoodDietDialog.setTitle("Añadir a tu dieta");
+                else addFoodDietDialog.setTitle("Add to your diet");
+                addFoodDietDialog.setView(loadSpinnerTypeMeals());
+                addFoodDietDialog.setButton(getResources().getString(R.string.cancel), new DialogInterface.OnClickListener() {
+
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.dismiss();
+                    }
+                });
+                addFoodDietDialog.setButton(getResources().getString(R.string.add), new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int which) {
+                        //Seleccionamos el tipo de comida del spinner
+                        loadDialogDate();
+                        }
+                });
+                addFoodDietDialog.show();
+
+            }
+        });*/
         // Control TabHost
         TabHost host = (TabHost) findViewById(R.id.tabhost);
         host.setup();
@@ -516,5 +553,129 @@ public class DietActivity extends ActionBarActivity {
         }
         return super.onOptionsItemSelected(item);
     }
+
+
+  /**  private void storeFood(int idDiet, int date){
+        String timeMeal = dh.getDietByDateAndIdAndTypeMeal(1, 1, typeMealSpinner);
+        Diet diet = new Diet();
+        diet.setIdDiet(idDiet); // el idDiet de la sharedPreferences
+        Foods foodSelected = new Foods();
+        foodSelected.setId(680);
+        String timeMealFood = dh.getDietByDateAndIdAndTypeMeal(date, idDiet,typeMealSpinner);
+        dh.addFoodToDietDB(foodSelected, typeMealSpinner, timeMealFood, 1, diet, 1);
+
+    }
+
+    private Spinner loadSpinnerTypeMeals(){
+        spinnerTypeMeals = new Spinner(this);
+        List<String> mealArray = Arrays.asList(getResources().getStringArray(R.array.type_meal_array));
+        ArrayAdapter<String> adapterSpinnerMeals = new ArrayAdapter<String>(DietActivity.this,android.R.layout.simple_spinner_item, mealArray);
+        adapterSpinnerMeals.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        spinnerTypeMeals.setAdapter(adapterSpinnerMeals);
+
+        spinnerTypeMeals.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                Log.v("VERBOSE", "recojo el dato "+ position);
+                typeMealSpinner = (String) parent.getItemAtPosition(position);
+
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+                typeMealSpinner = "Desayuno";
+            }
+        });
+        return spinnerTypeMeals;
+    }
+
+    private Spinner loadSpinnerDate(){
+        spinnerDate = (Spinner) findViewById(R.id.spinnerDate);
+        List<String> dateArray = Arrays.asList(getResources().getStringArray(R.array.dateArray));
+        ArrayAdapter<String> adapterSpinnerDate = new ArrayAdapter<String>(DietActivity.this,android.R.layout.simple_spinner_item, dateArray);
+        adapterSpinnerDate.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        spinnerDate.setAdapter(adapterSpinnerDate);
+
+        spinnerDate.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                Log.v("VERBOSE", "recojo el dato "+ parent.getItemAtPosition(position).toString());
+                dateSpinner = Integer.parseInt((String)parent.getItemAtPosition(position));
+
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+                dateSpinner = 1;
+            }
+        });
+        return spinnerDate;
+    }
+
+    private Spinner loadSpinnerQuantity(){
+        spinnerQuantity = spinnerDate = (Spinner) findViewById(R.id.spinner3);
+        List<String> quantityArray = Arrays.asList(getResources().getStringArray(R.array.quantityArray));
+        ArrayAdapter<String> adapterSpinnerQuantity = new ArrayAdapter<String>(DietActivity.this,android.R.layout.simple_spinner_item, quantityArray);
+        adapterSpinnerQuantity.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        spinnerQuantity.setAdapter(adapterSpinnerQuantity);
+
+        spinnerQuantity.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                Log.v("VERBOSE", "recojo el dato "+ position);
+                quantitySpinner = (Integer)parent.getItemAtPosition(position);
+
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+                quantitySpinner = 50;
+            }
+        });
+        return spinnerQuantity;
+    }
+
+    private void loadDialogDate(){
+        AlertDialog addFoodDietDialog2 =  new AlertDialog.Builder(DietActivity.this).create();
+        addFoodDietDialog2.setCancelable(true);
+        if("es".equals(Locale.getDefault().getLanguage())) addFoodDietDialog2.setTitle("Añadir al día");
+        else addFoodDietDialog2.setTitle("Add to day");
+
+        addFoodDietDialog2.setView(dateEdit);
+        addFoodDietDialog2.setButton(getResources().getString(R.string.cancel), new DialogInterface.OnClickListener() {
+
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.dismiss();
+            }
+        });
+        addFoodDietDialog2.setButton(getResources().getString(R.string.add), new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int which) {
+                //Seleccionamos el tipo de comida del spinner
+                loadDialogQuantity();
+            }
+        });
+        addFoodDietDialog2.show();
+    }
+
+    private void loadDialogQuantity(){
+        AlertDialog addFoodDietDialog =  new AlertDialog.Builder(DietActivity.this).create();
+        addFoodDietDialog.setCancelable(true);
+        if("es".equals(Locale.getDefault().getLanguage())) addFoodDietDialog.setTitle("Añadir al día");
+        else addFoodDietDialog.setTitle("Add to day");
+        addFoodDietDialog.setView(loadSpinnerQuantity());
+        addFoodDietDialog.setButton(getResources().getString(R.string.cancel), new DialogInterface.OnClickListener() {
+
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.dismiss();
+            }
+        });
+        addFoodDietDialog.setButton(getResources().getString(R.string.add), new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int which) {
+                //Seleccionamos el tipo de comida del spinner
+                dialog.dismiss();
+            }
+        });
+        addFoodDietDialog.show();
+    }*/
 
 }

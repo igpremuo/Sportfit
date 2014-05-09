@@ -62,7 +62,7 @@ public class FoodListDietMainAdapter  extends BaseAdapter  {
             } else {
                 nameFood.setText(food.getNameEN());
             }
-            calories.setText(String.valueOf(food.getCalories()));
+            calories.setText(String.format("%.2f", food.getCalories()));
             return rowView;
         }
 

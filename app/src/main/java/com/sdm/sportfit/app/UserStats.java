@@ -3,7 +3,7 @@ package com.sdm.sportfit.app;
 import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Intent;
-import android.os.AsyncTask;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -39,7 +39,7 @@ public class UserStats extends Activity implements View.OnClickListener {
     // Progress Dialog
     private ProgressDialog pDialog;
     private TextView textViewHip;
-
+    private SharedPreferences _prefs;
     // JSON parser class
     JSONParser jsonParser = new JSONParser();
 
@@ -74,7 +74,10 @@ public class UserStats extends Activity implements View.OnClickListener {
         save = (Button)findViewById(R.id.save);
         save.setOnClickListener(this);
         textViewHip = (TextView) findViewById(R.id.TextViewHip);
-
+        statistic = new Statistics();
+        _prefs = getSharedPreferences("myPreferences", MODE_PRIVATE);
+        statistic.setIdUser(_prefs.getInt("idUser",1));
+        Log.v("VERBOSE", "id de usuario a meter en stats "+ _prefs.getInt("idUser", -1));
         ArrayAdapter<CharSequence> adapterAge = ArrayAdapter.createFromResource(this, R.array.ageArray,
                 android.R.layout.simple_spinner_item);
         adapterAge.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
@@ -259,12 +262,12 @@ public class UserStats extends Activity implements View.OnClickListener {
     }
 
 
-    class CreateStatsUser extends AsyncTask<String, String, String> {
+   /* class CreateStatsUser extends AsyncTask<String, String, String> {
 
         /**
          * Before starting background thread Show Progress Dialog
          * */
-        boolean failure = false;
+    /*    boolean failure = false;
 
         @Override
         protected void onPreExecute() {
@@ -287,7 +290,7 @@ public class UserStats extends Activity implements View.OnClickListener {
         /**
          * After completing background task Dismiss the progress dialog
          * **/
-        protected void onPostExecute(String file_url) {
+   /*     protected void onPostExecute(String file_url) {
             // dismiss the dialog once product deleted
             pDialog.dismiss();
             if (file_url != null){
@@ -296,7 +299,7 @@ public class UserStats extends Activity implements View.OnClickListener {
 
         }
 
-    }
+    } */
 
 }
 

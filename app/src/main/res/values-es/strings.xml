@@ -88,6 +88,7 @@
     <string name="insertUserError">ERROR. No se han podido insertar el usuario en la base de datos</string>
     <string name="selectError">ERROR. No se ha podido ejecutar la consulta</string>
     <string name="deleteError">ERROR. No se ha podido borrar la tabla</string>
+    <string name="selectDietError">No existe la dieta buscada</string>
     <string name="dateError">ERROR. Al formatear la fecha</string>
     <string name="insertError">ERROR. Fallo al insertar los datos en la base de datos</string>
 
@@ -126,12 +127,5 @@
     <string name="title_activity_diet">DietActivity</string>
     <string name="day">Día </string>
     <string name="quantity">Cantidad (g)</string>
-
-    <!-- Frgament Main Review -->
-    <string name="diet">Dieta</string>
-    <string name="main_review_calories_diet">Calorias ingeridas</string>
-    <string name="main_review_calories_burned">Calorias consumidas</string>
-    <string name="main_review_distance">Kilometros realizados</string>
-
 </resources>
 

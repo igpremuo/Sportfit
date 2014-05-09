@@ -1,9 +1,9 @@
 package com.sdm.sportfit.app.fragments;
 
-import android.app.Activity;
 import android.app.ProgressDialog;
+import android.content.Context;
 import android.content.Intent;
-import android.os.AsyncTask;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.util.Log;
@@ -43,6 +43,7 @@ public class StaticsParentFragment extends Fragment implements View.OnClickListe
     private ProgressDialog pDialog;
     private TextView textViewHip;
     protected Statistics statistic;
+    private SharedPreferences _prefs;
 
     // JSON parser class
     JSONParser jsonParser = new JSONParser();
@@ -71,6 +72,9 @@ public class StaticsParentFragment extends Fragment implements View.OnClickListe
         sizeWaist = (EditText)rootView.findViewById(R.id.sizeWaist);
         sizeHip = (EditText)rootView.findViewById(R.id.sizeHip);
         statistic = new Statistics();
+        _prefs = getActivity().getSharedPreferences("myPreferences", Context.MODE_PRIVATE);
+        statistic.setIdUser(_prefs.getInt("idUser",1));
+        Log.v("VERBOSE", "id de usuario a meter en stats "+ _prefs.getInt("idUser", -1));
         save = (Button)rootView.findViewById(R.id.save);
         save.setOnClickListener(this);
         textViewHip = (TextView) rootView.findViewById(R.id.TextViewHip);
@@ -223,6 +227,7 @@ public class StaticsParentFragment extends Fragment implements View.OnClickListe
                     startActivity(i);
                 }
             }catch (Exception e){
+                e.getStackTrace();
                 Toast.makeText(getActivity(), R.string.notSaved, Toast.LENGTH_LONG).show();
             }
         }
@@ -245,12 +250,6 @@ public class StaticsParentFragment extends Fragment implements View.OnClickListe
 
         //%Grasa=495/(1.29579-0.35004(log(cintura+cadera-cuello))+0.22100(log(altura)))-450
         private double calcPgcWoman(int sizeHip, int sizeWaist, int height, int sizeNeck) {
-            /**double r =  (weight*0.86)+24;
-             double r1 =  sizeWaist * 0.14;
-             double r2 = sizeHip * 0.2;
-             double leanWeight = r - r1 - r2;
-             double pcgWoman = ((weight - leanWeight)*100)/weight;
-             return pcgWoman;*/
             return 495/(1.29579 - 0.35004 * (Math.log((sizeWaist+sizeHip-sizeNeck))) + 0.22100 * (Math.log(height))) - 450;
         }
 
@@ -262,12 +261,12 @@ public class StaticsParentFragment extends Fragment implements View.OnClickListe
         }
 
 
-        class CreateStatsUser extends AsyncTask<String, String, String> {
+     /*   class CreateStatsUser extends AsyncTask<String, String, String> {
 
             /**
              * Before starting background thread Show Progress Dialog
              * */
-            boolean failure = false;
+  /*          boolean failure = false;
 
             @Override
             protected void onPreExecute() {
@@ -290,7 +289,7 @@ public class StaticsParentFragment extends Fragment implements View.OnClickListe
             /**
              * After completing background task Dismiss the progress dialog
              * **/
-            protected void onPostExecute(String file_url) {
+    /*        protected void onPostExecute(String file_url) {
                 // dismiss the dialog once product deleted
                 pDialog.dismiss();
                 if (file_url != null){
@@ -299,7 +298,7 @@ public class StaticsParentFragment extends Fragment implements View.OnClickListe
 
             }
 
-        }
+        } */
 
     }
 

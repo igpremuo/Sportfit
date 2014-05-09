@@ -37,6 +37,7 @@ public class DietMyDietFragment extends Fragment {
         rootView = inflater.inflate(R.layout.fragment_diet_mydiet, container, false);
         TextView textView = (TextView) rootView.findViewById(R.id.section_label);
         textView.setText("Mi dieta personal Fragment");
+        Log.v("VERBOSE", "Paso por dietMydietFragment");
         return rootView;
     }
 

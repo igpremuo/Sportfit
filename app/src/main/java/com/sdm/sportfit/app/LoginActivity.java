@@ -101,9 +101,9 @@ public class LoginActivity extends Activity implements OnClickListener{
         }
 
         /**** Quitar esto para realizar el login ****/
-        Intent i = new Intent(LoginActivity.this, MainActivity.class);
-        finish();
-        startActivity(i);
+        //Intent i = new Intent(LoginActivity.this, MainActivity.class);
+        //finish();
+        //startActivity(i);
     }
 
     @Override
@@ -172,7 +172,7 @@ public class LoginActivity extends Activity implements OnClickListener{
         boolean failure = false;
 
         @Override
-        protected void onPreExecute() {
+            protected void onPreExecute() {
             super.onPreExecute();
             pDialog = new ProgressDialog(LoginActivity.this);
             pDialog.setMessage("Attempting login...");

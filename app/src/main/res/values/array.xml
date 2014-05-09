@@ -5,20 +5,18 @@
         <item>Principal</item>
         <item>Dieta</item>
         <item>Entrenamiento</item>
-        <item>Estadísticas</item>
-        <item>Preferencias</item>
+        <item>Hiit</item>
     </string-array>
 
     <string-array name="main_titles">
-        <item>Entrenar</item>
-        <item>Principal</item>
-        <item>Mi dieta</item>
+        <item>Training</item>
+        <item>Main</item>
+        <item>My diets</item>
     </string-array>
 
     <string-array name="diet_titles">
-        <item>Alimentos</item>
-        <item>Mi dieta</item>
-        <item>Dietas</item>
+        <item>Foods</item>
+        <item>Diets</item>
     </string-array>
 
     <string-array name="train_titles">
@@ -34,13 +32,18 @@
         <item>Ganar peso</item>
     </string-array>
 
-    <!-- Array typeMeals-->
-    <string-array name="type_meal_array">
-        <item>Desayuno</item>
-        <item>Almuerzo</item>
-        <item>Comida</item>
-        <item>Merienda</item>
-        <item>Cena</item>
+    <!--fragment_main_diet-->
+    <string-array name="tips">
+        <item>Evita grasas e hidratos por las noches</item>
+        <item>Evita comer fruta despúes de las comidas</item>
+        <item>Come con moderación</item>
+        <item>Realiza 5 comidads al día</item>
+        <item>Mastica bien los alimentos</item>
+        <item>Bebe agua antes comer</item>
+        <item>No realizes deporte con el estomago vacio</item>
+        <item>Espera al menos una hora antes de realizar una actividad física</item>
+        <item>Repón sales minerales tras a ver realizado ejercicio</item>
+        <item>Ingiere proteinas después de realizar ejercio para tonificar el músculo</item>
     </string-array>
 
     <string-array name="food_category_array">
@@ -61,9 +64,18 @@
     </string-array>
 
     <string-array name="physicalType">
-        <item>Sedentario</item>
-        <item>Moderado</item>
-        <item>Activo</item>
+        <item>Sedentary</item>
+        <item>Moderate</item>
+        <item>Active</item>
+    </string-array>
+
+    <!-- Array typeMeals-->
+    <string-array name="type_meal_array">
+        <item>Breakfast</item>
+        <item>Brunch</item>
+        <item>Lunch</item>
+        <item>Afternoon snack</item>
+        <item>Dinner</item>
     </string-array>
 
     <string-array name="ageArray">
@@ -168,51 +180,4 @@
         <item>99</item>
         <item>100</item>
     </string-array>
-
-    <integer-array name="quantityArray">
-        <item>50</item>
-        <item>100</item>
-        <item>150</item>
-        <item>200</item>
-        <item>250</item>
-        <item>300</item>
-        <item>350</item>
-        <item>400</item>
-        <item>450</item>
-        <item>500</item>
-    </integer-array>
-
-<integer-array name="dateArray">
-    <item>1</item>
-    <item>2</item>
-    <item>3</item>
-    <item>4</item>
-    <item>5</item>
-    <item>6</item>
-    <item>7</item>
-    <item>8</item>
-    <item>9</item>
-    <item>10</item>
-    <item>11</item>
-    <item>12</item>
-    <item>13</item>
-    <item>14</item>
-    <item>15</item>
-    <item>16</item>
-    <item>17</item>
-    <item>18</item>
-    <item>19</item>
-    <item>20</item>
-    <item>21</item>
-    <item>22</item>
-    <item>23</item>
-    <item>24</item>
-    <item>25</item>
-    <item>26</item>
-    <item>27</item>
-    <item>28</item>
-    <item>29</item>
-    <item>30</item>
-    <item>31</item>
-</integer-array>
 </resources>

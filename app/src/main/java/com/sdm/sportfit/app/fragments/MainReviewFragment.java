@@ -16,6 +16,7 @@ import android.widget.TextView;
 import com.sdm.sportfit.app.R;
 import com.sdm.sportfit.app.logic.Statistics;
 import com.sdm.sportfit.app.logic.Trainings;
+import com.sdm.sportfit.app.logic.Users;
 import com.sdm.sportfit.app.persistence.DatabaseHandler;
 import com.sdm.sportfit.app.persistence.UserPreferences;
 
@@ -31,7 +32,7 @@ import java.util.Calendar;
 public class MainReviewFragment extends Fragment {
 
 
-    private TextView name, textViewDayDiet, textViewHeight, textViewWeight,textViewImc, textViewPgc;
+    private TextView name, textViewDayDiet,textViewAge, textViewHeight, textViewWeight,textViewImc, textViewPgc, textViewWater;
     private TextView textViewCaloriesDiet, textViewCaloriesBurned, textViewDistance;
     private RadioGroup radioGroup;
     private RadioButton genreMan, genreWoman;
@@ -50,11 +51,13 @@ public class MainReviewFragment extends Fragment {
                              Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.fragment_main_review, container, false);
         name = (TextView) rootView.findViewById(R.id.name);
+        textViewAge = (TextView) rootView.findViewById(R.id.textViewAge);
         textViewDayDiet  = (TextView) rootView.findViewById(R.id.textViewDayDiet);
         textViewHeight  = (TextView) rootView.findViewById(R.id.textViewHeight);
         textViewWeight  = (TextView) rootView.findViewById(R.id.textViewWeight);
         textViewImc  = (TextView) rootView.findViewById(R.id.textViewImc);
         textViewPgc  = (TextView) rootView.findViewById(R.id.textViewPgc);
+        textViewWater = (TextView) rootView.findViewById(R.id.textViewWater);
         textViewCaloriesDiet = (TextView) rootView.findViewById(R.id.textViewCaloriesDiet);
         textViewCaloriesBurned = (TextView) rootView.findViewById(R.id.textViewCaloriesBurned);
         textViewDistance = (TextView) rootView.findViewById(R.id.textViewDistance);
@@ -63,21 +66,23 @@ public class MainReviewFragment extends Fragment {
         _prefsEditor = _prefs.edit();
 
         dh = dh.getInstance(this.getActivity());
-        //Users user = dh.getUser(_prefs.getInt("idUser", 2));
-        statistics = dh.getLastStatistic(1);
+        Users user = dh.getUser(_prefs.getInt("idUser", 2));
+        statistics = dh.getLastStatistic(_prefs.getInt("idUser", 2));
 
         UserPreferences userPref = new UserPreferences(getActivity());
 
         name.setText(userPref.getUserName());
         textViewDayDiet.setText("Día " + _prefs.getInt("day", 1));
-       // textViewHeight.setText(this.getString(R.string.height) + ": " + statistics.getHeight());
-       // textViewWeight.setText(this.getString(R.string.weight) + ": " + statistics.getWeight());
-       // textViewImc.setText(this.getString(R.string.imc) + ": " + statistics.getImc());
-       // textViewPgc.setText(this.getString(R.string.pgc) + ": " + statistics.getPgc());
-        textViewHeight.setText(userPref.getUserHeight()+ " cm");
-        textViewWeight.setText(userPref.getUserWeight() + " kg");
-        textViewImc.setText(userPref.getUserImc() + " %");
-        textViewPgc.setText(userPref.getUserMgc() + " %");
+        textViewAge.setText(this.getString(R.string.user_age) +": " + statistics.getAge());
+        textViewHeight.setText(this.getString(R.string.user_height) + ": " + statistics.getHeight());
+        textViewWeight.setText(this.getString(R.string.user_weight) + ": " + String.format("%.2f",statistics.getWeight()));
+        textViewWater.setText(this.getString(R.string.user_water) + ": " + String.format("%.2f",statistics.getWater()));
+        textViewImc.setText(this.getString(R.string.user_imc) + ": " + String.format("%.2f",Double.parseDouble(String.valueOf(statistics.getImc()))));
+        textViewPgc.setText(this.getString(R.string.pgc) + ": " + String.format("%.2f",statistics.getPgc()));
+        //textViewHeight.setText(userPref.getUserHeight()+ " cm");
+        //textViewWeight.setText(userPref.getUserWeight() + " kg");
+        //textViewImc.setText(userPref.getUserImc() + " %");
+        //textViewPgc.setText(userPref.getUserMgc() + " %");
 
         NumberFormat decimalFormat = new DecimalFormat("###0.00");
         DateFormat dateFormat = new SimpleDateFormat("dd/MM/yyy");
@@ -87,10 +92,10 @@ public class MainReviewFragment extends Fragment {
 
         int idTraining = dh.getIdTrainingByDate(dateFormat.format(calendar.getTime()));
         Trainings training = dh.getTraining(idTraining);
-        training.addAll(dh.getPoints(idTraining));
+       // training.addAll(dh.getPoints(idTraining));
 
-        textViewCaloriesBurned.setText(decimalFormat.format(training.getCaloriesBurned()) + " Kcal");
-        textViewDistance.setText(decimalFormat.format(training.getDistance()) + " Km");
+//        textViewCaloriesBurned.setText(decimalFormat.format(training.getCaloriesBurned()) + " Kcal");
+//        textViewDistance.setText(decimalFormat.format(training.getDistance()) + " Km");
 
         return rootView;
     }

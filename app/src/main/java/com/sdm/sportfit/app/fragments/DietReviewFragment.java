@@ -1,6 +1,7 @@
 package com.sdm.sportfit.app.fragments;
 
 import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
@@ -35,6 +36,7 @@ public class DietReviewFragment extends Fragment   {
     private DatabaseHandler dh;
     private List<Diet> dietList;
     private SharedPreferences _prefs;
+    private SharedPreferences.Editor _prefsEditor;
     private Button createDiet;
     private ActionBarDrawerToggle mDrawerToggle;
 
@@ -61,6 +63,7 @@ public class DietReviewFragment extends Fragment   {
                // DietDialog dialog = new DietDialog();
                // dialog.setArguments(extras);
               //  dialog.show(getFragmentManager(), "tagAlerta");
+                saveStateDiet(dietSelect);
                 launchDiet(dietSelect.getIdDiet());
 
              /**   AlertDialog.Builder	builder	=
@@ -89,6 +92,17 @@ public class DietReviewFragment extends Fragment   {
 
         });
         return rootView;
+    }
+
+
+    private void saveStateDiet(Diet diet){
+        _prefs = getActivity().getSharedPreferences("myPreferences", Context.MODE_PRIVATE);
+        if(_prefs==null) return;
+        _prefsEditor = _prefs.edit();
+        if(_prefsEditor==null) return;
+
+        _prefsEditor.putInt("idDiet",diet.getIdDiet());
+        _prefsEditor.commit();
     }
 
     public void launchDiet(int idDiet){

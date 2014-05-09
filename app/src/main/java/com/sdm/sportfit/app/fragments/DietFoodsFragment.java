@@ -3,8 +3,9 @@ package com.sdm.sportfit.app.fragments;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Dialog;
-import android.app.DialogFragment;
+import android.content.Context;
 import android.content.DialogInterface;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.util.Log;
@@ -19,6 +20,7 @@ import android.widget.Spinner;
 import com.sdm.sportfit.app.MainActivity;
 import com.sdm.sportfit.app.R;
 import com.sdm.sportfit.app.adapters.FoodsListAdapter;
+import com.sdm.sportfit.app.logic.Diet;
 import com.sdm.sportfit.app.logic.Foods;
 import com.sdm.sportfit.app.persistence.DatabaseHandler;
 
@@ -33,9 +35,14 @@ public class DietFoodsFragment extends Fragment implements AdapterView.OnItemSel
 
     private MainActivity mMainActivity;
     private ListView mFoodsList;
-    private Spinner spinnerCategory;
+    private Spinner spinnerCategory, spinnerTypeMeals;
     private DatabaseHandler dh;
     Dialog customDialog = null;
+    private String typeMeal;
+    private SharedPreferences _prefs;
+    private SharedPreferences.Editor _prefsEditor;
+
+
 
 
 
@@ -65,7 +72,7 @@ public class DietFoodsFragment extends Fragment implements AdapterView.OnItemSel
         mFoodsList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int position, long arg) {
-                Foods foodsSelect = (Foods) mFoodsList.getAdapter().getItem(position);
+                final Foods foodsSelect = (Foods) mFoodsList.getAdapter().getItem(position);
                 Bundle extras = new Bundle();
                 extras.putInt("Food", foodsSelect.getId());
                 //FoodDialog dialog = new FoodDialog();
@@ -85,14 +92,20 @@ public class DietFoodsFragment extends Fragment implements AdapterView.OnItemSel
                 if("es".equals(Locale.getDefault().getLanguage())) alertDialog.setTitle((foodsSelect.getNameES()));
                 else alertDialog.setTitle(foodsSelect.getNameEN());
                 alertDialog.setMessage(mensaje);
-                alertDialog.setButton("OK", new DialogInterface.OnClickListener() {
+                    alertDialog.setButton(getResources().getString(R.string.cancel), new DialogInterface.OnClickListener() {
 
-                    public void onClick(DialogInterface dialog, int which) {
-                        dialog.dismiss();
-                    }
-                });
-                alertDialog.show();
-            }});
+                        public void onClick(DialogInterface dialog, int which) {
+                            dialog.dismiss();
+                        }
+                    });
+                    alertDialog.setButton(getResources().getString(R.string.add), new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int which) {
+                                dialog.dismiss();
+                                addFoodToDiet(foodsSelect);
+                            }
+                    });
+                    alertDialog.show();
+                }});
 
         return rootView;
     }
@@ -112,6 +125,36 @@ public class DietFoodsFragment extends Fragment implements AdapterView.OnItemSel
 
     }
 
+    private void addFoodToDiet(final Foods foodId){
+        AlertDialog addFoodDietDialog =  new AlertDialog.Builder(getActivity()).create();
+        addFoodDietDialog.setCancelable(true);
+        if("es".equals(Locale.getDefault().getLanguage())) addFoodDietDialog.setTitle("Añadir a tu dieta");
+        else addFoodDietDialog.setTitle("Add to your diet");
+        addFoodDietDialog.setView(loadSpinnerTypeMeals());
+        _prefs = getActivity().getSharedPreferences("myPreferences", Context.MODE_PRIVATE);
+
+
+       // Log.v("VERBOSE", "Valor del item del spinner seleccionado" +  spinnerTypeMeals.getSelectedItem().toString());
+
+        addFoodDietDialog.setButton(getResources().getString(R.string.cancel), new DialogInterface.OnClickListener() {
+
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.dismiss();
+            }
+        });
+        addFoodDietDialog.setButton(getResources().getString(R.string.add), new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int which) {
+                 //El idDiet va con sharedPreferences y los otros dos parametros con spinner
+                Log.v("VERBOSE", "spinner comida"+ spinnerTypeMeals.getSelectedItem().toString());
+                if(typeMeal != null) typeMeal = "Desayuno";
+                String timeMeal = dh.getDietByDateAndIdAndTypeMeal(1, 1, typeMeal);
+                Diet diet = dh.getDietById(_prefs.getInt("idDiet", 1));
+                dh.addFoodToDietDB(foodId, spinnerTypeMeals.getSelectedItem().toString(), timeMeal, _prefs.getInt("dateDiet", 1), diet, 100);
+            }
+        });
+        addFoodDietDialog.show();
+    }
+
     @Override
     public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
         String categorySelected = parent.getItemAtPosition(position).toString();
@@ -128,4 +171,28 @@ public class DietFoodsFragment extends Fragment implements AdapterView.OnItemSel
     public void onNothingSelected(AdapterView<?> parent) {
             // borrar la categoria guardada y poner el list a blanco
     }
+
+    private Spinner loadSpinnerTypeMeals(){
+        spinnerTypeMeals = new Spinner(this.getActivity());
+        List<String> mealArray = Arrays.asList(getResources().getStringArray(R.array.type_meal_array));
+        ArrayAdapter<String> adapterSpinnerMeals = new ArrayAdapter<String>(this.getActivity(),android.R.layout.simple_spinner_item, mealArray);
+        adapterSpinnerMeals.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        spinnerTypeMeals.setAdapter(adapterSpinnerMeals);
+
+        spinnerTypeMeals.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                Log.v("VERBOSE", "recojo el dato "+ position);
+                typeMeal = (String) parent.getItemAtPosition(position);
+
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+                typeMeal = "Desayuno";
+            }
+        });
+        return spinnerTypeMeals;
+    }
+
 }
