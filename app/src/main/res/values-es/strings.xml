@@ -126,5 +126,12 @@
     <string name="title_activity_diet">DietActivity</string>
     <string name="day">Día </string>
     <string name="quantity">Cantidad (g)</string>
+
+    <!-- Frgament Main Review -->
+    <string name="diet">Dieta</string>
+    <string name="main_review_calories_diet">Calorias ingeridas</string>
+    <string name="main_review_calories_burned">Calorias consumidas</string>
+    <string name="main_review_distance">Kilometros realizados</string>
+
 </resources>
 

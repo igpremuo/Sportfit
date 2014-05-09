@@ -669,6 +669,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         // return contact list
         return training;
     }
+
     // Getting Points
     public List<Points> getPoints(long idTraining) {
         List<Points> pointsList = new ArrayList<Points>();
@@ -701,6 +702,32 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 
         // return points list
         return pointsList;
+    }
+
+    // Getting Training
+    public int getIdTrainingByDate(String date) {
+        Cursor cursor = null;
+        SQLiteDatabase db = this.getWritableDatabase();
+        int positionPoint = 0;
+        try{
+
+            //cursor = db.rawQuery("SELECT t.idTraining, t.idUser, t.typeTraining, t.caloriesBurned, t.duration, t.averageSpeed, t.averageRate, t.distance, t.dateTraining, p.id, p.longitude, p.latitude, p.speed FROM " + TABLE_TRAINING + " t, " + TABLE_POINTS + "p WHERE t.idTraining = p.idTraining AND t.idTraining = " + idTraining + ";", null);
+            cursor = db.rawQuery("SELECT idTraining FROM " + TABLE_TRAINING + " WHERE dateTraining LIKE '" + date + "';", null);
+
+
+            // looping through all rows and adding to list
+            if (cursor.moveToFirst()) {
+                return Integer.parseInt(cursor.getString(0));
+            }
+        } catch (SQLiteException sqlError){
+            Toast toast = Toast.makeText(this.myContext, R.string.selectError, Toast.LENGTH_SHORT);
+            toast.show();
+        } finally{
+            db.close(); // Closing database connection
+        }
+
+        // return contact list
+        return -1;
     }
 
     // Getting All Training

@@ -15,7 +15,15 @@ import android.widget.TextView;
 
 import com.sdm.sportfit.app.R;
 import com.sdm.sportfit.app.logic.Statistics;
+import com.sdm.sportfit.app.logic.Trainings;
 import com.sdm.sportfit.app.persistence.DatabaseHandler;
+import com.sdm.sportfit.app.persistence.UserPreferences;
+
+import java.text.DateFormat;
+import java.text.DecimalFormat;
+import java.text.NumberFormat;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
 
 /**
  * Created by nacho on 1/04/14.
@@ -24,6 +32,7 @@ public class MainReviewFragment extends Fragment {
 
 
     private TextView name, textViewDayDiet, textViewHeight, textViewWeight,textViewImc, textViewPgc;
+    private TextView textViewCaloriesDiet, textViewCaloriesBurned, textViewDistance;
     private RadioGroup radioGroup;
     private RadioButton genreMan, genreWoman;
     private Spinner spinnerAge, spinnerPhysicalType;
@@ -46,22 +55,43 @@ public class MainReviewFragment extends Fragment {
         textViewWeight  = (TextView) rootView.findViewById(R.id.textViewWeight);
         textViewImc  = (TextView) rootView.findViewById(R.id.textViewImc);
         textViewPgc  = (TextView) rootView.findViewById(R.id.textViewPgc);
+        textViewCaloriesDiet = (TextView) rootView.findViewById(R.id.textViewCaloriesDiet);
+        textViewCaloriesBurned = (TextView) rootView.findViewById(R.id.textViewCaloriesBurned);
+        textViewDistance = (TextView) rootView.findViewById(R.id.textViewDistance);
+
         _prefs = this.getActivity().getSharedPreferences("myPreferences", this.getActivity().MODE_PRIVATE);
         _prefsEditor = _prefs.edit();
+
         dh = dh.getInstance(this.getActivity());
         //Users user = dh.getUser(_prefs.getInt("idUser", 2));
         statistics = dh.getLastStatistic(1);
 
-       // name.setText(user.getName());
+        UserPreferences userPref = new UserPreferences(getActivity());
+
+        name.setText(userPref.getUserName());
         textViewDayDiet.setText("Día " + _prefs.getInt("day", 1));
        // textViewHeight.setText(this.getString(R.string.height) + ": " + statistics.getHeight());
        // textViewWeight.setText(this.getString(R.string.weight) + ": " + statistics.getWeight());
        // textViewImc.setText(this.getString(R.string.imc) + ": " + statistics.getImc());
        // textViewPgc.setText(this.getString(R.string.pgc) + ": " + statistics.getPgc());
-        textViewHeight.setText(this.getString(R.string.height) + ": 170 cm");
-        textViewWeight.setText(this.getString(R.string.weight) + ": 61 kg");
-        textViewImc.setText(this.getString(R.string.imc) + ": 21 %");
-        textViewPgc.setText(this.getString(R.string.pgc) + " :15 %");
+        textViewHeight.setText(userPref.getUserHeight()+ " cm");
+        textViewWeight.setText(userPref.getUserWeight() + " kg");
+        textViewImc.setText(userPref.getUserImc() + " %");
+        textViewPgc.setText(userPref.getUserMgc() + " %");
+
+        NumberFormat decimalFormat = new DecimalFormat("###0.00");
+        DateFormat dateFormat = new SimpleDateFormat("dd/MM/yyy");
+        Calendar calendar = Calendar.getInstance();
+
+        textViewCaloriesDiet.setText(decimalFormat.format(2000) + " Kcal");
+
+        int idTraining = dh.getIdTrainingByDate(dateFormat.format(calendar.getTime()));
+        Trainings training = dh.getTraining(idTraining);
+        training.addAll(dh.getPoints(idTraining));
+
+        textViewCaloriesBurned.setText(decimalFormat.format(training.getCaloriesBurned()) + " Kcal");
+        textViewDistance.setText(decimalFormat.format(training.getDistance()) + " Km");
+
         return rootView;
     }
 

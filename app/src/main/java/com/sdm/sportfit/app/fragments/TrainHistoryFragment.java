@@ -83,7 +83,7 @@ public class TrainHistoryFragment extends Fragment {
         //Muestro datos por pantalla
         view_distancia.setText(decimalFormat.format(distancia/1000)+" Km");
         view_speed.setText(decimalFormat.format(velocidad/rutas)+" Km/h");
-        view_calories.setText(String.valueOf(calorias)+" Kcal");
+        view_calories.setText(decimalFormat.format(calorias)+" Kcal");
         view_routes.setText(String.valueOf(rutas));
         if (!history.isEmpty()){
             loadHistoryList(history);
